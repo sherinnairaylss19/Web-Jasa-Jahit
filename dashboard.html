@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Jasa Jahit</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="profile">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Nama User</span>
+            </div>
+            <ul>
+                <li class="active"><i class="fa-solid fa-desktop"></i> Dashboard</li>
+                <li><i class="fa-solid fa-pen-to-square"></i> Pesanan</li>
+                <li><i class="fa-solid fa-user-group"></i> Pelanggan</li>
+                <li><i class="fa-solid fa-wallet"></i> Pembayaran</li>
+                <li><i class="fa-solid fa-clock"></i> Laporan</li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <h1>Dashboard</h1>
+
+            <div class="stats-container">
+                <div class="card blue">
+                    <img src="assets/icon-mesin-jahit.png" alt="Icon Mesin Jahit" width="40">
+                    <p>Total Pesanan</p>
+                    <h2>10</h2>
+                </div>
+                <div class="card yellow">
+                    <img src="assets/icon-benang.png.jpeg" alt="Icon Proses" width="40">
+                    <p>Dalam Proses</p>
+                    <h2>6</h2>
+                </div>
+                <div class="card cyan">
+                    <img src="assets/icon-selesai.jpeg" alt="Icon Selesai" width="60">
+                    <p>Selesai</p>
+                    <h2>3</h2>
+                </div>
+                <div class="card red">
+                    <p>Deadline Dekat</p>
+                    <h2>2</h2>
+                </div>
+            </div>
+
+            <div class="table-section">
+                <h3>Pesanan Terbaru</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Layanan</th>
+                            <th>Status</th>
+                            <th>Tgl Tenggat</th>
+                            <th>Total Biaya</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sherin</td>
+                            <td>Permak Celana</td>
+                            <td><span class="status selesai">Selesai</span></td>
+                            <td>23 April</td>
+                            <td>30.000</td>
+                        </tr>
+                        <tr>
+                            <td>Dina</td>
+                            <td>Permak Blouse</td>
+                            <td><span class="status proses">Proses</span></td>
+                            <td>25 April</td>
+                            <td>250.000</td>
+                        </tr>
+                        <tr>
+                            <td>Rani</td>
+                            <td>Jahit Dress</td>
+                            <td><span class="status selesai">Selesai</span></td>
+                            <td>18 Maret</td>
+                            <td>90.000</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn-all">Lihat Semua Pesanan</button>
+            </div>
+
+            <div class="income-banner">
+                <p>Total Pemasukan Hari Ini</p>
+                <h2>Rp 505.000</h2>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
