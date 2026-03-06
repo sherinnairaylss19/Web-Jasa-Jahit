@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Pesanan - Jasa Jahit</title>
+    <link rel="stylesheet" href="css/pesanan.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="profile">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Nama User</span>
+            </div>
+            <ul>
+                <li><a href="dashboard.html"><i class="fa-solid fa-desktop"></i> Dashboard</a></li>
+                <li class="active"><a href="pesanan.html"><i class="fa-solid fa-desktop"></i> Pesanan</a></li>
+                <li><a href="#"><i class="fa-solid fa-user-group"></i> Pelanggan</a></li>
+                <li><a href="#"><i class="fa-solid fa-wallet"></i> Pembayaran</a></li>
+                <li><a href="#"><i class="fa-solid fa-clock"></i> Laporan</a></li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <div class="header-breadcrumb">
+                <p><a href="pesanan.html"><i class="fa-solid fa-chevron-left"></i> Kembali Pesanan</a> / Edit Pesanan</p>
+            </div>
+
+            <div class="form-section">
+                <h2 class="form-title">Edit Data Pesanan</h2>
+                
+                <form id="formEditPesanan">
+                    <div class="form-grid">
+                        <div class="form-column">
+                            <h3>Data Pelanggan</h3>
+                            <div class="input-group">
+                                <label>Nama Lengkap</label>
+                                <input type="text" id="editNama" value="Sherin" required>
+                            </div>
+                            <div class="input-group">
+                                <label>No Handphone</label>
+                                <input type="text" id="editNoHp" value="08123456789" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Status Produksi</label>
+                                <select id="editStatus" class="status-select">
+                                    <option value="Selesai" selected>Selesai</option>
+                                    <option value="Proses">Proses</option>
+                                    <option value="Telat">Telat</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Total Biaya</label>
+                                <input type="number" id="editTotal" value="30000" required>
+                            </div>
+                        </div>
+
+                        <div class="form-column">
+                            <h3>Detail Jahitan</h3>
+                            <div class="input-group">
+                                <label>Jenis Pesanan</label>
+                                <input type="text" id="editJenis" value="Permak Celana" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Catatan Tambahan</label>
+                                <textarea id="editCatatan" rows="5">Kecilkan pinggang 3cm & ganti resleting baru</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-save">Simpan Perubahan</button>
+                        <button type="button" class="btn-cancel" onclick="window.history.back()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="js/edit-pesanan.js"></script>
+</body>
+</html>
