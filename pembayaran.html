@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Pembayaran - Dua Saudara</title>
+    <link rel="stylesheet" href="css/pembayaran&laporan.css">
+</head>
+<body>
+    <nav class="sidebar no-print">
+        <div class="user-profile">
+            <div class="user-icon">👤</div>
+            <span>Dua Saudara</span>
+        </div>
+        <ul>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Pesanan</a></li>
+            <li><a href="#">Pelanggan</a></li>
+            <li class="active"><a href="pembayaran.html">Pembayaran</a></li>
+            <li><a href="laporan.html">Laporan</a></li>
+        </ul>
+    </nav>
+    <main class="main-content">
+        <header class="top-header no-print">Pembayaran</header>
+        <div class="content-area">
+            <div class="card">
+                <div class="controls no-print">
+                    <input type="text" id="cari" class="search-bar" placeholder="Cari pembayaran..." onkeyup="muatTabel()">
+                    <button class="btn-add" onclick="bukaModal()" style="padding:10px 20px; border-radius:8px; border:none; background:#3e534f; color:white; cursor:pointer;">+ Tambah Pembayaran</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>No</th><th>Pelanggan</th><th>Tanggal</th><th>Total</th><th>Uang Muka</th><th>Sisa</th><th>Status Bayar</th><th class="btn-action">Aksi</th></tr>
+                    </thead>
+                    <tbody id="tabelBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div id="modal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Input Pembayaran</h3>
+            <input type="hidden" id="editIdx">
+            <input type="text" id="nama" placeholder="Nama Pelanggan">
+            <input type="date" id="tgl">
+            <input type="number" id="total" placeholder="Total Harga">
+            <input type="number" id="dp" placeholder="Uang Muka (DP)">
+            <button onclick="simpanData()" style="width:100%; padding:12px; background:#4a7c74; color:white; border:none; border-radius:8px; cursor:pointer;">Simpan Data</button>
+            <button onclick="tutupModal()" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">Batal</button>
+        </div>
+    </div>
+    <script src="js/pembayaran.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan - Dua Saudara</title>
+    <link rel="stylesheet" href="css/pembayaran&laporan.css">
+</head>
+<body>
+    <nav class="sidebar no-print">
+        <div class="user-profile">
+            <div class="user-icon">👤</div>
+            <span>Dua Saudara</span>
+        </div>
+        <ul>
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="pesanan.html">Pesanan</a></li>
+    <li><a href="pelanggan.html">Pelanggan</a></li>
+    <li><a href="pembayaran.html">Pembayaran</a></li> 
+    <li class="active"><a href="laporan.html">Laporan</a></li>
+</ul>
+    </nav>
+    <main class="main-content">
+        <header class="top-header no-print">Laporan</header>
+        <div class="content-area">
+            <div class="print-only">LAPORAN PEMASUKAN DUA SAUDARA</div>
+            
+            <div class="card no-print">
+                <input type="month" id="filterBulan" class="search-bar" onchange="muatLaporan()">
+            </div>
+
+            <div class="card" style="margin-top:20px">
+                <table>
+                    <thead>
+                        <tr><th>No</th><th>Tanggal</th><th>Pesanan Selesai</th><th>Total Pemasukan</th></tr>
+                    </thead>
+                    <tbody id="reportTable"></tbody>
+                </table>
+            </div>
+
+            <div class="summary-card no-print">
+                <div class="summary-icon">💰</div>
+                <div>
+                    <p>Total Pemasukan Bulan Ini</p>
+                    <h2 id="grandTotal">Rp 0</h2>
+                </div>
+            </div>
+
+            <button onclick="window.print()" class="no-print" style="margin-top:20px; padding:12px 25px; background:#3e534f; color:white; border:none; border-radius:8px; cursor:pointer;">Cetak Laporan</button>
+        </div>
+    </main>
+    <script src="js/laporan.js"></script>
+</body>
+</html>
