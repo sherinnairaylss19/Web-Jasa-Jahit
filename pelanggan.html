@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Pelanggan</title>
+    <link rel="stylesheet" href="css/pelanggan.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="profile">
+            <i class="fa-solid fa-circle-user"></i>
+            <span>Nama User</span>
+        </div>
+
+        <ul>
+            <li>
+                <a href="dashboard.html" style="color:white; text-decoration:none;">
+                    <i class="fa-solid fa-desktop"></i> Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="pesanan.html" style="color:white; text-decoration:none;">
+                    <i class="fa-solid fa-pen-to-square"></i> Pesanan
+                </a>
+            </li>
+
+            <li class="active">
+                <i class="fa-solid fa-user-group"></i> Pelanggan
+            </li>
+
+            <li>
+                <a href="pembayaran.html" style="color:white; text-decoration:none;">
+                    <i class="fas fa-wallet"></i> Pembayaran
+                </a>
+            </li>
+
+            <li>
+                <a href="laporan.html" style="color:white; text-decoration:none;">
+                <i class="fas fa-clock"></i> Laporan
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <h1 class="top-bar-title">Pelanggan</h1>
+        </div>
+        
+        <div class="dashboard-body">
+            <div class="stats-container">
+                <div class="card yellow">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <i class="fas fa-users fa-2x"></i>
+                        <div>
+                            <p style="color:#666; font-size:14px;">Total Pelanggan</p>
+                            <h2 style="font-size:24px;">35</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card blue">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <i class="fas fa-clipboard-list fa-2x"></i>
+                        <div>
+                            <p style="color:#666; font-size:14px;">Pelanggan Baru</p>
+                            <h2 style="font-size:24px;">5</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <div style="background:white; padding:10px 15px; border-radius:8px; display:inline-flex; align-items:center; width:400px; border:1px solid #ddd;">
+                    <i class="fas fa-search" style="color:#999;"></i>
+                    <input type="text" placeholder="Cari Nama Pelanggan" style="border:none; outline:none; margin-left:10px; width:100%;">
+                </div>
+            </div>
+
+            <div class="table-section">
+                <h3 style="margin-bottom:15px;">Data Pelanggan</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Alamat</th>
+                            <th>No HP</th>
+                            <th style="text-align:center;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sherin</td>
+                            <td>Jl. Mawar No. 5</td>
+                            <td>08123456789</td>
+                            <td style="text-align:center;">
+                                <button class="selesai" style="border:none; padding:5px 15px; cursor:pointer; border-radius:15px;" onclick="window.location.href='detail_pelanggan.html'">Detail</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Dina</td>
+                            <td>Gg. Melati</td>
+                            <td>08234567890</td>
+                            <td style="text-align:center;">
+                                <button class="selesai" style="border:none; padding:5px 15px; cursor:pointer; border-radius:15px;">Detail</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Rani</td>
+                            <td>Jl. Kenanga</td>
+                            <td>08987654321</td>
+                            <td style="text-align:center;">
+                                <button class="selesai" style="border:none; padding:5px 15px; cursor:pointer; border-radius:15px;">Detail</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Dimas</td>
+                            <td>Jl. Dahlia</td>
+                            <td>08112233445</td>
+                            <td style="text-align:center;">
+                                <button class="selesai" style="border:none; padding:5px 15px; cursor:pointer; border-radius:15px;">Detail</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hendra</td>
+                            <td>Gg. Anggrek</td>
+                            <td>08223344556</td>
+                            <td style="text-align:center;">
+                                <button class="selesai" style="border:none; padding:5px 15px; cursor:pointer; border-radius:15px;">Detail</button>
+                            </td>
+                    </tbody>
+                </table>
+                <button class="btn-all" style="background-color: #0b5351; color: white; font-weight: bold;">Tambahkan Pesanan</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

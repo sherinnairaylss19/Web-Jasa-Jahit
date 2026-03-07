@@ -2,16 +2,82 @@
 body { background-color: #f4f4f4; }
 .container { display: flex; height: 100vh; }
 
-/* Sidebar */
-.sidebar { width: 250px; background-color: #2D5E55; color: white; padding: 20px; }
-.profile { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid #ffffff55; padding-bottom: 10px; }
-.sidebar ul { list-style: none; }
-.sidebar li { padding: 15px; cursor: pointer; display: flex; align-items: center; gap: 10px; border-radius: 8px; margin-bottom: 5px; }
-.sidebar li.active, .sidebar li:hover { background-color: #ffffff33; }
+/* Sidebar - Pakai Absolute agar tidak memakan tempat atau menumpuk */
+.sidebar { 
+    width: 250px; 
+    background-color: #2D5E55; 
+    color: white; 
+    padding: 20px; 
+    min-height: 100vh; /* Pakai min-height agar mengikuti panjang halaman */
+    flex-shrink: 0;    /* Mencegah sidebar menyusut */
+}
 
-/* Main Content */
-.main-content { flex: 1; padding: 30px; }
-h1 { margin-bottom: 20px; color: #333; }
+/* Profil - Dibuat Besar & Rata Tengah Sempurna */
+.profile { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+    margin-bottom: 30px; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3); 
+    padding-bottom: 15px; 
+}
+
+/* Ukuran Ikon Profil - Kita kunci di sini */
+.profile i {
+    font-size: 45px !important; /* Ukuran besar sesuai halaman pelanggan */
+    width: 50px; 
+    text-align: center;
+}
+
+.profile span {
+    font-size: 18px; 
+    font-weight: bold;
+}
+
+/* Menu Navigasi */
+.sidebar ul { list-style: none; padding: 0; }
+
+.sidebar li { 
+    padding: 12px 15px; 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    border-radius: 8px; 
+    margin-bottom: 5px; 
+    cursor: pointer;
+}
+
+/* Menu yang sedang aktif */
+.sidebar li.active { 
+    background-color: rgba(255, 255, 255, 0.2); 
+}
+
+/* Mengatur container utama agar tidak ada jarak di pinggir */
+.main-content {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.top-bar {
+  background-color: #2D5E55; 
+  padding: 15px 30px; 
+  width: 100%;
+  box-sizing: border-box; 
+}
+
+.top-bar-title {
+  color: #ffffff; 
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Beri jarak sedikit antara header ijo dengan konten di bawahnya */
+.dashboard-body {
+  padding: 20px;
+}
 
 /* Cards */
 .stats-container { display: flex; gap: 20px; margin-bottom: 30px; }
@@ -28,7 +94,84 @@ th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
 .status { padding: 5px 10px; border-radius: 15px; font-size: 12px; }
 .selesai { background: #2D5E55; color: white; }
 .proses { background: #fff9c4; color: #856404; }
+.telat { background: #8B0000; color: #FFF0F0; }
 .btn-all { background: #2D5E55; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; display: block; margin: 0 auto; }
 
-/* Banner */
-.income-banner { margin-top: 20px; background: #fff176; padding: 20px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
+.income-card {
+  display: flex;
+  align-items: center; 
+  background-color: #FBDC87; 
+  padding: 15px 25px;
+  border-radius: 12px;
+  gap: 20px; 
+  width: 100%; 
+  box-sizing: border-box;
+}
+
+.income-icon img {
+  width: 50px; 
+  height: auto;
+}
+
+.income-info {
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+}
+
+.income-label {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+}
+
+.income-amount {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+}
+
+/* Membuat kotak putih pembungkus tabel */
+.table-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* Mengatur tabel agar punya garis */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Supaya garisnya menyatu */
+    margin-top: 15px;
+}
+
+/* Mengatur header tabel (Nama, Layanan, dll) */
+th {
+    background-color: #f2f2f2; /* Warna abu-abu header */
+    text-align: left;
+    padding: 12px;
+    border: 1px solid #ddd; /* Garis tipis */
+}
+
+/* Mengatur isi baris tabel */
+td {
+    padding: 12px;
+    border: 1px solid #ddd; /* Garis tipis kotak-kotak */
+    vertical-align: middle;
+}
+
+/* Tombol Lihat Semua Pesanan */
+.btn-all {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 25px;
+    background-color: #0b5351;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}

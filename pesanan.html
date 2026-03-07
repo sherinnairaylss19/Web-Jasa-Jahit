@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Pesanan - Jasa Jahit</title>
+    <link rel="stylesheet" href="css/pesanan.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="profile">
+                <i class="fa-solid fa-circle-user" style="font-size: 20px;"></i>
+                <span>Nama User</span>
+            </div>
+            <ul>
+                <li><a href="dashboard.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-desktop"></i>Dashboard</a></li>
+                <li class="active"><i class="fa-solid fa-desktop"></i> Pesanan</li>
+                <li><a href="pelanggan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
+                <li><i class="fa-solid fa-wallet"></i> Pembayaran</li>
+                <li><i class="fa-solid fa-clock"></i> Laporan</li>
+            </ul>
+        </nav>
+
+        <div class="main-content"> <div class="header-pesanan"> <h2>Pesanan</h2></div>
+
+            <div class="content-body">
+                <div class="toolbar">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Cari Nama Pelanggan">
+                    </div>
+                   <a href="tambah-pesanan.html" class="btn-add">+ Tambahkan Pesanan</a>
+                </div>
+
+                <div class="table-section">
+                    <h3>Pesanan Keseluruhan</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>No HP</th>
+                                <th>Alamat</th>
+                                <th>Jenis Pesanan</th>
+                                <th>Tgl Masuk</th>
+                                <th>Tgl Tenggat</th>
+                                <th>Catatan</th>
+                                <th>Total</th>
+                                <th>Status Produksi</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Sherin</td>
+                                <td>08123456789</td>
+                                <td>Jl. Mawar No. 5</td>
+                                <td>Permak Celana</td>
+                                <td>20 April 2025</td>
+                                <td>23 April 2025</td>
+                                <td>Kecilkan pinggang 3cm</td>
+                                <td>30.000</td>
+                                <td><span class="status selesai">Selesai</span></td>
+                                <td class="aksi-buttons">
+                                    <div class="button-group">
+                                    <a href="detail-pesanan.html" class="btn-detail">Detail</a>
+                                    <a href="edit-pesanan.html" class="btn-edit">Edit</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Dina</td>
+                                <td>08234567890</td>
+                                <td>Gg. Melati</td>
+                                <td>Permak Blouse</td>
+                                <td>19 April 2025</td>
+                                <td>25 April 2025</td>
+                                <td>Buat menjadi slim fit</td>
+                                <td>250.000</td>
+                                <td><span class="status proses">Proses</span></td>
+                                <td class="aksi-buttons">
+                                    <div class="button-group">
+                                    <a href="detail-pesanan.html" class="btn-detail">Detail</a>
+                                    <a href="edit-pesanan.html" class="btn-edit">Edit</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Rani</td>
+                                <td>08987654321</td>
+                                <td>Jl. Kenanga</td>
+                                <td>Jahit Dress</td>
+                                <td>14 Maret 2025</td>
+                                <td>18 Maret 2025</td>
+                                <td>Pakai furing full</td>
+                                <td>90.000</td>
+                                <td><span class="status proses">Selesai</span></td>
+                                <td class="aksi-buttons">
+                                    <div class="button-group">
+                                    <a href="detail-pesanan.html" class="btn-detail">Detail</a>
+                                    <a href="edit-pesanan.html" class="btn-edit">Edit</a>
+                                    </div>
+                                </td> 
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Dimas</td>
+                                <td>08567890321</td>
+                                <td>Jl Dahlia No.3</td>
+                                <td>Bordir Logo</td>
+                                <td>7 Maret 2025</td>
+                                <td>10 Maret 2025</td>
+                                <td>Bordir Logo Ukuran 6 cm</td>
+                                <td>90.000</td>
+                                <td><span class="status proses">Proses</span></td>
+                                <td class="aksi-buttons">
+                                    <div class="button-group">
+                                    <a href="detail-pesanan.html" class="btn-detail">Detail</a>
+                                    <a href="edit-pesanan.html" class="btn-edit">Edit</a>
+                                    </div>
+                                </td> 
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Hendra</td>
+                                <td>08789123456</td>
+                                <td>Jl. Anggrek No. 7</td>
+                                <td>Permak Celana</td>
+                                <td>5 Maret 2025</td>
+                                <td>10 Maret 2025</td>
+                                <td>Kecilkan dibagian lubang kaki</td>
+                                <td>45.000</td>
+                                <td><span class="status telat">Telat</span></td>
+                                <td class="aksi-buttons">
+                                    <div class="button-group">
+                                    <a href="detail-pesanan.html" class="btn-detail">Detail</a>
+                                    <a href="edit-pesanan.html" class="btn-edit">Edit</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/pesanan.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Pesanan - Jasa Jahit</title>
+    <link rel="stylesheet" href="css/pesanan.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="profile">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Nama User</span>
+            </div>
+            <ul>
+                <li><a href="dashboard.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-desktop"></i>Dashboard</a></li>
+                <li class="active"><i class="fa-solid fa-desktop"></i> Pesanan</li>
+                <li><a href="pelanggan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
+                <li><a href="pembayaran.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-wallet"></i>Pembayaran</a></li>
+                <li><a href="laporan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-clock"></i>Laporan</a></li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <div class="header-breadcrumb">
+                <p><a href="pesanan.html"><i class="fa-solid fa-chevron-left"></i> Kembali Pesanan</a> / Tambahkan Pesanan</p>
+            </div>
+
+            <div class="form-section">
+                <h2 class="form-title">Form Pesanan Baru</h2>
+                
+                <form id="formPesanan">
+                    <div class="form-grid">
+                        <div class="form-column">
+                            <h3>Data Pelanggan</h3>
+                            <div class="input-group">
+                                <label>Nama Lengkap</label>
+                                <input type="text" id="nama" required>
+                            </div>
+                            <div class="input-group">
+                                <label>No Handphone</label>
+                                <input type="text" id="noHp" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Alamat Lengkap</label>
+                                <input type="text" id="alamat" required>
+                            </div>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label>Tanggal Masuk</label>
+                                    <input type="date" id="tglMasuk" required>
+                                </div>
+                                <div class="input-group">
+                                    <label>Tanggal Tenggat</label>
+                                    <input type="date" id="tglTenggat" required>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>Total Biaya</label>
+                                <input type="number" id="totalBiaya" required>
+                            </div>
+                        </div>
+
+                        <div class="form-column">
+                            <h3>Detail Jahitan & Ukuran</h3>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label>Lingkar Dada</label>
+                                    <input type="text" id="lingkarDada">
+                                </div>
+                                <div class="input-group">
+                                    <label>Lingkar Pinggang</label>
+                                    <input type="text" id="lingkarPinggang">
+                                </div>
+                            </div>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label>Lebar Bahu</label>
+                                    <input type="text" id="lebarBahu">
+                                </div>
+                                <div class="input-group">
+                                    <label>Panjang</label>
+                                    <input type="text" id="panjang">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>Jenis Pesanan:</label>
+                                <input type="text" id="jenisPesanan" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Catatan:</label>
+                                <textarea id="catatan" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-save">Simpan Pesanan</button>
+                        <button type="button" class="btn-cancel" onclick="window.history.back()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="js/tambah-pesanan.js"></script>
+</body>
+</html>
