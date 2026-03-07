@@ -70,3 +70,18 @@ td { padding: 12px; border: 1px solid #ddd; vertical-align: middle; font-size: 1
 /* Buttons & Status */
 .selesai { background: #2D5E55; color: white; }
 .btn-all { display: block; margin: 20px auto 0; padding: 10px 25px; border: none; border-radius: 20px; cursor: pointer; }
+
+.btn-detail {
+    background-color: #1d7a6c; /* Warna hijau khas dashboard kamu */
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.btn-detail:hover {
+    background-color: #145a50; /* Warna agak gelap saat disentuh kursor */
+}

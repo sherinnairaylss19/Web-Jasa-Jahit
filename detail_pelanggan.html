@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Pelanggan</title>
     <link rel="stylesheet" href="css/pelanggan.css">
-    <link rel="stylesheet" href="css/detail_pelanggan.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -31,96 +30,94 @@
             </a>
         </div>
         
-      <div class="dashboard-body">
-    <div style="background: white; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; display: flex; flex-direction: column;">
-        
-        <div style="display: flex;">
-            
-            <div style="flex: 1; padding: 20px; border-right: 1px solid #ccc;">
-                <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Detail Pelanggan</h3>
-                <table style="width: 100%; border-collapse: collapse;">
-                    <tr>
-                        <td style="padding: 10px 5px; color: #555; width: 150px; border-bottom: 1px solid #f9f9f9;">Nama Pelanggan:</td>
-                        <td style="padding: 10px 5px; border-bottom: 1px solid #f9f9f9;"><strong>Sherin</strong></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">No HP:</td>
-                        <td style="padding: 10px 5px; border-bottom: 1px solid #f9f9f9;"><strong>08123456789</strong></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px 5px; color: #555;">Alamat:</td>
-                        <td style="padding: 10px 5px;"><strong>Jl. Mawar No. 5</strong></td>
-                    </tr>
-                </table>
+        <div class="dashboard-body">
+            <div style="background: white; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; display: flex; flex-direction: column;">
+                <div style="display: flex;">
+                    <div style="flex: 1; padding: 20px; border-right: 1px solid #ccc;">
+                        <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Detail Pelanggan</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 10px 5px; color: #555; width: 150px; border-bottom: 1px solid #f9f9f9;">Nama Pelanggan:</td>
+                                <td style="padding: 10px 5px; border-bottom: 1px solid #f9f9f9;"><strong>Sherin</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">No HP:</td>
+                                <td style="padding: 10px 5px; border-bottom: 1px solid #f9f9f9;"><strong>08123456789</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 5px; color: #555;">Alamat:</td>
+                                <td style="padding: 10px 5px;"><strong>Jl. Mawar No. 5</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div style="flex: 1; padding: 20px;">
+                        <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Data Ukuran</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 8px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">Lingkar Dada:</td>
+                                <td style="padding: 8px 5px; border-bottom: 1px solid #f9f9f9;"><strong>95 cm</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">Lebar Bahu:</td>
+                                <td style="padding: 8px 5px; border-bottom: 1px solid #f9f9f9;"><strong>40 cm</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">Lingkar Pinggang:</td>
+                                <td style="padding: 8px 5px; border-bottom: 1px solid #f9f9f9;"><strong>90 cm</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">Panjang:</td>
+                                <td style="padding: 8px 5px; border-bottom: 1px solid #f9f9f9;"><strong>90 cm</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 5px; color: #555;">Jenis Pesanan:</td>
+                                <td><strong>Permak Celana</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="display: flex; border-top: 1px solid #ccc; background: #fafafa; padding: 15px 0;">
+                    <div style="flex: 1; text-align: center; border-right: 1px solid #ccc;">
+                        <button onclick="window.location.href='edit_data_pelanggan.html'" style="background-color: #1d7a6c; color: white; border: none; padding: 10px 30px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 80%;">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit Data Pelanggan
+                        </button>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <button onclick="window.location.href='edit_ukuran.html'" style="background-color: #1d7a6c; color: white; border: none; padding: 10px 30px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 80%;">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit Ukuran
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div style="flex: 1; padding: 20px;">
-                <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Data Ukuran</h3>
-                <table style="width: 100%; border-collapse: collapse;">
-                    <tr>
-                        <td style="padding: 8px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">Lingkar Dada:</td>
-                        <td style="padding: 8px 5px; border-bottom: 1px solid #f9f9f9;"><strong>95 cm</strong></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">Lebar Bahu:</td>
-                        <td style="padding: 8px 5px; border-bottom: 1px solid #f9f9f9;"><strong>40 cm</strong></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">Lingkar Pinggang:</td>
-                        <td style="padding: 8px 5px; border-bottom: 1px solid #f9f9f9;"><strong>90 cm</strong></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">Panjang:</td>
-                        <td style="padding: 8px 5px; border-bottom: 1px solid #f9f9f9;"><strong>90 cm</strong></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 5px; color: #555;">Jenis Pesanan:</td>
-                        <td><strong>Permak Celana</strong></td>
-                    </tr>
+            <div style="background: white; border: 1px solid #ccc; border-radius: 4px; margin-top: 20px; padding: 20px;">
+                <h3 style="margin-top: 0; margin-bottom: 15px; font-size: 18px;">Riwayat Pesanan</h3>
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background: #eee;">
+                            <th style="padding: 12px; border: 1px solid #ddd;">Tanggal Masuk</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Tanggal Tenggat</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Jenis Pesanan</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Total Biaya</th>
+                            <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #ddd;">20 April 2025</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">23 April 2025</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Permak Celana</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Rp 30.000</td>
+                            <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">
+                                <span style="background: #2D5E55; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px;">Selesai</span>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
-
-        <div style="display: flex; border-top: 1px solid #ccc; background: #fafafa; padding: 15px 0;">
-            <div style="flex: 1; text-align: center; border-right: 1px solid #ccc;">
-                <button class="selesai" style="background-color: #2D5E55; color: white; border: none; padding: 10px 30px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 80%;">
-                    <i class="fa-solid fa-pen-to-square"></i> Edit Data Pelanggan
-                </button>
-            </div>
-            <div style="flex: 1; text-align: center;">
-                <button class="selesai" style="background-color:#2D5E55; color: white; border: none; padding: 10px 30px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 80%;">
-                    <i class="fa-solid fa-pen-to-square"></i> Edit Ukuran
-                </button>
-            </div>
-        </div>
     </div>
-
-    <div class="table-section" style="margin-top: 30px; border: 1px solid #ccc; border-radius: 4px; background: white; padding: 20px;">
-        <h3 style="margin-bottom: 20px;">Riwayat Pesanan</h3>
-        <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr style="background-color: #f2f2f2; text-align: left;">
-                    <th style="padding: 12px; border: 1px solid #ddd;">Tanggal Masuk</th>
-                    <th style="padding: 12px; border: 1px solid #ddd;">Tanggal Tenggat</th>
-                    <th style="padding: 12px; border: 1px solid #ddd;">Jenis Pesanan</th>
-                    <th style="padding: 12px; border: 1px solid #ddd;">Total Biaya</th>
-                    <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="padding: 12px; border: 1px solid #ddd;">20 April 2025</td>
-                    <td style="padding: 12px; border: 1px solid #ddd;">23 April 2025</td>
-                    <td style="padding: 12px; border: 1px solid #ddd;">Permak Celana</td>
-                    <td style="padding: 12px; border: 1px solid #ddd;">30.000</td>
-                    <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">
-                        <span style="background-color: #2D5E55; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px;">Selesai</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-            
 </body>
 </html>

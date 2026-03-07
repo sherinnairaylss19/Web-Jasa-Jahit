@@ -50,93 +50,115 @@
         <div class="top-bar">
             <h1 class="top-bar-title">Pelanggan</h1>
         </div>
-        
-        <div class="dashboard-body">
-            <div class="stats-container">
-                <div class="card yellow">
-                    <div style="display:flex; align-items:center; gap:15px;">
-                        <i class="fas fa-users fa-2x"></i>
-                        <div>
-                            <p style="color:#666; font-size:14px;">Total Pelanggan</p>
-                            <h2 style="font-size:24px;">35</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="card blue">
-                    <div style="display:flex; align-items:center; gap:15px;">
-                        <i class="fas fa-clipboard-list fa-2x"></i>
-                        <div>
-                            <p style="color:#666; font-size:14px;">Pelanggan Baru</p>
-                            <h2 style="font-size:24px;">5</h2>
-                        </div>
-                    </div>
+      <div class="dashboard-body">
+    <div class="stats-container">
+        <div class="card yellow">
+            <div style="display:flex; align-items:center; gap:15px;">
+                <i class="fas fa-users fa-2x"></i>
+                <div>
+                    <p style="color:#666; font-size:14px;">Total Pelanggan</p>
+                    <h2 style="font-size:24px;">35</h2>
                 </div>
             </div>
-
-            <div style="margin-bottom: 20px;">
-                <div style="background:white; padding:10px 15px; border-radius:8px; display:inline-flex; align-items:center; width:400px; border:1px solid #ddd;">
-                    <i class="fas fa-search" style="color:#999;"></i>
-                    <input type="text" placeholder="Cari Nama Pelanggan" style="border:none; outline:none; margin-left:10px; width:100%;">
+        </div>
+        <div class="card blue">
+            <div style="display:flex; align-items:center; gap:15px;">
+                <i class="fas fa-clipboard-list fa-2x"></i>
+                <div>
+                    <p style="color:#666; font-size:14px;">Pelanggan Baru</p>
+                    <h2 style="font-size:24px;">5</h2>
                 </div>
-            </div>
-
-            <div class="table-section">
-                <h3 style="margin-bottom:15px;">Data Pelanggan</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Alamat</th>
-                            <th>No HP</th>
-                            <th style="text-align:center;">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Sherin</td>
-                            <td>Jl. Mawar No. 5</td>
-                            <td>08123456789</td>
-                            <td style="text-align:center;">
-                                <button class="selesai" style="border:none; padding:5px 15px; cursor:pointer; border-radius:15px;" onclick="window.location.href='detail_pelanggan.html'">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Dina</td>
-                            <td>Gg. Melati</td>
-                            <td>08234567890</td>
-                            <td style="text-align:center;">
-                                <button class="selesai" style="border:none; padding:5px 15px; cursor:pointer; border-radius:15px;">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Rani</td>
-                            <td>Jl. Kenanga</td>
-                            <td>08987654321</td>
-                            <td style="text-align:center;">
-                                <button class="selesai" style="border:none; padding:5px 15px; cursor:pointer; border-radius:15px;">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Dimas</td>
-                            <td>Jl. Dahlia</td>
-                            <td>08112233445</td>
-                            <td style="text-align:center;">
-                                <button class="selesai" style="border:none; padding:5px 15px; cursor:pointer; border-radius:15px;">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Hendra</td>
-                            <td>Gg. Anggrek</td>
-                            <td>08223344556</td>
-                            <td style="text-align:center;">
-                                <button class="selesai" style="border:none; padding:5px 15px; cursor:pointer; border-radius:15px;">Detail</button>
-                            </td>
-                    </tbody>
-                </table>
-                <button class="btn-all" style="background-color: #0b5351; color: white; font-weight: bold;">Tambahkan Pesanan</button>
             </div>
         </div>
     </div>
 
+    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="background:white; padding:10px 15px; border-radius:8px; display:inline-flex; align-items:center; width:400px; border:1px solid #ddd;">
+            <i class="fas fa-search" style="color:#999;"></i>
+            <input type="text" id="inputCari" onkeyup="fungsiCari()" placeholder="Cari Nama Pelanggan" style="border:none; outline:none; margin-left:10px; width:100%;">
+        </div>
+
+        <a href="tambah-pesanan.html" style="background-color: #2D5E55; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-plus"></i> Tambahkan Pesanan
+        </a>
+    </div>
+
+    <div class="table-section" style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+        <h3 style="margin-bottom: 15px;">Data Pelanggan</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f8f9fa; text-align: left; border-bottom: 2px solid #eee;">
+                    <th style="padding: 12px;">Nama</th>
+                    <th style="padding: 12px;">Alamat</th>
+                    <th style="padding: 12px;">No HP</th>
+                    <th style="padding: 12px; text-align: center;">Aksi</th>
+                </tr>
+            </thead>
+          <tbody>
+    <tr>
+        <td>Sherin</td>
+        <td>Jl. Mawar No. 5</td>
+        <td>08123456789</td>
+        <td style="text-align: center;">
+            <button onclick="window.location.href='detail_pelanggan.html'" class="btn-detail">Detail</button>
+        </td>
+    </tr>
+    <tr>
+        <td>Dina</td>
+        <td>Gg. Melati</td>
+        <td>08234567890</td>
+        <td style="text-align: center;">
+            <button onclick="window.location.href='detail_pelanggan.html'" class="btn-detail">Detail</button>
+        </td>
+    </tr>
+    <tr>
+        <td>Rani</td>
+        <td>Jl. Kenanga</td>
+        <td>08987654321</td>
+        <td style="text-align: center;">
+            <button onclick="window.location.href='detail_pelanggan.html'" class="btn-detail">Detail</button>
+        </td>
+    </tr>
+    <tr>
+        <td>Dimas</td>
+        <td>Jl. Dahlia</td>
+        <td>08112233445</td>
+        <td style="text-align: center;">
+            <button onclick="window.location.href='detail_pelanggan.html'" class="btn-detail">Detail</button>
+        </td>
+    </tr>
+    <tr>
+        <td>Hendra</td>
+        <td>Gg. Anggrek</td>
+        <td>08223344556</td>
+        <td style="text-align: center;">
+            <button onclick="window.location.href='detail_pelanggan.html'" class="btn-detail">Detail</button>
+        </td>
+    </tr>
+</tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+function fungsiCari() {
+    var input = document.getElementById("inputCari");
+    var filter = input.value.toUpperCase();
+    var table = document.querySelector("table");
+    var tr = table.getElementsByTagName("tr");
+
+    for (var i = 1; i < tr.length; i++) {
+        var tdNama = tr[i].getElementsByTagName("td")[0];
+        if (tdNama) {
+            var textValue = tdNama.textContent || tdNama.innerText;
+            if (textValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+</script>
 </body>
 </html>
