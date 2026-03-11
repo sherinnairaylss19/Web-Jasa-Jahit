@@ -11,8 +11,8 @@
     <div class="container">
         <nav class="sidebar">
             <div class="profile">
-                <i class="fa-solid fa-circle-user"></i>
-                <span>Nama User</span>
+                <img src="" id="user-foto" alt="User" referrerpolicy="no-referrer">
+                    <span id="user-nama">Memuat...</span>
             </div>
             <ul>
                 <li><a href="dashboard.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-desktop"></i>Dashboard</a></li>
@@ -20,6 +20,7 @@
                 <li><a href="pelanggan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
                 <li><a href="pembayaran.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-wallet"></i>Pembayaran</a></li>
                 <li><a href="laporan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-clock"></i>Laporan</a></li>
+                <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i>Logout</a></li>
             </ul>
         </nav>
 
@@ -105,5 +106,30 @@
         </div>
     </div>
     <script src="js/tambah-pesanan.js"></script>
+     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          
+            const nama = sessionStorage.getItem('namaAdmin');
+            const foto = sessionStorage.getItem('fotoAdmin');
+
+            const elemenNama = document.getElementById('user-nama');
+            const elemenFoto = document.getElementById('user-foto');
+            const elemenIkon = document.getElementById('user-icon');
+
+            if (nama && foto) {
+              
+                elemenNama.innerText = nama;
+                
+                elemenFoto.src = foto;
+                elemenFoto.style.display = 'block'; 
+                
+                if(elemenIkon) elemenIkon.style.display = 'none';
+            } else {
+                
+                alert("Sesi tidak ditemukan. Silakan login kembali.");
+                window.location.href = "login.php";
+            }
+        });
+    </script>
 </body>
 </html>
