@@ -11,43 +11,65 @@ body { background-color: #f4f4f4; display: flex; }
     position: fixed; 
 }
 
-.profile { 
+
+.profile {
     display: flex; 
     align-items: center; 
     gap: 15px; 
     margin-bottom: 30px; 
-    border-bottom: 1px solid #ffffff55; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3); 
     padding-bottom: 15px; 
-}
+        }
 
-.profile i {
-    font-size: 40px !important; 
-    width: 50px; 
-    display: flex;
-    justify-content: center;
-}
+#user-foto {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.2);
+            display: none; 
+        }
 
-.profile span {
-    font-size: 18px !important; 
-    font-weight: bold;
-}
+#user-icon {
+            font-size: 35px;
+            color: white;
+        }
 
-.sidebar ul { list-style: none; }
+#user-nama {
+            font-size: 18px; 
+            font-weight: bold;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+.sidebar ul { list-style: none; padding: 0; }
 
 .sidebar li { 
-    padding: 15px; 
-    cursor: pointer; 
+    padding: 12px 15px; 
     display: flex; 
     align-items: center; 
-    gap: 10px; 
+    gap: 12px; 
     border-radius: 8px; 
     margin-bottom: 5px; 
-    transition: 0.3s; 
+    cursor: pointer;
 }
 
 .sidebar li.active, .sidebar li:hover { 
     background-color: #ffffff33; 
 }
+
+.sidebar ul li a, 
+.sidebar ul li a:visited {
+    color: white;          
+    text-decoration: none;  
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
 
 /* Main Content - Sesuai Dashboard */
 .main-content { flex: 1; margin-left: 250px; display: flex; flex-direction: column; min-width: 0; }
@@ -84,4 +106,10 @@ td { padding: 12px; border: 1px solid #ddd; vertical-align: middle; font-size: 1
 
 .btn-detail:hover {
     background-color: #145a50; /* Warna agak gelap saat disentuh kursor */
+}
+
+.sidebar ul li a, 
+.sidebar ul li a:visited {
+    color: white;
+    text-decoration: none;
 }
