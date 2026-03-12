@@ -1,0 +1,255 @@
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: sans-serif; 
+}
+
+body { 
+    background-color: #f4f4f4; 
+}
+
+.container { 
+    display: flex;
+    align-items: stretch; 
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar { 
+    width: 250px; 
+    background-color: #2D5E55; 
+    color: white; 
+    padding: 20px; 
+    min-height: 100vh; 
+    height: auto;
+    flex-shrink: 0;    
+}
+
+.profile {
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+    margin-bottom: 30px; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3); 
+    padding-bottom: 15px; 
+}
+
+#user-foto {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.2);
+    display: none; 
+}
+
+#user-nama {
+    font-size: 18px; 
+    font-weight: bold;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar ul { list-style: none; padding: 0; }
+
+.sidebar li { 
+    padding: 12px 15px; 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    border-radius: 8px; 
+    margin-bottom: 5px; 
+    cursor: pointer;
+}
+
+.sidebar li a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.sidebar li.active, .sidebar li:hover { 
+    background-color: #ffffff33; 
+}
+
+/* MAIN CONTENT */
+.main-content {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.top-bar {
+    background-color: #2D5E55; 
+    padding: 15px 30px; 
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+.top-bar-title {
+    color: #ffffff; 
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.content-body {
+    padding: 20px;
+}
+.main-content { flex: 1; }
+
+/* TOOLBAR & SEARCH */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* TABLE SECTION */
+.table-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; 
+}
+
+th {
+    background-color: #f2f2f2; 
+    text-align: left;
+    padding: 12px;
+    border: 1px solid #ddd; 
+    font-size: 14px;
+}
+
+td {
+    padding: 12px;
+    border: 1px solid #ddd; 
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+
+/* Container pembungkus agar ada jarak dari tepi */
+.filter-wrapper {
+    padding: 20px 30px;
+}
+
+/* Kotak putih utama sesuai Figma */
+.filter-card {
+    background-color: #ffffff; /* Warna Putih */
+    padding: 15px 25px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Shadow halus agar terlihat melayang */
+    width: fit-content; /* Ukuran mengikuti isi */
+}
+
+/* Gaya Dropdown */
+.select-input {
+    padding: 10px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Gaya Tampilan Tanggal */
+.date-display {
+    padding: 10px 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    min-width: 200px;
+}
+
+/* Gaya Tombol Filter */
+.btn-filter {
+    background-color: #4A706A; /* Warna hijau gelap sesuai Figma */
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.btn-filter:hover {
+    background-color: #3d5c57;
+}
+
+
+
+/* SUMMARY CARD (Kuning) */
+.summary-card {
+    background-color: #FCE591; /* Warna kuning Figma */
+    margin: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.summary-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.summary-icon {
+    width: 50px;
+}
+
+.summary-text p {
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.summary-text h2 {
+    font-size: 24px;
+    color: #000;
+}
+
+/* PRINT BUTTON */
+.action-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px;
+}
+
+.btn-print {
+    background-color: #4A706A;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+}
