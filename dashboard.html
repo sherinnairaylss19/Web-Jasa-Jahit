@@ -11,8 +11,8 @@
     <div class="container">
         <nav class="sidebar">
             <div class="profile">
-                <i class="fa-solid fa-circle-user"></i>
-                <span>Nama User</span>
+                <img src="" id="user-foto" alt="User" referrerpolicy="no-referrer">
+            <span id="user-nama">Memuat...</span>
             </div>
             <ul>
                 <li class="active"><i class="fa-solid fa-desktop"></i> Dashboard</li>
@@ -20,6 +20,7 @@
                 <li><a href="pelanggan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
                 <li><a href="pembayaran.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-wallet"></i>Pembayaran</a></li>
                 <li><a href="laporan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-clock"></i>Laporan</a></li>
+                <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i>Logout</a></li>
             </ul>
         </nav>
 
@@ -53,7 +54,7 @@
                 </div>
 
                 <div class="table-section">
-                    <h3>Pesanan Terbaru</h3>
+                    <h3>Pesanan</h3>
                     <table>
                         <thead>
                             <tr>
@@ -102,7 +103,8 @@
                             </tr>
                         </tbody>
                     </table>
-                    <button class="btn-all">Lihat Semua Pesanan</button>
+                    <div class="button-container">
+                    <a href="pesanan.html" class="btn-all">Lihat Semua Pesanan</a>
                 </div>
 
                 <div class="income-card">
@@ -115,5 +117,5 @@
                     </div>
                 </div>
 
-            </div> </div> </div> </body>
+            </div> </div> </div> <script src="js/auth.js"></script></body>
 </html>

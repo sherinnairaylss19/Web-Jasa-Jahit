@@ -1,40 +1,63 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-body { background-color: #f4f4f4; }
-.container { display: flex; height: 100vh; }
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: sans-serif; 
+}
+body { 
+    background-color: #f4f4f4; 
+}
+.container { 
+    display: flex;
+    align-items: stretch; 
+    min-height: 100vh;
+}
 
-/* Sidebar - Pakai Absolute agar tidak memakan tempat atau menumpuk */
+
+
 .sidebar { 
     width: 250px; 
     background-color: #2D5E55; 
     color: white; 
     padding: 20px; 
-    min-height: 100vh; /* Pakai min-height agar mengikuti panjang halaman */
-    flex-shrink: 0;    /* Mencegah sidebar menyusut */
+    min-height: 100vh; 
+    height: auto;
+    flex-shrink: 0;    
 }
 
-/* Profil - Dibuat Besar & Rata Tengah Sempurna */
-.profile { 
+.profile {
     display: flex; 
     align-items: center; 
     gap: 15px; 
     margin-bottom: 30px; 
     border-bottom: 1px solid rgba(255, 255, 255, 0.3); 
     padding-bottom: 15px; 
-}
+        }
 
-/* Ukuran Ikon Profil - Kita kunci di sini */
-.profile i {
-    font-size: 45px !important; /* Ukuran besar sesuai halaman pelanggan */
-    width: 50px; 
-    text-align: center;
-}
+#user-foto {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.2);
+            display: none; 
+        }
 
-.profile span {
-    font-size: 18px; 
-    font-weight: bold;
-}
+#user-icon {
+            font-size: 35px;
+            color: white;
+        }
 
-/* Menu Navigasi */
+#user-nama {
+            font-size: 18px; 
+            font-weight: bold;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
 .sidebar ul { list-style: none; padding: 0; }
 
 .sidebar li { 
@@ -47,18 +70,28 @@ body { background-color: #f4f4f4; }
     cursor: pointer;
 }
 
-/* Menu yang sedang aktif */
-.sidebar li.active { 
-    background-color: rgba(255, 255, 255, 0.2); 
+
+.sidebar li.active, .sidebar li:hover { 
+    background-color: #ffffff33; 
 }
 
-/* Mengatur container utama agar tidak ada jarak di pinggir */
+.sidebar ul li a, 
+.sidebar ul li a:visited {
+    color: white;          
+    text-decoration: none;  
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
 .main-content {
     flex: 1; 
     display: flex;
     flex-direction: column;
     min-width: 0;
 }
+
 
 .top-bar {
   background-color: #2D5E55; 
@@ -74,6 +107,12 @@ body { background-color: #f4f4f4; }
   font-weight: bold;
 }
 
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
 /* Beri jarak sedikit antara header ijo dengan konten di bawahnya */
 .dashboard-body {
   padding: 20px;
@@ -166,12 +205,32 @@ td {
 
 /* Tombol Lihat Semua Pesanan */
 .btn-all {
-    display: block;
-    margin: 20px auto 0;
+    align-items: center;
+    display: inline-block;
+    width: auto;
+    margin: 10px auto 0;
     padding: 10px 25px;
     background-color: #0b5351;
     color: white;
     border: none;
     border-radius: 20px;
     cursor: pointer;
+}
+
+.button-container {
+    text-align: center;    /* Ini yang bikin tombol geser ke tengah */
+    width: 100%;           /* Memastikan wadahnya selebar area konten */
+    margin-top: 20px;      /* Memberi jarak antara tabel dengan tombol */
+    margin-bottom: 20px;   /* Memberi jarak antara tombol dengan kartu kuning di bawah */
+}
+.sidebar ul li a, 
+.sidebar ul li a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+h3 {
+    text-align: center;
+    width: 100%; /* Memastikan elemen mengambil ruang penuh agar bisa di-center */
+    margin-bottom: 20px; /* Opsional: memberi jarak ke konten bawahnya */
 }
