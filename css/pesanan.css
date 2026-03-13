@@ -424,22 +424,59 @@ td.aksi-buttons {
 }
 
 
-@media print {
-    .sidebar, .header-breadcrumb, .nota-actions {
-        display: none;
-    }
-    .main-content {
-        margin: 0;
-        padding: 0;
-    }
-    .nota-container {
-        border: none;
-        margin: 0;
-        width: 100%;
-    }
+.nota-ukuran-detail {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #b9b9b9;
+    border-radius: 0px;
+    background-color: #f9f9f9;
+}
+
+.nota-ukuran-detail h3 {
+    font-size: 16px;
+    color: #000000;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.ukuran-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.ukuran-item {
+    font-size: 14px;
+    color: #000000;
+}
+
+.ukuran-item span {
+    font-weight: bold;
+    color: #000000;
+    display: inline-block;
+    width: 120px;
 }
 
 
+@media print {
+    .sidebar, .header-breadcrumb, .btn-print {
+        display: none !important;
+    }
+    .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+    .nota-container {
+        box-shadow: none !important;
+        border: none !important;
+        width: 100% !important;
+    }
+    .nota-ukuran-detail {
+        background-color: transparent !important;
+        border: 1px solid #000 !important; 
+    }
+}
 
 
 
