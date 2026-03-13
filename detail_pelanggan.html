@@ -9,17 +9,19 @@
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="profile">
-            <i class="fa-solid fa-circle-user"></i>
-            <span>Nama User</span>
-        </div>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="profile">
+                <img src="" id="user-foto" alt="User" referrerpolicy="no-referrer">
+            <span id="user-nama">Memuat...</span>
+            </div>
         <ul>
             <li><a href="dashboard.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-desktop"></i> Dashboard</a></li>
             <li><a href="pesanan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-pen-to-square"></i> Pesanan</a></li>
             <li class="active"><i class="fa-solid fa-user-group"></i> Pelanggan</li>
             <li><a href="pembayaran.html" style="color:white; text-decoration:none;"><i class="fas fa-wallet"></i> Pembayaran</a></li>
             <li><a href="laporan.html" style="color:white; text-decoration:none;"><i class="fas fa-clock"></i> Laporan</a></li>
+            <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i>Logout</a></li>
         </ul>
     </div>
 
@@ -119,5 +121,6 @@
             </div>
         </div>
     </div>
+    <script src="js/auth.js"></script>
 </body>
 </html>
