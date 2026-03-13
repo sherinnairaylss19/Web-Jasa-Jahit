@@ -9,5 +9,5 @@ session_destroy();
     sessionStorage.removeItem('fotoAdmin');
   
     alert("Anda telah berhasil keluar.");
-    window.location.href = "login.php";
+    window.location.href = "login.html";
 </script>

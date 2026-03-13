@@ -148,6 +148,7 @@ body {
 
 .table-section {
     background-color: white;
+    overflow-x: auto;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -161,6 +162,7 @@ table {
 }
 
 .table-section h3 {
+    text-align: cennter;
     margin-bottom: 15px;
     color: #333;
 }

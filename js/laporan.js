@@ -1,28 +1,47 @@
-function muatLaporan() {
-    const filter = document.getElementById('filterBulan').value;
-    const db = JSON.parse(localStorage.getItem('db_duasaudara')) || [];
-    const tbody = document.getElementById('reportTable');
-    let rekap = {}, totalBulan = 0;
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Inisialisasi Elemen
+    const btnFilter = document.querySelector('.btn-filter');
+    const btnPrint = document.querySelector('.btn-print');
+    const tableRows = document.querySelectorAll('tbody tr');
 
-    db.forEach(item => {
-        if (item.tglISO.startsWith(filter)) {
-            const tgl = item.tglDisplay;
-            if (!rekap[tgl]) rekap[tgl] = { selesai: 0, uang: 0 };
-            if (item.total - item.dp <= 0) rekap[tgl].selesai += 1;
-            rekap[tgl].uang += item.dp;
-            totalBulan += item.dp;
-        }
+    // 2. Fungsi Filter (Berdasarkan Tanggal atau isi tabel)
+    // Mengikuti gaya logika pesanan.js yang menggunakan perulangan row
+    if (btnFilter) {
+        btnFilter.addEventListener('click', function() {
+            // Contoh sederhana: Kita bisa menambahkan input pencarian 
+            // atau memfilter berdasarkan rentang tanggal tertentu.
+            alert("Memproses filter laporan...");
+            
+            // Logika filter jika ingin menyaring berdasarkan teks tertentu (sama dengan pesanan.js)
+            /*
+            tableRows.forEach(row => {
+                const tanggal = row.cells[1].textContent.toLowerCase();
+                if (tanggal.includes('apr')) { // Contoh filter bulan April
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            */
+        });
+    }
+
+    // 3. Fungsi Cetak Laporan
+    if (btnPrint) {
+        btnPrint.addEventListener('click', function() {
+            // Membuka dialog print browser
+            window.print();
+        });
+    }
+
+    // 4. Integrasi Sidebar (Memastikan navigasi tetap aktif)
+    const sidebarItems = document.querySelectorAll('.sidebar li');
+    sidebarItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const link = this.querySelector('a');
+            if (link) {
+                window.location.href = link.getAttribute('href');
+            }
+        });
     });
-
-    tbody.innerHTML = '';
-    Object.keys(rekap).sort().forEach((tgl, i) => {
-        tbody.innerHTML += `<tr><td>${i+1}</td><td>${tgl}</td><td>${rekap[tgl].selesai}</td><td>Rp ${rekap[tgl].uang.toLocaleString()}</td></tr>`;
-    });
-    document.getElementById('grandTotal').innerText = `Rp ${totalBulan.toLocaleString()}`;
-}
-
-window.onload = () => {
-    const d = new Date();
-    document.getElementById('filterBulan').value = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}`;
-    muatLaporan();
-};
+});
