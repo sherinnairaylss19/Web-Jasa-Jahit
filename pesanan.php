@@ -92,8 +92,8 @@ $query = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap, pelan
                             </td>
                             <td class="aksi-buttons">
                                 <div class="button-group">
-                                    <a href="detail-pesanan.html" class="btn-detail">Detail</a>
-                                    <a href="edit-pesanan.html" class="btn-edit">Edit</a>
+                                    <a href="detail-pesanan.php" class="btn-detail">Detail</a>
+                                    <a href="edit-pesanan.php" class="btn-edit">Edit</a>
                                 </div>
                                 </td>
                                 </tr>

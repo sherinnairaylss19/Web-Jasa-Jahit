@@ -2,12 +2,36 @@
 session_start();
 include 'koneksi.php';
 
-// Proteksi Halaman
 if (!isset($_SESSION['login'])) { 
     header("Location: index.php"); 
     exit(); 
 }
+
+// HANYA jalankan ini jika tombol submit diklik
+if (isset($_POST['submit'])) {
+    
+    // Pastikan nama di dalam [''] sama dengan name di input HTML
+    $nama    = $_POST['nama'];          // Sesuai dengan name="nama"
+    $no_hp   = $_POST['no_hp'];         // Sesuai dengan name="no_hp"
+    $alamat  = $_POST['alamat'];        // Sesuai dengan name="alamat"
+    $tgl_m   = $_POST['tgl_masuk'];
+    $tgl_t   = $_POST['tgl_tenggat'];
+    $total   = $_POST['total'];         // Sesuai dengan name="total"
+    $jenis   = $_POST['jenis_pesanan'];
+    $catatan = $_POST['catatan'];
+    $status  = "Proses";
+
+    $query = "INSERT INTO pesanan (nama_lengkap, no_hp, alamat_lengkap, tgl_masuk, tgl_tenggat, total_biaya, jenis_pesanan, catatan, status_produksi) 
+              VALUES ('$nama', '$no_hp', '$alamat', '$tgl_m', '$tgl_t', '$total', '$jenis', '$catatan', '$status')";
+
+    if (mysqli_query($koneksi, $query)) {
+        echo "<script>alert('Data Berhasil Disimpan'); window.location='pesanan.php';</script>";
+    } else {
+        echo "Error: " . mysqli_error($koneksi);
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -25,12 +49,11 @@ if (!isset($_SESSION['login'])) {
                 <span id="user-nama"><?php echo $_SESSION['nama']; ?></span>
             </div>
             <ul>
-                <li><a href="dashboard_penjahit.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-desktop"></i>Dashboard</a></li>
+                <li><a href="dashboard_penjahit.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-desktop"></i> Dashboard</a></li>
                 <li class="active"><i class="fa-solid fa-pen-to-square"></i> Pesanan</li>
-                <li><a href="pelanggan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
-                <li><a href="pembayaran.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-wallet"></i>Pembayaran</a></li>
-                <li><a href="laporan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-clock"></i>Laporan</a></li>
-                <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i>Logout</a></li>
+                <li><a href="pelanggan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i> Pelanggan</a></li>
+                <li><a href="pembayaran.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-wallet"></i> Pembayaran</a></li>
+                <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i> Logout</a></li>
             </ul>
         </nav>
 
@@ -42,80 +65,58 @@ if (!isset($_SESSION['login'])) {
             <div class="form-section">
                 <h2 class="form-title">Form Pesanan Baru</h2>
                 
-                <form id="formPesanan">
+                <form action="" method="POST">
                     <div class="form-grid">
                         <div class="form-column">
                             <h3>Data Pelanggan</h3>
                             <div class="input-group">
                                 <label>Nama Lengkap</label>
-                                <input type="text" id="nama" required>
+                                <input type="text" name="nama" required>
                             </div>
                             <div class="input-group">
                                 <label>No Handphone</label>
-                                <input type="text" id="noHp" required>
+                                <input type="text" name="no_hp" required>
                             </div>
                             <div class="input-group">
                                 <label>Alamat Lengkap</label>
-                                <input type="text" id="alamat" required>
+                                <input type="text" name="alamat" required>
                             </div>
                             <div class="input-row">
                                 <div class="input-group">
                                     <label>Tanggal Masuk</label>
-                                    <input type="date" id="tglMasuk" required>
+                                    <input type="date" name="tgl_masuk" required>
                                 </div>
                                 <div class="input-group">
                                     <label>Tanggal Tenggat</label>
-                                    <input type="date" id="tglTenggat" required>
+                                    <input type="date" name="tgl_tenggat" required>
                                 </div>
                             </div>
                             <div class="input-group">
                                 <label>Total Biaya</label>
-                                <input type="number" id="totalBiaya" required>
+                                <input type="number" name="total" required>
                             </div>
                         </div>
 
                         <div class="form-column">
                             <h3>Detail Jahitan & Ukuran</h3>
-                            <div class="input-row">
-                                <div class="input-group">
-                                    <label>Lingkar Dada</label>
-                                    <input type="text" id="lingkarDada">
-                                </div>
-                                <div class="input-group">
-                                    <label>Lingkar Pinggang</label>
-                                    <input type="text" id="lingkarPinggang">
-                                </div>
-                            </div>
-                            <div class="input-row">
-                                <div class="input-group">
-                                    <label>Lebar Bahu</label>
-                                    <input type="text" id="lebarBahu">
-                                </div>
-                                <div class="input-group">
-                                    <label>Panjang</label>
-                                    <input type="text" id="panjang">
-                                </div>
-                            </div>
                             <div class="input-group">
                                 <label>Jenis Pesanan:</label>
-                                <input type="text" id="jenisPesanan" required>
+                                <input type="text" name="jenis_pesanan" placeholder="Misal: Jahit Kemeja" required>
                             </div>
                             <div class="input-group">
-                                <label>Catatan:</label>
-                                <textarea id="catatan" rows="4"></textarea>
+                                <label>Catatan / Ukuran:</label>
+                                <textarea name="catatan" rows="6" placeholder="Masukkan detail ukuran seperti LD, LP, dll"></textarea>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-buttons">
-                        <button type="submit" class="btn-save">Simpan Pesanan</button>
+                        <button type="submit" name="submit" class="btn-save">Simpan Pesanan</button>
                         <button type="button" class="btn-cancel" onclick="window.history.back()">Batal</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <script src="js/tambah-pesanan.js"></script>
-    <script src="js/auth.js"></script>
 </body>
 </html>
