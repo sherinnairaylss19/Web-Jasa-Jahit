@@ -1,3 +1,31 @@
+<?php
+session_start();
+include 'koneksi.php'; 
+
+// Proteksi halaman: Pastikan hanya admin/pemilik yang bisa masuk
+if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'admin') {
+    header("Location: index.php");
+    exit();
+}
+
+// 1. Total Seluruh Pesanan
+$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan");
+$res_total = mysqli_fetch_assoc($total_q);
+
+// 2. Pesanan Masih Proses
+$proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses'");
+$res_proses = mysqli_fetch_assoc($proses_q);
+
+// 3. Total Pelanggan (Dari tabel pelanggan)
+$pelanggan_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pelanggan");
+$res_pelanggan = mysqli_fetch_assoc($pelanggan_q);
+
+// 4. Total Pemasukan Keseluruhan (Omzet)
+$omzet_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan");
+$res_omzet = mysqli_fetch_assoc($omzet_q);
+
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -11,8 +39,9 @@
     <div class="container">
         <nav class="sidebar">
             <div class="profile">
-                <img src="" id="user-foto" alt="User" referrerpolicy="no-referrer">
-            <span id="user-nama">Memuat...</span>
+               <img src="<?php echo $_SESSION['foto']; ?>" id="user-foto" alt="User" referrerpolicy="no-referrer">
+                <span id="user-nama"><?php echo $_SESSION['nama']; ?></span>
+                <small style="color: #ccc; display: block;"><?php echo ucfirst($_SESSION['role']); ?></small>
             </div>
             <ul>
                 <li class="active"><i class="fa-solid fa-desktop"></i> Dashboard</li>
@@ -26,7 +55,7 @@
 
         <div class="main-content">
             <header class="top-bar">
-                <h1 class="top-bar-title">Dashboard</h1>
+                <h1 class="top-bar-title">Dashboard Pemilik</h1>
             </header>
 
             <div class="dashboard-body">
@@ -104,7 +133,7 @@
                         </tbody>
                     </table>
                     <div class="button-container">
-                    <a href="pesanan.html" class="btn-all">Lihat Semua Pesanan</a>
+                    <a href="pesanan.php" class="btn-all">Lihat Semua Pesanan</a>
                 </div>
 
                 <div class="income-card">

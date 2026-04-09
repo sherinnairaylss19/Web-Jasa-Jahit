@@ -80,9 +80,13 @@
         <h1>Toko Jahit Dua Saudara</h1>
         <p>Masuk ke akun Anda</p>
 
+    <?php if(isset($_GET['pesan']) && $_GET['pesan'] == 'gagal'): ?>
+            <div class="alert">Email tidak terdaftar dalam sistem!</div>
+        <?php endif; ?>
+
         <div id="google-btn-container">
             <div id="g_id_onload"
-                data-client_id="648043534216-bholsa3852ke19k6hj984dgj68d2i404.apps.googleusercontent.com"
+                data-client_id="735257234122-kishc6k5nlqu62hanah4da5c4lcpf85c.apps.googleusercontent.com"
                 data-callback="handleCredentialResponse"
                 data-auto_prompt="false">
             </div>
@@ -96,26 +100,27 @@
             </div>
         </div>
     </div>
+
     <script>
     function handleCredentialResponse(response) {
-      
-    const responsePayload = decodeJwtResponse(response.credential);
+        // Ambil token dari Google
+        const id_token = response.credential;
 
-    sessionStorage.setItem('namaAdmin', responsePayload.name);
-    sessionStorage.setItem('fotoAdmin', responsePayload.picture);
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'auth_google.php'; // Nama file PHP pengolah login
 
-    alert("Selamat Datang, " + responsePayload.name);
-    window.location.href = "dashboard.html"; 
-}
-    function decodeJwtResponse(token) {
-    let base64Url = token.split('.')[1];
-    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    return JSON.parse(jsonPayload);
-}
-</script>
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'id_token';
+        input.value = id_token;
+
+        form.appendChild(input);
+        document.body.appendChild(form);
+        
+        form.submit();
+    }
+    </script>
 
 </body>
 </html>
