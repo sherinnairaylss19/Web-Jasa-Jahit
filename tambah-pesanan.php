@@ -10,24 +10,34 @@ if (!isset($_SESSION['login'])) {
 // HANYA jalankan ini jika tombol submit diklik
 if (isset($_POST['submit'])) {
     
-    // Pastikan nama di dalam [''] sama dengan name di input HTML
-    $nama    = $_POST['nama'];          // Sesuai dengan name="nama"
-    $no_hp   = $_POST['no_hp'];         // Sesuai dengan name="no_hp"
-    $alamat  = $_POST['alamat'];        // Sesuai dengan name="alamat"
+    
+    $nama    = $_POST['nama'];        
+    $no_hp   = $_POST['no_hp'];         
+    $alamat  = $_POST['alamat'];        
     $tgl_m   = $_POST['tgl_masuk'];
     $tgl_t   = $_POST['tgl_tenggat'];
-    $total   = $_POST['total'];         // Sesuai dengan name="total"
+    $total   = $_POST['total'];         
     $jenis   = $_POST['jenis_pesanan'];
     $catatan = $_POST['catatan'];
     $status  = "Proses";
 
-    $query = "INSERT INTO pesanan (nama_lengkap, no_hp, alamat_lengkap, tgl_masuk, tgl_tenggat, total_biaya, jenis_pesanan, catatan, status_produksi) 
-              VALUES ('$nama', '$no_hp', '$alamat', '$tgl_m', '$tgl_t', '$total', '$jenis', '$catatan', '$status')";
+    $query_pelanggan = "INSERT INTO pelanggan (nama_lengkap, no_hp, alamat_lengkap) 
+                        VALUES ('$nama', '$no_hp', '$alamat')";
+    
+    if (mysqli_query($koneksi, $query_pelanggan)) {
 
-    if (mysqli_query($koneksi, $query)) {
-        echo "<script>alert('Data Berhasil Disimpan'); window.location='pesanan.php';</script>";
+        $id_pelanggan = mysqli_insert_id($koneksi);
+
+        $query_pesanan = "INSERT INTO pesanan (id_pelanggan, tgl_masuk, tgl_tenggat, total_biaya, jenis_pesanan, catatan, status_produksi) 
+                          VALUES ('$id_pelanggan', '$tgl_m', '$tgl_t', '$total', '$jenis', '$catatan', '$status')";
+
+        if (mysqli_query($koneksi, $query_pesanan)) {
+            echo "<script>alert('Data Berhasil Disimpan'); window.location='pesanan.php';</script>";
+        } else {
+            echo "Error Pesanan: " . mysqli_error($koneksi);
+        }
     } else {
-        echo "Error: " . mysqli_error($koneksi);
+        echo "Error Pelanggan: " . mysqli_error($koneksi);
     }
 }
 ?>
@@ -118,5 +128,6 @@ if (isset($_POST['submit'])) {
             </div>
         </div>
     </div>
+<script src="js/tambah-pesanan.js"></script>
 </body>
 </html>
