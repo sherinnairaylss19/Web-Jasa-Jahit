@@ -3,7 +3,7 @@ session_start();
 include 'koneksi.php'; 
 
 // Proteksi halaman: Pastikan hanya admin/pemilik yang bisa masuk
-if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'pemilik') {
     header("Location: index.php");
     exit();
 }
@@ -45,11 +45,11 @@ $res_omzet = mysqli_fetch_assoc($omzet_q);
             </div>
             <ul>
                 <li class="active"><i class="fa-solid fa-desktop"></i> Dashboard</li>
-                <li><a href="pesanan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-pen-to-square"></i>Pesanan</a></li>
-                <li><a href="pelanggan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
-                <li><a href="pembayaran.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-wallet"></i>Pembayaran</a></li>
-                <li><a href="laporan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-clock"></i>Laporan</a></li>
-                <li><a href="logout.html" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i> Logout</a></li>
+                <li><a href="pesanan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-pen-to-square"></i>Pesanan</a></li>
+                <li><a href="pelanggan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
+                <li><a href="pembayaran.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-wallet"></i>Pembayaran</a></li>
+                <li><a href="laporan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-clock"></i>Laporan</a></li>
+                <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i> Logout</a></li>
             </ul>
         </nav>
 
@@ -146,5 +146,5 @@ $res_omzet = mysqli_fetch_assoc($omzet_q);
                     </div>
                 </div>
 
-            </div> </div> </div> <script src="js/auth.js"></script></body>
+            </div> </div> </div> </body>
 </html>
