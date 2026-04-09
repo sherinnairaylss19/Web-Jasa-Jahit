@@ -1,3 +1,27 @@
+<?php
+session_start();
+include 'koneksi.php';
+
+if (!isset($_SESSION['login'])) { 
+    header("Location: index.php"); 
+    exit(); 
+}
+if (!isset($_GET['id'])) {
+    header("Location: pesanan.php");
+    exit();
+}
+$id_pesanan = $_GET['id'];
+$query = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.no_hp, pelanggan.alamat_lengkap 
+                                 FROM pesanan 
+                                 JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
+                                 WHERE pesanan.id_pesanan = '$id_pesanan'");
+$data = mysqli_fetch_assoc($query);
+if (!$data) {
+    echo "<script>alert('Data tidak ditemukan!'); window.location='pesanan.php';</script>";
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -6,27 +30,41 @@
     <title>Detail Pesanan - Jasa Jahit</title>
     <link rel="stylesheet" href="css/pesanan.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Tambahan style khusus print agar sidebar tidak ikut tercetak */
+        @media print {
+            .sidebar, .header-breadcrumb, .btn-print, .nota-actions {
+                display: none !important;
+            }
+            .main-content {
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                display: block;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <nav class="sidebar">
             <div class="profile">
-                   <img src="" id="user-foto" alt="User" referrerpolicy="no-referrer">
-                    <span id="user-nama">Memuat...</span>
+                <img src="<?= $_SESSION['foto']; ?>" id="user-foto" alt="User" referrerpolicy="no-referrer">
+                <span id="user-nama"><?= $_SESSION['nama']; ?></span>
             </div>
             <ul>
-                <li><a href="dashboard.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-desktop"></i>Dashboard</a></li>
-                <li class="active"><a href="pesanan.html"><i class="fa-solid fa-pen-to-square"></i> Pesanan</a></li>
-                <li><a href="pelanggan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
-                <li><a href="pembayaran.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-wallet"></i>Pembayaran</a></li>
-                <li><a href="laporan.html" style="color:white; text-decoration:none;"><i class="fa-solid fa-clock"></i>Laporan</a></li>
-                <li><a href="logout.html" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i>Logout</a></li>
+                <li><a href="dashboard_penjahit.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-desktop"></i>Dashboard</a></li>
+                <li class="active"><a href="pesanan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-pen-to-square"></i> Pesanan</a></li>
+                <li><a href="pelanggan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
+                <li><a href="pembayaran.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-wallet"></i>Pembayaran</a></li>
+                <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i>Logout</a></li>
             </ul>
         </nav>
 
         <div class="main-content">
             <div class="header-breadcrumb">
-                <p><a href="pesanan.html"><i class="fa-solid fa-chevron-left"></i> Kembali Pesanan</a> / Detail Pesanan</p>
+                <p><a href="pesanan.php"><i class="fa-solid fa-chevron-left"></i> Kembali Pesanan</a> / Detail Pesanan</p>
             </div>
 
             <div class="nota-container">
@@ -38,12 +76,13 @@
 
                 <div class="nota-info">
                     <div class="info-left">
-                        <p><strong>Nama:</strong> Sherin</p>
-                        <p><strong>No Telp:</strong> 08123456789</p>
+                        <p><strong>Nama:</strong> <?= $data['nama_lengkap']; ?></p>
+                        <p><strong>No Telp:</strong> <?= $data['no_hp']; ?></p>
+                        <p><strong>Alamat:</strong> <?= $data['alamat_lengkap']; ?></p>
                     </div>
                     <div class="info-right">
-                        <p><strong>Tanggal Masuk:</strong> 20 April 2025</p>
-                        <p><strong>Tanggal Tenggat:</strong> 23 April 2025</p>
+                        <p><strong>Tanggal Masuk:</strong> <?= date('d F Y', strtotime($data['tgl_masuk'])); ?></p>
+                        <p><strong>Tanggal Tenggat:</strong> <?= date('d F Y', strtotime($data['tgl_tenggat'])); ?></p>
                     </div>
                 </div>
 
@@ -52,35 +91,23 @@
                         <tr>
                             <th>No</th>
                             <th>Jenis Pesanan</th>
-                            <th>Catatan</th>
+                            <th>Catatan / Detail</th>
                             <th>Total Biaya</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>Permak Celana</td>
-                            <td>Kecilkan pinggang 3 cm & ganti resleting baru</td>
-                            <td>30.000</td>
+                            <td><?= $data['jenis_pesanan']; ?></td>
+                            <td><?= nl2br($data['catatan']); ?></td>
+                            <td>Rp <?= number_format($data['total_biaya'], 0, ',', '.'); ?></td>
                         </tr>
                     </tbody>
                 </table>
 
-                <div class="nota-ukuran-detail">
-                    <h3><i class="fa-solid fa-ruler-combined"></i> Rincian Ukuran</h3>
-                <div class="ukuran-grid">
-                    <div class="ukuran-item"><span>Lingkar Dada:</span> 95 cm</div>
-                    <div class="ukuran-item"><span>Lebar Bahu:</span> 40 cm</div>
-                    <div class="ukuran-item"><span>Lingkar Pinggang:</span> 90 cm</div>
-                    <div class="ukuran-item"><span>Panjang:</span> 70 cm</div>
-                </div>
-                </div>
-
                 <div class="nota-footer">
                     <div class="footer-left">
-                        <p>Total keseluruhan: Rp 30.000</p>
-                        <p>Uang Muka: 0</p>
-                        <p>Sisa Bayar: 0</p>
+                        <p><strong>Total Keseluruhan:</strong> Rp <?= number_format($data['total_biaya'], 0, ',', '.'); ?></p>
                     </div>
                     <div class="footer-right">
                         <p>Hormat kami,</p>
@@ -97,6 +124,5 @@
             </div>
         </div>
     </div>
-    <script src="js/auth.js"></script>
 </body>
 </html>

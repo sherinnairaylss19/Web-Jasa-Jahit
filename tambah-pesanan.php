@@ -111,11 +111,11 @@ if (isset($_POST['submit'])) {
                             <h3>Detail Jahitan & Ukuran</h3>
                             <div class="input-group">
                                 <label>Jenis Pesanan:</label>
-                                <input type="text" name="jenis_pesanan" placeholder="Misal: Jahit Kemeja" required>
+                                <input type="text" name="jenis_pesanan">
                             </div>
                             <div class="input-group">
                                 <label>Catatan / Ukuran:</label>
-                                <textarea name="catatan" rows="6" placeholder="Masukkan detail ukuran seperti LD, LP, dll"></textarea>
+                                <textarea name="catatan" rows="6"></textarea>
                             </div>
                         </div>
                     </div>
