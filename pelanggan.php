@@ -2,10 +2,25 @@
 session_start();
 include 'koneksi.php'; 
 
+// 1. Total Pelanggan (Tetap sama karena tidak butuh tanggal)
 $query_total = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pelanggan");
 $data_total = mysqli_fetch_assoc($query_total);
 
-$query_baru = mysqli_query($koneksi, "SELECT COUNT(*) as baru FROM pelanggan WHERE MONTH(tgl_masuk) = MONTH(CURRENT_DATE()) AND YEAR(tgl_masuk) = YEAR(CURRENT_DATE())");
+// 2. Pelanggan Baru (DIPERBAIKI: Menggunakan JOIN ke tabel pesanan)
+// Kita asumsikan ada kolom 'id_pelanggan' yang menghubungkan kedua tabel
+$sql_baru = "SELECT COUNT(DISTINCT pelanggan.id_pelanggan) as baru 
+             FROM pelanggan 
+             JOIN pesanan ON pelanggan.id_pelanggan = pesanan.id_pelanggan 
+             WHERE MONTH(pesanan.tgl_masuk) = MONTH(CURRENT_DATE()) 
+             AND YEAR(pesanan.tgl_masuk) = YEAR(CURRENT_DATE())";
+
+$query_baru = mysqli_query($koneksi, $sql_baru);
+
+// Cek jika query gagal untuk debugging
+if (!$query_baru) {
+    die("Error pada Query Pelanggan Baru: " . mysqli_error($koneksi));
+}
+
 $data_baru = mysqli_fetch_assoc($query_baru);
 ?>
 
