@@ -12,7 +12,27 @@ $query = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap, pelan
                                  FROM pesanan 
                                  JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
                                  ORDER BY tgl_tenggat ASC");
+
+$keyword = "";
+if (isset($_GET['cari'])) {
+    $keyword = $_GET['cari'];
+    // Jika ada pencarian, tambahkan kondisi WHERE
+    $query_str = "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.alamat_lengkap, pelanggan.no_hp 
+                  FROM pesanan 
+                  JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
+                  WHERE pelanggan.nama_lengkap LIKE '%$keyword%' 
+                  ORDER BY tgl_tenggat ASC";
+} else {
+    // Jika tidak ada pencarian, tampilkan semua
+    $query_str = "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.alamat_lengkap, pelanggan.no_hp 
+                  FROM pesanan 
+                  JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
+                  ORDER BY tgl_tenggat ASC";
+}
+
+$query = mysqli_query($koneksi, $query_str);
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -46,11 +66,12 @@ $query = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap, pelan
 
             <div class="content-body">
                 <div class="toolbar">
-                    <div class="search-box">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Cari Nama Pelanggan">
-                    </div>
-                   <a href="tambah-pesanan.php" class="btn-add">+ Tambahkan Pesanan</a>
+                <form action="" method="GET" class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" name="cari" placeholder="Cari Nama Pelanggan" value="<?= isset($_GET['cari']) ? $_GET['cari'] : ''; ?>">
+                <button type="submit" style="display:none;">Cari</button> 
+                </form>
+                <a href="tambah-pesanan.php" class="btn-add">+ Tambahkan Pesanan</a>
                 </div>
 
                 <div class="table-section">
@@ -92,8 +113,8 @@ $query = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap, pelan
                             </td>
                             <td class="aksi-buttons">
                                 <div class="button-group">
-                                    <a href="detail-pesanan.php" class="btn-detail">Detail</a>
-                                    <a href="edit-pesanan.php" class="btn-edit">Edit</a>
+                                    <a href="detail-pesanan.php?id=<?= $row['id_pesanan']; ?>" class="btn-detail">Detail</a>
+                                   <a href="edit-pesanan.php?id=<?= $row['id_pesanan']; ?>" class="btn-edit">Edit</a>
                                 </div>
                                 </td>
                                 </tr>
