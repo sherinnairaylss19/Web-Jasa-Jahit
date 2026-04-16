@@ -1,5 +1,6 @@
 <?php
 session_start();
+// Pastikan file koneksi.php sudah benar atau tulis manual seperti ini
 $koneksi = mysqli_connect("localhost", "root", "", "toko-jahit");
 
 $sql = "SELECT 
@@ -25,8 +26,8 @@ $query = mysqli_query($koneksi, $sql);
     <div class="container">
         <nav class="sidebar">
             <div class="profile">
-                <img src="<?php echo $_SESSION['foto']; ?>" id="user-foto" alt="User" referrerpolicy="no-referrer">
-                <span id="user-nama"><?php echo $_SESSION['nama']; ?></span>
+                <img src="<?= $_SESSION['foto']; ?>" id="user-foto" alt="User">
+                <span id="user-nama"><?= $_SESSION['nama']; ?></span>
             </div>
             <ul>
                 <li><a href="dashboard_penjahit.php"><i class="fa-solid fa-desktop"></i> Dashboard</a></li>
@@ -66,10 +67,7 @@ $query = mysqli_query($koneksi, $sql);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
-                            $no = 1;
-                            while($row = mysqli_fetch_assoc($query)) : 
-                            ?>
+                            <?php $no = 1; while($row = mysqli_fetch_assoc($query)) : ?>
                             <tr>
                                 <td><?= $no++; ?></td>
                                 <td><strong><?= $row['nama_lengkap']; ?></strong></td>

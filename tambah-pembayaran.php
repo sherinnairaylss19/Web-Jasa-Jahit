@@ -21,21 +21,7 @@ $query_pesanan = mysqli_query($koneksi, "SELECT pesanan.id_pesanan, pelanggan.na
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <nav class="sidebar">
-            <div class="profile">
-                <img src="<?php echo $_SESSION['foto']; ?>" id="user-foto" alt="User" referrerpolicy="no-referrer">
-                <span id="user-nama"><?php echo $_SESSION['nama']; ?></span>
-            </div>
-            <ul>
-                <li><a href="dashboard_penjahit.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-desktop"></i>Dashboard</a></li>
-                <li><a href="pesanan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-pen-to-square"></i>Pesanan</a></li>
-                <li><a href="pelanggan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
-                <li class="active"><i class="fa-solid fa-wallet"></i> Pembayaran</li>
-                <li><a href="laporan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-clock"></i>Laporan</a></li>
-                <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i>Logout</a></li>
-            </ul>
-        </nav>
+   
 
         <div class="main-content">
             <div class="header-breadcrumb">
