@@ -8,7 +8,6 @@ if (!isset($_SESSION['login'])) {
     exit(); 
 }
 
-// Ambil ID dari URL (Pastikan di pesanan.php linknya adalah edit-pesanan.php?id=...)
 if (!isset($_GET['id'])) {
     header("Location: pesanan.php");
     exit();
@@ -16,7 +15,6 @@ if (!isset($_GET['id'])) {
 
 $id_pesanan = $_GET['id'];
 
-// Ambil data lama untuk ditampilkan di form
 $query_get = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.no_hp 
                                      FROM pesanan 
                                      JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 

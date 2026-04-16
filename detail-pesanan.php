@@ -31,7 +31,7 @@ if (!$data) {
     <link rel="stylesheet" href="css/pesanan.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Tambahan style khusus print agar sidebar tidak ikut tercetak */
+
         @media print {
             .sidebar, .header-breadcrumb, .btn-print, .nota-actions {
                 display: none !important;

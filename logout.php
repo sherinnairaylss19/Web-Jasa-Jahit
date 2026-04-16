@@ -1,23 +1,3 @@
-<<<<<<< HEAD
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Logout...</title>
-</head>
-<body>
-    <script>
-
-        sessionStorage.removeItem('namaAdmin');
-        sessionStorage.removeItem('fotoAdmin');
-    
-        alert("Anda telah berhasil keluar.");
-
-        window.location.href = "index.html";
-    </script>
-</body>
-</html>
-=======
 <?php
 session_start();
 
@@ -39,4 +19,3 @@ echo "<script>
 </script>";
 exit();
 ?>
->>>>>>> d623d883a4a5dbadbc0fb9f53af58886177a66b9
