@@ -2,12 +2,9 @@
 session_start();
 include 'koneksi.php'; 
 
-// 1. Total Pelanggan (Tetap sama karena tidak butuh tanggal)
 $query_total = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pelanggan");
 $data_total = mysqli_fetch_assoc($query_total);
 
-// 2. Pelanggan Baru (DIPERBAIKI: Menggunakan JOIN ke tabel pesanan)
-// Kita asumsikan ada kolom 'id_pelanggan' yang menghubungkan kedua tabel
 $sql_baru = "SELECT COUNT(DISTINCT pelanggan.id_pelanggan) as baru 
              FROM pelanggan 
              JOIN pesanan ON pelanggan.id_pelanggan = pesanan.id_pelanggan 
@@ -16,7 +13,6 @@ $sql_baru = "SELECT COUNT(DISTINCT pelanggan.id_pelanggan) as baru
 
 $query_baru = mysqli_query($koneksi, $sql_baru);
 
-// Cek jika query gagal untuk debugging
 if (!$query_baru) {
     die("Error pada Query Pelanggan Baru: " . mysqli_error($koneksi));
 }
@@ -37,40 +33,8 @@ $data_baru = mysqli_fetch_assoc($query_baru);
 
     <div class="container">
         <nav class="sidebar">
-                <div class="profile">
-                <img src="<?php echo $_SESSION['foto']; ?>" id="user-foto" alt="User" referrerpolicy="no-referrer">
-                <span id="user-nama"><?php echo $_SESSION['nama']; ?></span>
-            </div>
-        <ul>
-            <li>
-                <a href="dashboard_pemilik.php" style="color:white; text-decoration:none;">
-                    <i class="fa-solid fa-desktop"></i> Dashboard
-                </a>
-            </li>
-
-            <li>
-                <a href="pesanan.php" style="color:white; text-decoration:none;">
-                    <i class="fa-solid fa-pen-to-square"></i> Pesanan
-                </a>
-            </li>
-
-            <li class="active">
-                <i class="fa-solid fa-user-group"></i> Pelanggan
-            </li>
-
-            <li>
-                <a href="pembayaran.php" style="color:white; text-decoration:none;">
-                    <i class="fas fa-wallet"></i> Pembayaran
-                </a>
-            </li>
-
-            <li>
-                <a href="laporan.php" style="color:white; text-decoration:none;">
-                <i class="fas fa-clock"></i> Laporan
-                </a>
-            </li>
-            <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i>Logout</a></li>
-        </ul>
+            <?php include 'sidebar.php'; ?>
+        </nav>
     </div>
 
     <div class="main-content">
@@ -144,23 +108,19 @@ $data_baru = mysqli_fetch_assoc($query_baru);
 </div>
 
 <script>
-function fungsiCari() {
-    var input = document.getElementById("inputCari");
-    var filter = input.value.toUpperCase();
-    var table = document.querySelector("table");
-    var tr = table.getElementsByTagName("tr");
+    const searchInput = document.querySelector('.search-box input');
+    searchInput.addEventListener('keyup', function() {
+        const filter = searchInput.value.toLowerCase();
+        const tr = document.querySelectorAll('tbody tr');
 
-    for (var i = 1; i < tr.length; i++) {
-        var tdNama = tr[i].getElementsByTagName("td")[0];
-        if (tdNama) {
-            var textValue = tdNama.textContent || tdNama.innerText;
-            if (textValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
+        tr.forEach(row => {
+            const nama = row.cells[1].innerText.toLowerCase();
+            if (nama.includes(filter)) {
+                row.style.display = "";
             } else {
-                tr[i].style.display = "none";
+                row.style.display = "none";
             }
-        }
-    }
-}
+        });
+    });
 </body>
 </html>

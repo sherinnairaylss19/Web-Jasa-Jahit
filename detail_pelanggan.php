@@ -34,18 +34,7 @@ if (!$data) {
 
     <div class="container" style="display: flex; min-height: 100vh; width: 100%; margin: 0; padding: 0;">
         <nav class="sidebar">
-            <div class="profile">
-                <img src="<?php echo $_SESSION['foto']; ?>" id="user-foto" alt="User">
-                <span id="user-nama"><?php echo $_SESSION['nama']; ?></span>
-            </div>
-            <ul>
-                <li><a href="dashboard_pemilik.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-desktop"></i> Dashboard</a></li>
-                <li><a href="pesanan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-pen-to-square"></i> Pesanan</a></li>
-                <li class="active"><i class="fa-solid fa-user-group"></i> Pelanggan</li>
-                <li><a href="pembayaran.php" style="color:white; text-decoration:none;"><i class="fas fa-wallet"></i> Pembayaran</a></li>
-                <li><a href="laporan.php" style="color:white; text-decoration:none;"><i class="fas fa-clock"></i> Laporan</a></li>
-                <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i> Logout</a></li>
-            </ul>
+            <?php include 'sidebar.php'; ?>
         </nav>
 
         <div class="main-content">
@@ -148,26 +137,5 @@ if (!$data) {
         </div>
     </div>
     </div> 
-
-    <script>
-    function fungsiCari() {
-        var input = document.getElementById("inputCari");
-        var filter = input.value.toUpperCase();
-        var rows = document.getElementsByClassName("baris-pelanggan");
-
-        for (var i = 0; i < rows.length; i++) {
-            var namaElemen = rows[i].getElementsByClassName("nama-pelanggan")[0];
-            if (namaElemen) {
-                var textValue = namaElemen.textContent || namaElemen.innerText;
-                if (textValue.toUpperCase().indexOf(filter) > -1) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
-        }
-    }
-    </script>
-    
 </body>
 </html>

@@ -102,10 +102,10 @@
 
         <form action="login_proses.php" method="POST">
             <div class="input-group">
-                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" name="username" placeholder="Masukkan Username" required>
             </div>
             <div class="input-group">
-                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="password" placeholder="Masukkan Password" required>
             </div>
             <button type="submit" class="btn-login">MASUK</button>
         </form>

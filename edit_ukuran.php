@@ -58,19 +58,8 @@ if (isset($_POST['update_ukuran'])) {
 
     <div class="container"  style="display: flex; min-height: 100vh; width: 100%; margin: 0; padding: 0;">
         <nav class="sidebar">
-            <div class="profile">
-                <img src="<?php echo $_SESSION['foto']; ?>" id="user-foto" alt="User" referrerpolicy="no-referrer">
-                <span id="user-nama"><?php echo $_SESSION['nama']; ?></span>
-            </div>
-            <ul>
-                <li><a href="dashboard_pemilik.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-desktop"></i> Dashboard</a></li>
-                <li><a href="pesanan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-pen-to-square"></i> Pesanan</a></li>
-                <li class="active"><i class="fa-solid fa-user-group"></i> Pelanggan</li>
-                <li><a href="pembayaran.php" style="color:white; text-decoration:none;"><i class="fas fa-wallet"></i> Pembayaran</a></li>
-                <li><a href="laporan.php" style="color:white; text-decoration:none;"><i class="fas fa-clock"></i> Laporan</a></li>
-                <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i> Logout</a></li>
-            </ul>
-        </nav>
+    <?php include 'sidebar.php'; ?>
+</nav>
 
         <div class="main-content">
             <div class="top-bar">

@@ -2,28 +2,34 @@
 session_start();
 include 'koneksi.php'; 
 
-// Proteksi halaman: Pastikan hanya admin/pemilik yang bisa masuk
+// Proteksi halaman: 
 if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'pemilik') {
     header("Location: index.php");
     exit();
 }
 
-// 1. Total Seluruh Pesanan
 $total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan");
 $res_total = mysqli_fetch_assoc($total_q);
 
-// 2. Pesanan Masih Proses
 $proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses'");
 $res_proses = mysqli_fetch_assoc($proses_q);
 
-// 3. Total Pelanggan (Dari tabel pelanggan)
 $pelanggan_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pelanggan");
 $res_pelanggan = mysqli_fetch_assoc($pelanggan_q);
 
-// 4. Total Pemasukan Keseluruhan (Omzet)
+$selesai_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Selesai'");
+$res_selesai = mysqli_fetch_assoc($selesai_q);
+
+$telat_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Telat'");
+$res_telat = mysqli_fetch_assoc($telat_q);
+
 $omzet_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan");
 $res_omzet = mysqli_fetch_assoc($omzet_q);
 
+$query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap 
+                                       FROM pesanan 
+                                       JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
+                                       ORDER BY pesanan.id_pesanan DESC LIMIT 5");
 ?>
 
 <!DOCTYPE html>
@@ -38,19 +44,7 @@ $res_omzet = mysqli_fetch_assoc($omzet_q);
 <body>
     <div class="container">
         <nav class="sidebar">
-            <div class="profile">
-               <img src="<?php echo $_SESSION['foto']; ?>" id="user-foto" alt="User" referrerpolicy="no-referrer">
-                <span id="user-nama"><?php echo $_SESSION['nama']; ?></span>
-                <small style="color: #ccc; display: block;"><?php echo ucfirst($_SESSION['role']); ?></small>
-            </div>
-            <ul>
-                <li class="active"><i class="fa-solid fa-desktop"></i> Dashboard</li>
-                <li><a href="pesanan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-pen-to-square"></i>Pesanan</a></li>
-                <li><a href="pelanggan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
-                <li><a href="pembayaran.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-wallet"></i>Pembayaran</a></li>
-                <li><a href="laporan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-clock"></i>Laporan</a></li>
-                <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i> Logout</a></li>
-            </ul>
+        <?php include 'sidebar.php'; ?>
         </nav>
 
         <div class="main-content">
@@ -63,23 +57,23 @@ $res_omzet = mysqli_fetch_assoc($omzet_q);
                     <div class="card blue">
                         <img src="assets/icon-mesin-jahit.jpeg" alt="Icon" width="40">
                         <p>Total Pesanan</p>
-                        <h2>10</h2>
-                    </div>
+                        <h2><?php echo $res_total['total']; ?></h2>
+                        </div>
                     <div class="card yellow">
                         <img src="assets/icon-benang.png" alt="Icon" width="40">
                         <p>Dalam Proses</p>
-                        <h2>6</h2>
-                    </div>
+                        <h2><?php echo $res_proses['total']; ?></h2>
+                        </div>
                     <div class="card cyan">
                         <img src="assets/icon-selesai.png" alt="Icon" width="40">
-                        <p>Selesai</p>
-                        <h2>3</h2>
-                    </div>
+                        <p>Total Pelanggan</p>
+                        <h2><?php echo $res_pelanggan['total']; ?></h2>
+                        </div>
                     <div class="card red">
                         <img src="assets/icon-deadline.png" alt="Icon" width="40">
-                        <p>Deadline Dekat</p>
-                        <h2>2</h2>
-                    </div>
+                        <p>Pesanan Telat</p>
+                        <h2><?php echo $res_total_telat = $res_telat['total'] ?? 0; ?></h2>
+                        </div>
                 </div>
 
                 <div class="table-section">
@@ -95,41 +89,20 @@ $res_omzet = mysqli_fetch_assoc($omzet_q);
                             </tr>
                         </thead>
                         <tbody>
+                        <?php while($row = mysqli_fetch_assoc($query_tabel)) : ?>
                             <tr>
-                                <td>Sherin</td>
-                                <td>Permak Celana</td>
-                                <td><span class="status selesai">Selesai</span></td>
-                                <td>23 April</td>
-                                <td>30.000</td>
+                                <td><?php echo htmlspecialchars($row['nama_lengkap']); ?></td>
+                                <td><?php echo htmlspecialchars($row['jenis_pesanan']); ?></td>
+                                <td>
+                        <?php 
+                            $status = strtolower($row['status_produksi']);
+                            echo "<span class='status $status'>" . ucfirst($status) . "</span>";
+                        ?>
+                                </td>
+                                <td><?php echo date('d M', strtotime($row['tgl_tenggat'])); ?></td>
+                                <td><?php echo number_format($row['total_biaya'], 0, ',', '.'); ?></td>
                             </tr>
-                            <tr>
-                                <td>Dina</td>
-                                <td>Permak Blouse</td>
-                                <td><span class="status proses">Proses</span></td>
-                                <td>25 April</td>
-                                <td>250.000</td>
-                            </tr>
-                            <tr>
-                                <td>Rani</td>
-                                <td>Jahit Dress</td>
-                                <td><span class="status selesai">Selesai</span></td>
-                                <td>18 Maret</td>
-                                <td>90.000</td>
-                            </tr>
-                            <tr>
-                                <td>Dimas</td>
-                                <td>Bordir Logo</td>
-                                <td><span class="status proses">Proses</span></td>
-                                <td>10 Maret</td>
-                                <td>90.000</td>
-                            </tr>
-                            <tr>
-                                <td>Hendra</td>
-                                <td>Permak Celana</td>
-                                <td><span class="status telat">Telat</span></td>
-                                <td>10 Maret</td>
-                                <td>45.000</td>
-                            </tr>
+                            <?php endwhile; ?>
                         </tbody>
                     </table>
                     <div class="button-container">
@@ -142,8 +115,10 @@ $res_omzet = mysqli_fetch_assoc($omzet_q);
                     </div>
                     <div class="income-info">
                         <p class="income-label">Total Pemasukan Hari Ini</p>
-                        <h2 class="income-amount">Rp 505.000</h2>
-                    </div>
+                        <h2 class="income-amount">
+                        Rp <?php echo number_format($res_pemasukan['total'] ?? 0, 0, ',', '.'); ?>
+                        </h2>
+                </div>
                 </div>
 
             </div> </div> </div> </body>

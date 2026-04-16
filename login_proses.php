@@ -1,55 +1,34 @@
 <?php
-// 1. Pastikan session dimulai paling atas
 session_start();
+include 'koneksi.php';
 
-// 2. Koneksi ke database
-$koneksi = mysqli_connect("localhost", "root", "", "toko-jahit");
-
-if (mysqli_connect_errno()) {
-    die("Koneksi database gagal : " . mysqli_connect_error());
-}
-
-// 3. Ambil dan bersihkan input
 $username = mysqli_real_escape_string($koneksi, $_POST['username']);
 $password = mysqli_real_escape_string($koneksi, $_POST['password']);
 
-// 4. Query ke database
-$query = mysqli_query($koneksi, "SELECT * FROM users WHERE username='$username' AND password='$password'");
+$query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+$result = mysqli_query($koneksi, $query);
+$cek = mysqli_num_rows($result);
 
-if (!$query) {
-    die("Query Error: " . mysqli_error($koneksi));
-}
+if ($cek > 0) {
+    $data = mysqli_fetch_assoc($result);
 
-$cek = mysqli_num_rows($query);
+    // Menyimpan data login ke session
+    $_SESSION['login'] = true;
+    $_SESSION['id_user'] = $data['id'];
+    $_SESSION['username'] = $data['username'];
+    $_SESSION['role'] = $data['role'];
 
-if($cek > 0) {
-    $data = mysqli_fetch_assoc($query);
-    
-    // Simpan ke Session
-    $_SESSION['nama']     = $data['nama'];
-    $_SESSION['username'] = $data['username']; 
-    $_SESSION['role']     = $data['role'];
-    $_SESSION['status']   = "login";
+    $_SESSION['nama'] = $data['username']; 
+    $_SESSION['foto'] = "assets/default-profile.png"; 
 
-    // DEBUGGING: Hapus tanda // di bawah ini jika masih putih polos untuk melihat error
-    // echo "Data ditemukan! Role anda: " . $data['role']; exit();
-
-    // 5. Gunakan trim() dan strtolower() sekaligus agar tidak ada celah spasi/huruf besar
-    $role_bersih = strtolower(trim($data['role']));
-
-    if ($role_bersih == 'pemilik') {
-        header("Location: dashboard_pemilik.php");
-        exit();
-    } else if ($role_bersih == 'penjahit') {
-        header("Location: dashboard_penjahit.php");
-        exit();
-    } else {
-        echo "Role tidak dikenali: " . $data['role'];
-        exit();
+    if ($data['role'] == "pemilik") {
+        header("location:dashboard_pemilik.php");
+    } else if ($data['role'] == "penjahit") {
+        header("location:dashboard_penjahit.php");
     }
+    exit(); 
 } else {
-    // Jika tidak ditemukan, arahkan balik dengan pesan gagal
-    header("Location: index.php?pesan=gagal");
+    header("location:index.php?pesan=gagal");
     exit();
 }
 ?>
