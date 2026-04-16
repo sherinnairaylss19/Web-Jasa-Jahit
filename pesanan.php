@@ -114,5 +114,21 @@ $query = mysqli_query($koneksi, $query_str);
             </div>
         </div>
     </div>
+    <script>
+    const searchInput = document.querySelector('.search-box input');
+    searchInput.addEventListener('keyup', function() {
+        const filter = searchInput.value.toLowerCase();
+        const tr = document.querySelectorAll('tbody tr');
+
+        tr.forEach(row => {
+            const nama = row.cells[1].innerText.toLowerCase();
+            if (nama.includes(filter)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+</script>
 </body>
 </html>
