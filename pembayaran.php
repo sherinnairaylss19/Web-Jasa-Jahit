@@ -4,13 +4,16 @@ session_start();
 $koneksi = mysqli_connect("localhost", "root", "", "toko-jahit");
 
 $sql = "SELECT 
-            pembayaran.*, 
+            pembayaran.id_pembayaran,
             pelanggan.nama_lengkap, 
-            pesanan.tgl_masuk,
-            pesanan.total_biaya
+            pesanan.tgl_masuk, 
+            pesanan.total_biaya,
+            pembayaran.uang_muka,
+            pembayaran.sisa_bayar,
+            pembayaran.status_bayar
         FROM pembayaran
-        INNER JOIN pesanan ON pembayaran.id_pesanan = pesanan.id_pesanan
-        INNER JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan";
+        JOIN pesanan ON pembayaran.id_pesanan = pesanan.id_pesanan
+        JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan";
 
 $query = mysqli_query($koneksi, $sql);
 ?>
@@ -25,17 +28,7 @@ $query = mysqli_query($koneksi, $sql);
 <body>
     <div class="container">
         <nav class="sidebar">
-            <div class="profile">
-                <img src="<?= $_SESSION['foto']; ?>" id="user-foto" alt="User">
-                <span id="user-nama"><?= $_SESSION['nama']; ?></span>
-            </div>
-            <ul>
-                <li><a href="dashboard_penjahit.php"><i class="fa-solid fa-desktop"></i> Dashboard</a></li>
-                <li><a href="pesanan.php"><i class="fa-solid fa-pen-to-square"></i> Pesanan</a></li>
-                <li><a href="pelanggan.php"><i class="fa-solid fa-user-group"></i> Pelanggan</a></li>
-                <li class="active"><a href="pembayaran.php"><i class="fa-solid fa-wallet"></i> Pembayaran</a></li>
-                <li><a href="logout.php"><i class="fa-solid fa-power-off"></i> Logout</a></li>
-            </ul>
+        <?php include 'sidebar.php'; ?>
         </nav>
 
         <div class="main-content">
@@ -95,5 +88,21 @@ $query = mysqli_query($koneksi, $sql);
             </div>
         </div>
     </div>
+    <script>
+    const searchInput = document.querySelector('.search-box input');
+    searchInput.addEventListener('keyup', function() {
+        const filter = searchInput.value.toLowerCase();
+        const tr = document.querySelectorAll('tbody tr');
+
+        tr.forEach(row => {
+            const nama = row.cells[1].innerText.toLowerCase();
+            if (nama.includes(filter)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+</script>
 </body>
 </html>
