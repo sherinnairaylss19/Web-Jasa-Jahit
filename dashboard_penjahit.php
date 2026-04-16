@@ -41,18 +41,7 @@ $res_pemasukan = mysqli_fetch_assoc($pemasukan_q);
 <body>
     <div class="container">
         <nav class="sidebar">
-            <div class="profile">
-              <img src="<?php echo $_SESSION['foto']; ?>" id="user-foto" alt="User" referrerpolicy="no-referrer">
-                <span id="user-nama"><?php echo $_SESSION['nama']; ?></span>
-                <small style="color: #ccc; display: block; font-size: 10px;">Penjahit</small>
-            </div>
-            <ul>
-                <li class="active"><i class="fa-solid fa-desktop"></i> Dashboard</li>
-                <li><a href="pesanan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-pen-to-square"></i>Pesanan</a></li>
-                <li><a href="pelanggan.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
-                <li><a href="pembayaran.php" style="color:white; text-decoration:none;"><i class="fa-solid fa-wallet"></i>Pembayaran</a></li>
-                <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i> Logout</a></li>
-            </ul>
+        <?php include 'sidebar.php'; ?>
         </nav>
 
         <div class="main-content">
