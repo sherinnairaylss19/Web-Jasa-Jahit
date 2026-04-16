@@ -2,24 +2,23 @@
 session_start();
 include 'koneksi.php';
 
-// Proteksi Halaman: Hanya Pemilik yang boleh masuk
+// Proteksi Halaman:
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'pemilik') {
     header("Location: dashboard.php?pesan=akses_ditolak");
     exit();
 }
 
-// Query untuk mengambil data laporan (Mengelompokkan data per tanggal)
-$query_laporan = mysqli_query($koneksi, "SELECT tgl_pesanan, COUNT(*) as jml_pesanan, SUM(total_biaya) as pemasukan_harian 
+$query_laporan = mysqli_query($koneksi, "SELECT tgl_masuk, COUNT(*) as jml_pesanan, SUM(total_biaya) as pemasukan_harian 
     FROM pesanan 
-    WHERE status_pesanan = 'Selesai' 
-    GROUP BY tgl_pesanan 
-    ORDER BY tgl_pesanan DESC");
+    WHERE status_produksi = 'Selesai' 
+    GROUP BY tgl_masuk 
+    ORDER BY tgl_masuk DESC");
 
-// Menghitung Total Pemasukan Bulan Ini
 $query_total = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total_bulan_ini FROM pesanan 
-    WHERE status_pesanan = 'Selesai' 
-    AND MONTH(tgl_pesanan) = MONTH(CURRENT_DATE()) 
-    AND YEAR(tgl_pesanan) = YEAR(CURRENT_DATE())");
+    WHERE status_produksi = 'Selesai' 
+    AND MONTH(tgl_masuk) = MONTH(CURRENT_DATE()) 
+    AND YEAR(tgl_masuk) = YEAR(CURRENT_DATE())");
+
 $data_total = mysqli_fetch_assoc($query_total);
 $total_akhir = $data_total['total_bulan_ini'] ?? 0;
 ?>
@@ -32,28 +31,23 @@ $total_akhir = $data_total['total_bulan_ini'] ?? 0;
     <title>Halaman Laporan - Jasa Jahit</title>
     <link rel="stylesheet" href="css/laporan.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @media print {
+            .sidebar, .filter-section, .btn-print, .top-bar { display: none !important; }
+            .main-content { margin-left: 0 !important; width: 100% !important; }
+            .container { display: block !important; }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <nav class="sidebar">
-            <div class="profile">
-                <img src="<?php echo $_SESSION['foto']; ?>" id="user-foto" alt="User" referrerpolicy="no-referrer">
-                <span id="user-nama"><?php echo $_SESSION['nama']; ?></span>
-            </div>
-
-            <ul>
-                <li><a href="dashboard_pemilik.php" class="nav-link"><i class="fa-solid fa-desktop"></i>Dashboard</a></li>
-                <li><a href="pesanan.php" class="nav-link"><i class="fa-solid fa-pen-to-square"></i>Pesanan</a></li>
-                <li><a href="pelanggan.php" class="nav-link"><i class="fa-solid fa-user-group"></i>Pelanggan</a></li>
-                <li><a href="pembayaran.php" class="nav-link"><i class="fa-solid fa-wallet"></i>Pembayaran</a></li>
-                <li class="active"><i class="fa-solid fa-clock"></i>Laporan</li>
-                <li><a href="logout.php" class="nav-link logout-btn"><i class="fa-solid fa-power-off"></i>Logout</a></li>
-            </ul>
+            <?php include 'sidebar.php'; ?>
         </nav>
 
         <div class="main-content">
             <header class="top-bar">
-                <h1 class="top-bar-title">Laporan</h1>
+                <h1 class="top-bar-title">Laporan Pemasukan</h1>
             </header>
 
             <div class="content-body">
@@ -62,7 +56,7 @@ $total_akhir = $data_total['total_bulan_ini'] ?? 0;
                         <div class="filter-wrapper">
                             <div class="filter-card">
                                 <select class="select-input">
-                                    <option>Bulan Ini</option>
+                                    <option>Bulan Ini (<?php echo date('F'); ?>)</option>
                                 </select>
                                 <div class="date-display">
                                     01 <?php echo date('M'); ?> - <?php echo date('t M Y'); ?>
@@ -92,13 +86,13 @@ $total_akhir = $data_total['total_bulan_ini'] ?? 0;
                                 while($row = mysqli_fetch_assoc($query_laporan)) { ?>
                                 <tr>
                                     <td><?php echo $no++; ?></td>
-                                    <td><?php echo date('d M Y', strtotime($row['tgl_pesanan'])); ?></td>
-                                    <td><?php echo $row['jml_pesanan']; ?></td>
+                                    <td><?php echo date('d M Y', strtotime($row['tgl_masuk'])); ?></td>
+                                    <td><?php echo $row['jml_pesanan']; ?> Unit</td>
                                     <td>Rp <?php echo number_format($row['pemasukan_harian'], 0, ',', '.'); ?></td>
                                 </tr>
                             <?php } 
                             } else {
-                                echo "<tr><td colspan='4' style='text-align:center;'>Tidak ada data pesanan selesai.</td></tr>";
+                                echo "<tr><td colspan='4' style='text-align:center;'>Belum ada pesanan dengan status 'Selesai' bulan ini.</td></tr>";
                             } ?>
                         </tbody>
                     </table>
@@ -116,7 +110,7 @@ $total_akhir = $data_total['total_bulan_ini'] ?? 0;
 
                 <div class="action-footer">
                     <button class="btn-print" onclick="window.print()">
-                        <i class="fa-solid fa-print"></i> Cetak Laporan
+                        <i class="fa-solid fa-print"></i> Cetak Laporan (PDF)
                     </button>
                 </div>
             </div>
