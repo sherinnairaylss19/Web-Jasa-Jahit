@@ -11,7 +11,19 @@ if (isset($_POST['update'])) {
                                        WHERE id_pembayaran = '$id'");
     $d_harga = mysqli_fetch_assoc($q_harga);
     $sisa_bayar = $d_harga['total_biaya'] - $uang_muka;
+   
+    if ($sisa_bayar <= 0) {
+    $sisa_bayar = 0;
+    $status_bayar = 'Lunas';
+    } else {
+    $status_bayar = 'DP'; 
+    }
 
+$sql = "UPDATE pembayaran SET 
+        uang_muka = '$uang_muka', 
+        sisa_bayar = '$sisa_bayar', 
+        status_bayar = '$status_bayar' 
+        WHERE id_pembayaran = '$id'";
     $sql = "UPDATE pembayaran SET 
             uang_muka = '$uang_muka', 
             sisa_bayar = '$sisa_bayar', 
