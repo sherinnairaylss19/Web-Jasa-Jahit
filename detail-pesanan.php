@@ -20,7 +20,7 @@ if (!$data) {
     echo "<script>alert('Data tidak ditemukan!'); window.location='pesanan.php';</script>";
     exit();
 }
-// Query mengambil data dari 3 tabel: pesanan, pelanggan, dan pembayaran
+
 $query = mysqli_query($koneksi, "SELECT pesanan.*, 
                                         pelanggan.nama_lengkap, pelanggan.no_hp, pelanggan.alamat_lengkap,
                                         pembayaran.uang_muka, pembayaran.sisa_bayar
@@ -30,7 +30,6 @@ $query = mysqli_query($koneksi, "SELECT pesanan.*,
                                  WHERE pesanan.id_pesanan = '$id_pesanan'");
 $data = mysqli_fetch_assoc($query);
 
-// Jika di tabel pembayaran masih kosong, set nilai ke 0 agar tidak error
 $uang_muka = $data['uang_muka'] ?? 0;
 $sisa_bayar = $data['sisa_bayar'] ?? $data['total_biaya'];
 ?>
@@ -95,6 +94,7 @@ $sisa_bayar = $data['sisa_bayar'] ?? $data['total_biaya'];
                             <th>No</th>
                             <th>Jenis Pesanan</th>
                             <th>Catatan / Detail</th>
+                            <th>Ukuran</th>
                             <th>Total Biaya</th>
                         </tr>
                     </thead>
@@ -103,6 +103,14 @@ $sisa_bayar = $data['sisa_bayar'] ?? $data['total_biaya'];
                             <td>1</td>
                             <td><?= $data['jenis_pesanan']; ?></td>
                             <td><?= nl2br($data['catatan']); ?></td>
+                            <td>
+                                <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; line-height: 1.6;">
+                                    <li><strong>Bahu:</strong> <?= $data['lebar_bahu'] ?? '-'; ?></li>
+                                    <li><strong>Dada:</strong> <?= $data['lingkar_dada'] ?? '-'; ?></li>
+                                    <li><strong>Lengan:</strong> <?= $data['panjang_lengan'] ?? '-'; ?></li>
+                                    <li><strong>Baju:</strong> <?= $data['panjang_baju'] ?? '-'; ?></li>
+                                </ul>
+                            </td>
                             <td>Rp <?= number_format($data['total_biaya'], 0, ',', '.'); ?></td>
                         </tr>
                     </tbody>

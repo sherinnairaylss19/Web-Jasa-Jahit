@@ -7,39 +7,41 @@ if (!isset($_SESSION['login'])) {
     exit(); 
 }
 
-// HANYA jalankan ini jika tombol submit diklik
 if (isset($_POST['submit'])) {
-    
-    
     $nama    = $_POST['nama'];        
-    $no_hp   = $_POST['no_hp'];         
+    $no_hp   = $_POST['no_hp'];        
     $alamat  = $_POST['alamat'];        
     $tgl_m   = $_POST['tgl_masuk'];
     $tgl_t   = $_POST['tgl_tenggat'];
-    $total   = $_POST['total'];         
+    $total   = $_POST['total'];        
     $jenis   = $_POST['jenis_pesanan'];
     $catatan = $_POST['catatan'];
     $status  = "Proses";
+
+    // AMBIL DATA UKURAN BARU
+    $l_bahu   = $_POST['lebar_bahu'];
+    $l_dada   = $_POST['lingkar_dada'];
+    $p_lengan = $_POST['panjang_lengan'];
+    $p_baju   = $_POST['panjang_baju'];
 
     $query_pelanggan = "INSERT INTO pelanggan (nama_lengkap, no_hp, alamat_lengkap) 
                         VALUES ('$nama', '$no_hp', '$alamat')";
     
     if (mysqli_query($koneksi, $query_pelanggan)) {
-
         $id_pelanggan = mysqli_insert_id($koneksi);
 
-        $query_pesanan = "INSERT INTO pesanan (id_pelanggan, tgl_masuk, tgl_tenggat, total_biaya, jenis_pesanan, catatan, status_produksi) 
-                          VALUES ('$id_pelanggan', '$tgl_m', '$tgl_t', '$total', '$jenis', '$catatan', '$status')";
+        // UPDATE QUERY INSERT PESANAN (Tambahkan kolom ukuran)
+        $query_pesanan = "INSERT INTO pesanan (id_pelanggan, tgl_masuk, tgl_tenggat, total_biaya, jenis_pesanan, catatan, status_produksi, lebar_bahu, lingkar_dada, panjang_lengan, panjang_baju) 
+                          VALUES ('$id_pelanggan', '$tgl_m', '$tgl_t', '$total', '$jenis', '$catatan', '$status', '$l_bahu', '$l_dada', '$p_lengan', '$p_baju')";
 
         if (mysqli_query($koneksi, $query_pesanan)) {
             echo "<script>alert('Data Berhasil Disimpan'); window.location='pesanan.php';</script>";
         } else {
             echo "Error Pesanan: " . mysqli_error($koneksi);
         }
-    } else {
-        echo "Error Pelanggan: " . mysqli_error($koneksi);
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -103,6 +105,27 @@ if (isset($_POST['submit'])) {
                                 <label>Jenis Pesanan:</label>
                                 <input type="text" name="jenis_pesanan">
                             </div>
+                        <div class="input-row">
+                        <div class="input-group">
+                            <label>Lebar Bahu</label>
+                            <input type="text" name="lebar_bahu" placeholder="cm">
+                        </div>
+                        <div class="input-group">
+                            <label>Lingkar Dada</label>
+                            <input type="text" name="lingkar_dada" placeholder="cm">
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Panjang Lengan</label>
+                            <input type="text" name="panjang_lengan" placeholder="cm">
+                        </div>
+                        <div class="input-group">
+                            <label>Panjang Baju/Celana</label>
+                            <input type="text" name="panjang_baju" placeholder="cm">
+                        </div>
+                    </div>
                             <div class="input-group">
                                 <label>Catatan / Ukuran:</label>
                                 <textarea name="catatan" rows="6"></textarea>
