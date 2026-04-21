@@ -1,47 +1,51 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. Inisialisasi Elemen
-    const btnFilter = document.querySelector('.btn-filter');
-    const btnPrint = document.querySelector('.btn-print');
-    const tableRows = document.querySelectorAll('tbody tr');
+    console.log("Laporan JS Ready!");
 
-    // 2. Fungsi Filter (Berdasarkan Tanggal atau isi tabel)
-    // Mengikuti gaya logika pesanan.js yang menggunakan perulangan row
-    if (btnFilter) {
-        btnFilter.addEventListener('click', function() {
-            // Contoh sederhana: Kita bisa menambahkan input pencarian 
-            // atau memfilter berdasarkan rentang tanggal tertentu.
-            alert("Memproses filter laporan...");
-            
-            // Logika filter jika ingin menyaring berdasarkan teks tertentu (sama dengan pesanan.js)
-            /*
-            tableRows.forEach(row => {
-                const tanggal = row.cells[1].textContent.toLowerCase();
-                if (tanggal.includes('apr')) { // Contoh filter bulan April
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-            */
+    const selectBulan = document.querySelector('.select-input');
+    if (selectBulan) {
+        selectBulan.addEventListener('change', function() {
+            console.log("Filter diubah ke: " + this.value);
         });
     }
-
-    // 3. Fungsi Cetak Laporan
-    if (btnPrint) {
-        btnPrint.addEventListener('click', function() {
-            // Membuka dialog print browser
-            window.print();
-        });
-    }
-
-    // 4. Integrasi Sidebar (Memastikan navigasi tetap aktif)
-    const sidebarItems = document.querySelectorAll('.sidebar li');
-    sidebarItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const link = this.querySelector('a');
-            if (link) {
-                window.location.href = link.getAttribute('href');
-            }
-        });
-    });
 });
+
+function jalankanFilter() {
+   
+    const bulan = document.getElementById('filterBulan').value;
+    const tahun = document.getElementById('filterTahun').value;
+
+    window.location.href = `laporan.php?bulan=${bulan}&tahun=${tahun}`;
+}
+
+function cetakLaporan() {
+    
+    const bulanNama = document.querySelector('.select-input').value;
+    const originalTitle = document.title;
+
+    document.title = "Laporan_Keuangan_" + bulanNama.replace(/\s+/g, '_');
+
+    window.print();
+
+    setTimeout(() => {
+        document.title = originalTitle;
+    }, 1000);
+}
+
+function cariDiTabel() {
+    const input = document.getElementById("inputCari");
+    const filter = input.value.toUpperCase();
+    const table = document.getElementById("tabelLaporan");
+    const tr = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName("td")[1]; 
+        if (td) {
+            let txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}

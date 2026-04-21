@@ -64,6 +64,26 @@ if (isset($_POST['update'])) {
     <link rel="stylesheet" href="css/pesanan.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+<style>
+    .btn-delete {
+    background-color: #e74c3c; 
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 5px;
+    transition: background 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+</style>
+
 <body>
     <div class="container">
         <nav class="sidebar">
@@ -119,6 +139,11 @@ if (isset($_POST['update'])) {
 
                     <div class="form-buttons">
                         <button type="submit" name="update" class="btn-save">Simpan Perubahan</button>
+                        <a href="hapus_pesanan.php?id=<?= $id_pesanan; ?>" 
+                            class="btn-delete" 
+                            onclick="return confirm('Apakah Anda yakin ingin menghapus pesanan ini? Semua data pesanan ini akan hilang.')">
+                            <i class="fa-solid fa-trash"></i>Hapus Pesanan
+                        </a>
                         <button type="button" class="btn-cancel" onclick="window.location='pesanan.php'">Batal</button>
                     </div>
                 </form>
