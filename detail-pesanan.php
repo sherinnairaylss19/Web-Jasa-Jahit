@@ -20,6 +20,19 @@ if (!$data) {
     echo "<script>alert('Data tidak ditemukan!'); window.location='pesanan.php';</script>";
     exit();
 }
+// Query mengambil data dari 3 tabel: pesanan, pelanggan, dan pembayaran
+$query = mysqli_query($koneksi, "SELECT pesanan.*, 
+                                        pelanggan.nama_lengkap, pelanggan.no_hp, pelanggan.alamat_lengkap,
+                                        pembayaran.uang_muka, pembayaran.sisa_bayar
+                                 FROM pesanan 
+                                 JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
+                                 LEFT JOIN pembayaran ON pesanan.id_pesanan = pembayaran.id_pesanan
+                                 WHERE pesanan.id_pesanan = '$id_pesanan'");
+$data = mysqli_fetch_assoc($query);
+
+// Jika di tabel pembayaran masih kosong, set nilai ke 0 agar tidak error
+$uang_muka = $data['uang_muka'] ?? 0;
+$sisa_bayar = $data['sisa_bayar'] ?? $data['total_biaya'];
 ?>
 
 <!DOCTYPE html>
@@ -98,6 +111,9 @@ if (!$data) {
                 <div class="nota-footer">
                     <div class="footer-left">
                         <p><strong>Total Keseluruhan:</strong> Rp <?= number_format($data['total_biaya'], 0, ',', '.'); ?></p>
+                        <p><strong>Uang Muka (DP)</strong> Rp <?= number_format($uang_muka, 0, ',', '.'); ?></p>
+                        <p style="color: #d32f2f;"><strong>Sisa Tagihan</strong></td> Rp <?= number_format($sisa_bayar, 0, ',', '.'); ?></p>
+                    </tr>
                     </div>
                     <div class="footer-right">
                         <p>Hormat kami,</p>
