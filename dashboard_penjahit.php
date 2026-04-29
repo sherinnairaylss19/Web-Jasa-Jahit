@@ -12,21 +12,30 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'penjahit') {
 $total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan");
 $res_total = mysqli_fetch_assoc($total_q);
 
-// 2. Hitung Pesanan Dalam Proses (Kolom: status_produksi)
+// 2. Hitung Pesanan Dalam Proses
 $proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses'");
 $res_proses = mysqli_fetch_assoc($proses_q);
 
-// 3. Hitung Pesanan Selesai (Kolom: status_produksi)
+// 3. Hitung Pesanan Selesai
 $selesai_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Selesai'");
 $res_selesai = mysqli_fetch_assoc($selesai_q);
 
-// 4. Hitung Pesanan Telat (Kolom: status_produksi)
+// 4. Hitung Pesanan Telat
 $telat_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Telat'");
 $res_telat = mysqli_fetch_assoc($telat_q);
 
-// 5. Total Pemasukan Hari Ini (Berdasarkan tgl_masuk dan total_biaya)
-$pemasukan_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan WHERE DATE(tgl_masuk) = CURDATE()");
-$res_pemasukan = mysqli_fetch_assoc($pemasukan_q);
+// 5. QUERY PEMASUKAN BULAN INI (Hanya yang statusnya 'Selesai')
+$bulan_ini_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan 
+                                       WHERE status_produksi = 'Selesai' 
+                                       AND MONTH(tgl_masuk) = MONTH(CURDATE()) 
+                                       AND YEAR(tgl_masuk) = YEAR(CURDATE())");
+$res_bulan_ini = mysqli_fetch_assoc($bulan_ini_q);
+
+// 6. Ambil 5 Pesanan Terbaru untuk Tabel
+$query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap 
+                                       FROM pesanan 
+                                       JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
+                                       ORDER BY pesanan.id_pesanan DESC LIMIT 5");
 ?>
 
 <!DOCTYPE html>
@@ -54,27 +63,27 @@ $res_pemasukan = mysqli_fetch_assoc($pemasukan_q);
                     <div class="card blue">
                         <img src="assets/icon-mesin-jahit.jpeg" alt="Icon" width="40">
                         <p>Total Pesanan</p>
-                        <h2>10</h2>
+                        <h2><?php echo $res_total['total']; ?></h2>
                     </div>
                     <div class="card yellow">
                         <img src="assets/icon-benang.png" alt="Icon" width="40">
                         <p>Dalam Proses</p>
-                        <h2>6</h2>
+                        <h2><?php echo $res_proses['total']; ?></h2>
                     </div>
                     <div class="card cyan">
                         <img src="assets/icon-selesai.png" alt="Icon" width="40">
                         <p>Selesai</p>
-                        <h2>3</h2>
+                        <h2><?php echo $res_selesai['total']; ?></h2>
                     </div>
                     <div class="card red">
                         <img src="assets/icon-deadline.png" alt="Icon" width="40">
-                        <p>Deadline Dekat</p>
-                        <h2>2</h2>
+                        <p>Pesanan Telat</p>
+                        <h2><?php echo $res_telat['total'] ?? 0; ?></h2>
                     </div>
                 </div>
 
                 <div class="table-section">
-                    <h3>Pesanan</h3>
+                    <h3>Pesanan Terbaru</h3>
                     <table>
                         <thead>
                             <tr>
@@ -86,45 +95,25 @@ $res_pemasukan = mysqli_fetch_assoc($pemasukan_q);
                             </tr>
                         </thead>
                         <tbody>
+                        <?php while($row = mysqli_fetch_assoc($query_tabel)) : ?>
                             <tr>
-                                <td>Sherin</td>
-                                <td>Permak Celana</td>
-                                <td><span class="status selesai">Selesai</span></td>
-                                <td>23 April</td>
-                                <td>30.000</td>
+                                <td><?php echo htmlspecialchars($row['nama_lengkap']); ?></td>
+                                <td><?php echo htmlspecialchars($row['jenis_pesanan']); ?></td>
+                                <td>
+                                    <?php 
+                                        $status = strtolower($row['status_produksi']);
+                                        echo "<span class='status $status'>" . ucfirst($status) . "</span>";
+                                    ?>
+                                </td>
+                                <td><?php echo date('d M', strtotime($row['tgl_tenggat'])); ?></td>
+                                <td><?php echo number_format($row['total_biaya'], 0, ',', '.'); ?></td>
                             </tr>
-                            <tr>
-                                <td>Dina</td>
-                                <td>Permak Blouse</td>
-                                <td><span class="status proses">Proses</span></td>
-                                <td>25 April</td>
-                                <td>250.000</td>
-                            </tr>
-                            <tr>
-                                <td>Rani</td>
-                                <td>Jahit Dress</td>
-                                <td><span class="status selesai">Selesai</span></td>
-                                <td>18 Maret</td>
-                                <td>90.000</td>
-                            </tr>
-                            <tr>
-                                <td>Dimas</td>
-                                <td>Bordir Logo</td>
-                                <td><span class="status proses">Proses</span></td>
-                                <td>10 Maret</td>
-                                <td>90.000</td>
-                            </tr>
-                            <tr>
-                                <td>Hendra</td>
-                                <td>Permak Celana</td>
-                                <td><span class="status telat">Telat</span></td>
-                                <td>10 Maret</td>
-                                <td>45.000</td>
-                            </tr>
+                        <?php endwhile; ?>
                         </tbody>
                     </table>
                     <div class="button-container">
-                    <a href="pesanan.php" class="btn-all">Lihat Semua Pesanan</a>
+                        <a href="pesanan.php" class="btn-all">Lihat Semua Pesanan</a>
+                    </div>
                 </div>
 
                 <div class="income-card">
@@ -132,10 +121,15 @@ $res_pemasukan = mysqli_fetch_assoc($pemasukan_q);
                         <img src="assets/icon-koin.png" alt="Coin Icon">
                     </div>
                     <div class="income-info">
-                        <p class="income-label">Total Pemasukan Hari Ini</p>
-                        <h2 class="income-amount">Rp 505.000</h2>
+                        <p class="income-label">Total Pemasukan Bulan Ini </p>
+                        <h2 class="income-amount">
+                            Rp <?php echo number_format($res_bulan_ini['total'] ?? 0, 0, ',', '.'); ?>
+                        </h2>
                     </div>
                 </div>
 
-            </div> </div> </div> </body>
+            </div> 
+        </div> 
+    </div> 
+</body>
 </html>

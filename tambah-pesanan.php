@@ -7,7 +7,21 @@ if (!isset($_SESSION['login'])) {
     exit(); 
 }
 
+$id_p_lama = isset($_GET['id_pelanggan']) ? $_GET['id_pelanggan'] : "";
+$nama = ""; $no_hp = ""; $alamat = "";
+
+if ($id_p_lama != "") {
+    $cek_p = mysqli_query($koneksi, "SELECT * FROM pelanggan WHERE id_pelanggan = '$id_p_lama'");
+    $data_p = mysqli_fetch_assoc($cek_p);
+    if ($data_p) {
+        $nama   = $data_p['nama_lengkap'];
+        $no_hp  = $data_p['no_hp'];
+        $alamat = $data_p['alamat_lengkap'];
+    }
+}
+
 if (isset($_POST['submit'])) {
+    $id_pelanggan = $_POST['id_pelanggan_hidden']; 
     $nama    = $_POST['nama'];        
     $no_hp   = $_POST['no_hp'];        
     $alamat  = $_POST['alamat'];        
@@ -18,30 +32,32 @@ if (isset($_POST['submit'])) {
     $catatan = $_POST['catatan'];
     $status  = "Proses";
 
-    // AMBIL DATA UKURAN BARU
     $l_bahu   = $_POST['lebar_bahu'];
     $l_dada   = $_POST['lingkar_dada'];
     $p_lengan = $_POST['panjang_lengan'];
     $p_baju   = $_POST['panjang_baju'];
 
-    $query_pelanggan = "INSERT INTO pelanggan (nama_lengkap, no_hp, alamat_lengkap) 
-                        VALUES ('$nama', '$no_hp', '$alamat')";
     
-    if (mysqli_query($koneksi, $query_pelanggan)) {
+    if (empty($id_pelanggan)) {
+        $query_pelanggan = "INSERT INTO pelanggan (nama_lengkap, no_hp, alamat_lengkap) 
+                            VALUES ('$nama', '$no_hp', '$alamat')";
+        mysqli_query($koneksi, $query_pelanggan);
         $id_pelanggan = mysqli_insert_id($koneksi);
+    } else {
+   
+        mysqli_query($koneksi, "UPDATE pelanggan SET no_hp='$no_hp', alamat_lengkap='$alamat' WHERE id_pelanggan='$id_pelanggan'");
+    }
 
-        // UPDATE QUERY INSERT PESANAN (Tambahkan kolom ukuran)
-        $query_pesanan = "INSERT INTO pesanan (id_pelanggan, tgl_masuk, tgl_tenggat, total_biaya, jenis_pesanan, catatan, status_produksi, lebar_bahu, lingkar_dada, panjang_lengan, panjang_baju) 
-                          VALUES ('$id_pelanggan', '$tgl_m', '$tgl_t', '$total', '$jenis', '$catatan', '$status', '$l_bahu', '$l_dada', '$p_lengan', '$p_baju')";
+    // SIMPAN KE TABEL PESANAN
+    $query_pesanan = "INSERT INTO pesanan (id_pelanggan, tgl_masuk, tgl_tenggat, total_biaya, jenis_pesanan, catatan, status_produksi, lebar_bahu, lingkar_dada, panjang_lengan, panjang_baju) 
+                      VALUES ('$id_pelanggan', '$tgl_m', '$tgl_t', '$total', '$jenis', '$catatan', '$status', '$l_bahu', '$l_dada', '$p_lengan', '$p_baju')";
 
-        if (mysqli_query($koneksi, $query_pesanan)) {
-            echo "<script>alert('Data Berhasil Disimpan'); window.location='pesanan.php';</script>";
-        } else {
-            echo "Error Pesanan: " . mysqli_error($koneksi);
-        }
+    if (mysqli_query($koneksi, $query_pesanan)) {
+        echo "<script>alert('Data Berhasil Disimpan'); window.location='pesanan.php';</script>";
+    } else {
+        echo "Error Pesanan: " . mysqli_error($koneksi);
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -55,9 +71,7 @@ if (isset($_POST['submit'])) {
 </head>
 <body>
     <div class="container">
-        <nav class="sidebar">
-        <?php include 'sidebar.php'; ?>
-        </nav>
+        <nav class="sidebar"><?php include 'sidebar.php'; ?></nav>
 
         <div class="main-content">
             <div class="header-breadcrumb">
@@ -65,28 +79,32 @@ if (isset($_POST['submit'])) {
             </div>
 
             <div class="form-section">
-                <h2 class="form-title">Form Pesanan Baru</h2>
+                <h2 class="form-title"><?= ($id_p_lama != "") ? "Pesanan Ulang: $nama" : "Form Pesanan Baru" ?></h2>
                 
                 <form action="" method="POST">
+                    <!-- Hidden input untuk ID Pelanggan -->
+                    <input type="hidden" name="id_pelanggan_hidden" value="<?= $id_p_lama ?>">
+
                     <div class="form-grid">
                         <div class="form-column">
                             <h3>Data Pelanggan</h3>
                             <div class="input-group">
                                 <label>Nama Lengkap</label>
-                                <input type="text" name="nama" required>
+                                <!-- Readonly jika pelanggan lama agar tidak mengubah ID secara tidak sengaja -->
+                                <input type="text" name="nama" value="<?= $nama ?>" required <?= ($id_p_lama != "") ? "readonly style='background:#f0f0f0;'" : "" ?>>
                             </div>
                             <div class="input-group">
                                 <label>No Handphone</label>
-                                <input type="text" name="no_hp" required>
+                                <input type="text" name="no_hp" value="<?= $no_hp ?>" required>
                             </div>
                             <div class="input-group">
                                 <label>Alamat Lengkap</label>
-                                <input type="text" name="alamat" required>
+                                <input type="text" name="alamat" value="<?= $alamat ?>" required>
                             </div>
                             <div class="input-row">
                                 <div class="input-group">
                                     <label>Tanggal Masuk</label>
-                                    <input type="date" name="tgl_masuk" required>
+                                    <input type="date" name="tgl_masuk" value="<?= date('Y-m-d') ?>" required>
                                 </div>
                                 <div class="input-group">
                                     <label>Tanggal Tenggat</label>
@@ -103,31 +121,30 @@ if (isset($_POST['submit'])) {
                             <h3>Detail Jahitan & Ukuran</h3>
                             <div class="input-group">
                                 <label>Jenis Pesanan:</label>
-                                <input type="text" name="jenis_pesanan">
+                                <input type="text" name="jenis_pesanan" >
                             </div>
-                        <div class="input-row">
-                        <div class="input-group">
-                            <label>Lebar Bahu</label>
-                            <input type="text" name="lebar_bahu" placeholder="cm">
-                        </div>
-                        <div class="input-group">
-                            <label>Lingkar Dada</label>
-                            <input type="text" name="lingkar_dada" placeholder="cm">
-                        </div>
-                    </div>
-
-                    <div class="input-row">
-                        <div class="input-group">
-                            <label>Panjang Lengan</label>
-                            <input type="text" name="panjang_lengan" placeholder="cm">
-                        </div>
-                        <div class="input-group">
-                            <label>Panjang Baju/Celana</label>
-                            <input type="text" name="panjang_baju" placeholder="cm">
-                        </div>
-                    </div>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label>Lebar Bahu</label>
+                                    <input type="text" name="lebar_bahu" placeholder="cm">
+                                </div>
+                                <div class="input-group">
+                                    <label>Lingkar Dada</label>
+                                    <input type="text" name="lingkar_dada" placeholder="cm">
+                                </div>
+                            </div>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label>Panjang Lengan</label>
+                                    <input type="text" name="panjang_lengan" placeholder="cm">
+                                </div>
+                                <div class="input-group">
+                                    <label>Panjang Baju/Celana</label>
+                                    <input type="text" name="panjang_baju" placeholder="cm">
+                                </div>
+                            </div>
                             <div class="input-group">
-                                <label>Catatan / Ukuran:</label>
+                                <label>Catatan Tambahan:</label>
                                 <textarea name="catatan" rows="6"></textarea>
                             </div>
                         </div>
@@ -135,12 +152,11 @@ if (isset($_POST['submit'])) {
 
                     <div class="form-buttons">
                         <button type="submit" name="submit" class="btn-save">Simpan Pesanan</button>
-                        <button type="button" class="btn-cancel" onclick="window.history.back()">Batal</button>
+                        <button type="button" class="btn-cancel" onclick="window.location='pesanan.php'">Batal</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-<script src="js/tambah-pesanan.js"></script>
 </body>
 </html>
