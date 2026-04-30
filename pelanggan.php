@@ -36,7 +36,7 @@ $data_baru = mysqli_fetch_assoc($query_baru);
 
     <div class="main-content">
         <div class="top-bar">
-            <h1 class="top-bar-title">Riwayat Pelanggan</h1>
+            <h1 class="top-bar-title">Pelanggan</h1>
         </div>
         
         <div class="dashboard-body">
@@ -73,6 +73,7 @@ $data_baru = mysqli_fetch_assoc($query_baru);
             <!-- Tabel Data -->
             <div class="table-section" style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #ddd; overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse;">
+                    <h3>Riwayat Pelanggan</h3>
                     <thead>
                         <tr style="background-color: #f8f9fa; border-bottom: 2px solid #eee;">
                             <th style="padding: 12px; text-align: left;">No</th>
