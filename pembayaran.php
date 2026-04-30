@@ -42,7 +42,6 @@ $query = mysqli_query($koneksi, $sql);
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" placeholder="Cari Nama Pelanggan">
                     </div>
-                    <a href="tambah-pembayaran.php" class="btn-add">+ Tambahkan Pembayaran</a>
                 </div>
 
                 <div class="table-section">
