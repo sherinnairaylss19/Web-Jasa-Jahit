@@ -66,7 +66,7 @@ $sisa_bayar = $data['sisa_bayar'] ?? $data['total_biaya'];
 
         <div class="main-content">
             <div class="header-breadcrumb">
-                <p><a href="pesanan.php"><i class="fa-solid fa-chevron-left"></i> Kembali Pesanan</a> / Detail Pesanan</p>
+                <p><a href="pesanan.php"><i class="fa-solid fa-chevron-left"></i> Kembali Pesanan</a> / Nota Pesanan</p>
             </div>
 
             <div class="nota-container">

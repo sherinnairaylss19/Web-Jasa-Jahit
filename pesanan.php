@@ -102,7 +102,7 @@ $query = mysqli_query($koneksi, $query_str);
                             </td>
                             <td class="aksi-buttons">
                                 <div class="button-group">
-                                    <a href="detail-pesanan.php?id=<?= $row['id_pesanan']; ?>" class="btn-detail">Detail</a>
+                                    <a href="detail-pesanan.php?id=<?= $row['id_pesanan']; ?>" class="btn-detail">Nota</a>
                                    <a href="edit-pesanan.php?id=<?= $row['id_pesanan']; ?>" class="btn-edit">Edit</a>
                                    <a href="tambah-pembayaran.php?id=<?= $row['id_pesanan']; ?>" class="btn-bayar">Bayar</a>
                                 </div>
