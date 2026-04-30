@@ -2,23 +2,13 @@
 session_start();
 include 'koneksi.php';
 
-// 1. Ambil ID dari URL
-$id_pelanggan = isset($_GET['id']) ? mysqli_real_escape_string($koneksi, $_GET['id']) : '';
-
-if (empty($id_pelanggan)) {
-    header("Location: pelanggan.php");
-    exit();
-}
-
-// 2. Query ambil data pelanggan berdasarkan ID
-$query = mysqli_query($koneksi, "SELECT * FROM pelanggan WHERE id_pelanggan = '$id_pelanggan'");
+$id_pelanggan = $_GET['id'];
+$query = mysqli_query($koneksi, "SELECT p.*, s.lebar_bahu, s.lingkar_dada, s.panjang_baju, s.panjang_lengan 
+                                 FROM pelanggan p 
+                                 LEFT JOIN pesanan s ON p.id_pelanggan = s.id_pelanggan 
+                                 WHERE p.id_pelanggan = '$id_pelanggan' 
+                                 ORDER BY s.id_pesanan DESC LIMIT 1");
 $data = mysqli_fetch_assoc($query);
-
-// Jika data tidak ditemukan
-if (!$data) {
-    echo "<script>alert('Data pelanggan tidak ditemukan!'); window.location='pelanggan.php';</script>";
-    exit();
-}
 ?>
 
 <!DOCTYPE html>
@@ -69,7 +59,7 @@ if (!$data) {
                             <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Data Ukuran</h3>
                             <table style="width: 100%; border-collapse: collapse;">
                                 <tr>
-                                    <td style="padding: 8px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">Lingkar Dada:</td>
+                                    <td style="padding: 8px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">Lingkar Dada/Pinggang:</td>
                                     <td style="padding: 8px 5px; border-bottom: 1px solid #f9f9f9;"><strong><?php echo $data['lingkar_dada'] ?? '-'; ?> cm</strong></td>
                                 </tr>
                                 <tr>
@@ -77,11 +67,11 @@ if (!$data) {
                                     <td style="padding: 8px 5px; border-bottom: 1px solid #f9f9f9;"><strong><?php echo $data['lebar_bahu'] ?? '-'; ?> cm</strong></td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 8px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">Lingkar Pinggang:</td>
-                                    <td style="padding: 8px 5px; border-bottom: 1px solid #f9f9f9;"><strong><?php echo $data['lingkar_pinggang'] ?? '-'; ?> cm</strong></td>
+                                    <td style="padding: 8px 5px; color: #555; border-bottom: 1px solid #f9f9f9;">Panjang Lengan:</td>
+                                    <td style="padding: 8px 5px; border-bottom: 1px solid #f9f9f9;"><strong><?php echo $data['panjang_lengan'] ?? '-'; ?> cm</strong></td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 8px 5px; color: #555;">Panjang:</td>
+                                    <td style="padding: 8px 5px; color: #555;">Panjang Baju/Celana:</td>
                                     <td><strong><?php echo $data['panjang_baju'] ?? '-'; ?> cm</strong></td>
                                 </tr>
                             </table>
@@ -115,7 +105,7 @@ if (!$data) {
                         </thead>
                         <tbody>
                             <?php
-                            // Ambil data dari tabel pesanan yang berhubungan dengan id_pelanggan ini
+                          
                             $query_pesanan = mysqli_query($koneksi, "SELECT * FROM pesanan WHERE id_pelanggan = '$id_pelanggan' ORDER BY tgl_masuk DESC");
                             if (mysqli_num_rows($query_pesanan) > 0) {
                                 while($pesanan = mysqli_fetch_assoc($query_pesanan)) {

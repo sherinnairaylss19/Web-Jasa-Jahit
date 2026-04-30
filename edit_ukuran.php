@@ -2,7 +2,6 @@
 session_start();
 include 'koneksi.php';
 
-// Pastikan ada ID pelanggan yang dikirim melalui URL
 if (!isset($_GET['id'])) {
     header("Location: pelanggan.php");
     exit;
@@ -10,8 +9,6 @@ if (!isset($_GET['id'])) {
 
 $id_pelanggan = $_GET['id'];
 
-// Ambil data ukuran berdasarkan id_pelanggan
-// Catatan: Pastikan tabel 'pelanggan' memiliki kolom-kolom ini atau sesuaikan join-nya
 $query = mysqli_query($koneksi, "SELECT * FROM pelanggan WHERE id_pelanggan = '$id_pelanggan'");
 $data = mysqli_fetch_assoc($query);
 
@@ -24,24 +21,28 @@ if (!$data) {
 if (isset($_POST['update_ukuran'])) {
     $ld = mysqli_real_escape_string($koneksi, $_POST['lingkar_dada']);
     $lb = mysqli_real_escape_string($koneksi, $_POST['lebar_bahu']);
-    $lp = mysqli_real_escape_string($koneksi, $_POST['lingkar_pinggang']);
-    $pj = mysqli_real_escape_string($koneksi, $_POST['panjang']);
-    $jp = mysqli_real_escape_string($koneksi, $_POST['jenis_pesanan']);
+    $pl = mysqli_real_escape_string($koneksi, $_POST['panjang_lengan']);
+    $pj = mysqli_real_escape_string($koneksi, $_POST['panjang_baju']);
 
-    // Query Update (Sesuaikan nama kolom dengan database Anda)
-    $sql_update = "UPDATE pelanggan SET 
-                    lingkar_dada = '$ld', 
-                    lebar_bahu = '$lb', 
-                    lingkar_pinggang = '$lp', 
-                    panjang = '$pj',
-                    jenis_pesanan = '$jp'
-                  WHERE id_pelanggan = '$id_pelanggan'";
 
-    if (mysqli_query($koneksi, $sql_update)) {
-        echo "<script>alert('Ukuran berhasil diperbarui!'); window.location='detail_pelanggan.php?id=$id_pelanggan';</script>";
-    } else {
-        echo "<script>alert('Gagal memperbarui data: " . mysqli_error($koneksi) . "');</script>";
-    }
+    
+$sql_update_pelanggan = "UPDATE pelanggan SET 
+                        lingkar_dada = '$ld', 
+                        lebar_bahu = '$lb', 
+                        panjang_lengan = '$pl', 
+                        panjang_baju = '$pj'
+                      WHERE id_pelanggan = '$id_pelanggan'";
+
+$sql_update_pesanan = "UPDATE pesanan SET 
+                        lingkar_dada = '$ld', 
+                        lebar_bahu = '$lb', 
+                        panjang_lengan = '$pl', 
+                        panjang_baju = '$pj'
+                      WHERE id_pelanggan = '$id_pelanggan' 
+                      ORDER BY id_pesanan DESC LIMIT 1";
+
+mysqli_query($koneksi, $sql_update_pelanggan);
+mysqli_query($koneksi, $sql_update_pesanan);
 }
 ?>
 
@@ -70,12 +71,12 @@ if (isset($_POST['update_ukuran'])) {
 
             <div class="dashboard-body" style="padding: 20px;">
                 <div style="background: white; padding: 30px; border-radius: 10px; border: 1px solid #ddd; max-width: 700px; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-                    <h3 style="margin-top: 0; margin-bottom: 25px; text-align: center; color: #2D5E55;">Update Ukuran & Jahitan: <?php echo htmlspecialchars($data['nama_lengkap']); ?></h3>
+                    <h3 style="margin-top: 0; margin-bottom: 25px; text-align: center; color: #2D5E55;">Update Ukuran : <?php echo htmlspecialchars($data['nama_lengkap']); ?></h3>
                     
                     <form action="" method="POST" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                         
                         <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: bold;">Lingkar Dada (cm)</label>
+                            <label style="display: block; margin-bottom: 8px; font-weight: bold;">Lingkar Dada/Pinggang (cm)</label>
                             <input type="number" name="lingkar_dada" value="<?php echo $data['lingkar_dada']; ?>" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
                         </div>
 
@@ -85,19 +86,15 @@ if (isset($_POST['update_ukuran'])) {
                         </div>
 
                         <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: bold;">Lingkar Pinggang (cm)</label>
-                            <input type="number" name="lingkar_pinggang" value="<?php echo $data['lingkar_pinggang']; ?>" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: bold;">Panjang Lengan (cm)</label>
+                            <input type="number" name="panjang_lengan" value="<?php echo $data['panjang_lengan']; ?>" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
                         </div>
 
                         <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: bold;">Panjang (cm)</label>
-                            <input type="number" name="panjang" value="<?php echo $data['panjang']; ?>" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: bold;">Panjang Baju/Celana (cm)</label>
+                            <input type="number" name="panjang_baju" value="<?php echo $data['panjang_baju']; ?>" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
                         </div>
 
-                        <div style="grid-column: span 2;">
-                            <label style="display: block; margin-bottom: 8px; font-weight: bold;">Jenis Pesanan</label>
-                            <input type="text" name="jenis_pesanan" value="<?php echo htmlspecialchars($data['jenis_pesanan']); ?>" placeholder="Contoh: Permak Celana, Jahit Kebaya" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
-                        </div>
 
                         <div style="grid-column: span 2; display: flex; gap: 15px; margin-top: 15px;">
                             <button type="button" onclick="window.location='detail_pelanggan.php?id=<?php echo $id_pelanggan; ?>'" style="flex: 1; padding: 12px; background: #f1f1f1; color: #333; border: 1px solid #ccc; cursor: pointer; border-radius: 6px; font-weight: bold;">Batal</button>

@@ -68,43 +68,49 @@ $data_baru = mysqli_fetch_assoc($query_baru);
                     <i class="fas fa-search" style="color:#999;"></i>
                     <input type="text" id="inputCari" onkeyup="fungsiCari()" placeholder="Cari Nama Pelanggan..." style="border:none; outline:none; width:100%; margin-left:10px;">
                 </div>
-                <a href="tambah-pesanan.php" class="btn-tambah" style="background:#2D5E55; color:white; padding:10px 20px; border-radius:8px; text-decoration:none; font-weight:bold;">
-                    <i class="fas fa-plus"></i> Tambah Pesanan
-                </a>
-            </div>
+           </div>    
 
-            <div class="table-section" style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #ddd; overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="background-color: #f8f9fa; border-bottom: 2px solid #eee;">
-                            <th style="padding: 15px; text-align: left;">Nama</th>
-                            <th style="padding: 15px; text-align: left;">Alamat</th>
-                            <th style="padding: 15px; text-align: left;">No HP</th>
-                            <th style="padding: 15px; text-align: center;">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $sql = "SELECT * FROM pelanggan ORDER BY nama_lengkap ASC";
-                        $result = mysqli_query($koneksi, $sql);
-                        if (mysqli_num_rows($result) > 0) {
-                            while($row = mysqli_fetch_assoc($result)) {
-                                echo "<tr>";
-                                echo "<td style='padding: 15px; border-bottom: 1px solid #eee;'>" . htmlspecialchars($row['nama_lengkap']) . "</td>";
-                                echo "<td style='padding: 15px; border-bottom: 1px solid #eee;'>" . htmlspecialchars($row['alamat_lengkap']) . "</td>";
-                                echo "<td style='padding: 15px; border-bottom: 1px solid #eee;'>" . htmlspecialchars($row['no_hp']) . "</td>";
-                                echo "<td style='padding: 15px; border-bottom: 1px solid #eee; text-align:center;'>
-                                        <a href='detail_pelanggan.php?id=".$row['id_pelanggan']."' style='background:#2D5E55; color:white; padding:6px 12px; border-radius:5px; text-decoration:none; font-size:12px;'>Detail</a>
-                                      </td>";
-                                echo "</tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='4' style='padding:20px; text-align:center;'>Data tidak ditemukan</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-    </div>
+           <div class="table-section" style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #ddd; overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background-color: #f8f9fa; border-bottom: 2px solid #eee;">
+                <th style="padding: 15px; text-align: left;">No</th>
+                <th style="padding: 15px; text-align: left;">Nama</th>
+                <th style="padding: 15px; text-align: left;">No HP</th>
+                <th style="padding: 15px; text-align: left;">Alamat</th>
+                <th style="padding: 15px; text-align: center;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $sql = "SELECT * FROM pelanggan ORDER BY nama_lengkap ASC";
+            $result = mysqli_query($koneksi, $sql);
+            $no = 1;
+
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>";
+                    echo "<td style='padding: 15px; border-bottom: 1px solid #eee;'>" . $no++ . "</td>";
+                    echo "<td style='padding: 15px; border-bottom: 1px solid #eee;'>" . htmlspecialchars($row['nama_lengkap']) . "</td>";
+                    echo "<td style='padding: 15px; border-bottom: 1px solid #eee;'>" . htmlspecialchars($row['no_hp']) . "</td>";
+                    echo "<td style='padding: 15px; border-bottom: 1px solid #eee;'>" . htmlspecialchars($row['alamat_lengkap']) . "</td>";
+                   echo "<td style='padding: 15px; border-bottom: 1px solid #eee; text-align:center;'>
+                            <a href='detail_pelanggan.php?id=".$row['id_pelanggan']."' style='background:#2D5E55; color:white; padding:6px 12px; border-radius:5px; text-decoration:none; font-size:12px;'>Detail</a>
+                            
+                            <a href='tambah-pesanan.php?id_pelanggan=".$row['id_pelanggan']."' 
+                            style='background:#2D5E55; color:white; padding:6px 12px; border-radius:5px; text-decoration:none; font-size:12px;'>
+                            Pesan Lagi
+                            </a>
+                        </td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='5' style='padding:20px; text-align:center;'>Data tidak ditemukan</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
 </div>
 
 <script>
@@ -122,5 +128,6 @@ $data_baru = mysqli_fetch_assoc($query_baru);
             }
         });
     });
+</script>
 </body>
-</html>
+</html>s
