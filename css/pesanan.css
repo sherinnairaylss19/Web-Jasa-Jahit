@@ -236,6 +236,17 @@ td.aksi-buttons {
     text-decoration: none;
     font-size: 12px;
 }
+
+.btn-bayar {
+    background: #83d47c;
+    color: #1b3530;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 15px;
+    text-decoration: none;
+    font-size: 12px;
+}
+
 .btn-detail:hover, .btn-edit:hover {
     opacity: 0.8;
 }
