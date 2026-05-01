@@ -1,39 +1,34 @@
 <?php
-$koneksi = mysqli_connect("localhost", "root", "", "toko-jahit");
+include 'koneksi.php';
 
 if (isset($_POST['update'])) {
-    $id = $_POST['id_pembayaran'];
-    $uang_muka = $_POST['uang_muka'];
+    $id_pembayaran = $_POST['id_pembayaran'];
+    $sudah_bayar_lama = $_POST['sudah_bayar_lama'];
+    $tambahan_bayar = $_POST['tambahan_bayar'];
+    $total_biaya = $_POST['total_biaya'];
     $status_bayar = $_POST['status_bayar'];
 
-    $q_harga = mysqli_query($koneksi, "SELECT pesanan.total_biaya FROM pembayaran 
-                                       JOIN pesanan ON pembayaran.id_pesanan = pesanan.id_pesanan 
-                                       WHERE id_pembayaran = '$id'");
-    $d_harga = mysqli_fetch_assoc($q_harga);
-    $sisa_bayar = $d_harga['total_biaya'] - $uang_muka;
-   
-    if ($sisa_bayar <= 0) {
-    $sisa_bayar = 0;
-    $status_bayar = 'Lunas';
-    } else {
-    $status_bayar = 'DP'; 
+    $total_baru = $sudah_bayar_lama + $tambahan_bayar;
+    $sisa_baru = $total_biaya - $total_baru;
+
+    if ($sisa_baru <= 0) {
+        $status_bayar = 'Lunas';
+        $sisa_baru = 0;
     }
 
-$sql = "UPDATE pembayaran SET 
-        uang_muka = '$uang_muka', 
-        sisa_bayar = '$sisa_bayar', 
-        status_bayar = '$status_bayar' 
-        WHERE id_pembayaran = '$id'";
-    $sql = "UPDATE pembayaran SET 
-            uang_muka = '$uang_muka', 
-            sisa_bayar = '$sisa_bayar', 
-            status_bayar = '$status_bayar' 
-            WHERE id_pembayaran = '$id'";
+    $query = "UPDATE pembayaran SET 
+              uang_muka = '$total_baru', 
+              sisa_bayar = '$sisa_baru', 
+              status_bayar = '$status_bayar' 
+              WHERE id_pembayaran = '$id_pembayaran'";
 
-    if (mysqli_query($koneksi, $sql)) {
-        header("Location: pembayaran.php");
-    } else {
-        echo "Error: " . mysqli_error($koneksi);
+    if (mysqli_query($koneksi, $query)) {
+        if ($status_bayar == 'Lunas') {
+            $get_id = mysqli_query($koneksi, "SELECT id_pesanan FROM pembayaran WHERE id_pembayaran = '$id_pembayaran'");
+            $id_p = mysqli_fetch_assoc($get_id)['id_pesanan'];
+            mysqli_query($koneksi, "UPDATE pesanan SET status_pembayaran = 'Lunas' WHERE id_pesanan = '$id_p'");
+        }
+        echo "<script>alert('Pembayaran Berhasil Diupdate!'); window.location='pembayaran.php';</script>";
     }
 }
 ?>
