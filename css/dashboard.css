@@ -128,10 +128,18 @@ body {
 .table-section { background: white; padding: 20px; border-radius: 10px; }
 table { width: 100%; border-collapse: collapse; margin: 20px 0; }
 th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-.status { padding: 5px 10px; border-radius: 15px; font-size: 12px; }
-.selesai { background: #2D5E55; color: white; }
-.proses { background: #fff9c4; color: #856404; }
-.telat { background: #8B0000; color: #FFF0F0; }
+.status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    display: inline-block;
+    color: white;
+}
+.status-selesai { background: #2D5E55; }
+.status-proses { background: #fff9c4; color: #856404; }
+.status-telat { background: #8B0000; }
+.status-siap-diambil { background-color: #ecad24; }
+
 .btn-all { background: #2D5E55; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; display: block; margin: 0 auto; }
 
 .income-card {

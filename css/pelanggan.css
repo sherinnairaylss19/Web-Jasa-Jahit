@@ -127,4 +127,4 @@ td { padding: 12px; border: 1px solid #ddd; vertical-align: middle; font-size: 1
 .status-selesai { background-color: #2D5E55 !important; color: white !important; }
 .status-siap-diambil { background-color: #ecad24 !important; color: white !important; }
 .status-proses { background-color: #fff4d1 !important; color: #856404 !important; }
-.status-telat { background-color: #f8d7da !important; color: #721c24 !important; }
+.status-telat { background: #8B0000; color: white !important; }

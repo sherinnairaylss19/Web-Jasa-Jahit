@@ -102,8 +102,9 @@ $query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap
                                 <td><?php echo htmlspecialchars($row['jenis_pesanan']); ?></td>
                                 <td>
                                     <?php 
-                                        $status = strtolower($row['status_produksi']);
-                                        echo "<span class='status $status'>" . ucfirst($status) . "</span>";
+                                        $status_raw = $row['status_produksi']; 
+                                        $status_clean = str_replace(' ', '-', strtolower($status_raw)); 
+                                        echo "<span class='status status-$status_clean'>" . htmlspecialchars($status_raw) . "</span>";
                                     ?>
                                 </td>
                                 <td><?php echo date('d M', strtotime($row['tgl_tenggat'])); ?></td>
