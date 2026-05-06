@@ -128,10 +128,7 @@ if (isset($_POST['submit'])) {
                 <h2 class="form-title"><?= ($id_p_lama != "") ? "Pesanan Ulang: $nama" : "Form Pesanan Baru" ?></h2>
 
                 <?php if ($data_lama): ?>
-                    <div class="alert-info">
-                        <i class="fa-solid fa-clock-rotate-left"></i>
-                        Ukuran &amp; catatan diisi otomatis dari pesanan sebelumnya. Silakan sesuaikan jika ada perubahan.
-                    </div>
+                    
                 <?php endif; ?>
 
                 <form action="" method="POST">
