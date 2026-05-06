@@ -80,8 +80,23 @@ if (isset($_POST['update'])) {
                             <div class="input-group"><label>Catatan Tambahan:</label><textarea name="catatan" rows="6"><?= $data['catatan']; ?></textarea></div>
                         </div>
                     </div>
-                    <div class="form-buttons"><button type="submit" name="update" class="btn-save">Simpan Perubahan</button> <button type="button" class="btn-cancel" onclick="window.location='pesanan.php'">Batal</button></div>
-                </form>
+                     <div class="form-buttons">
+
+                        <button type="submit" name="update" class="btn-save">Simpan Perubahan</button>
+
+                        <a href="hapus_pesanan.php?id=<?= $id_pesanan; ?>"
+
+                            class="btn-delete"
+
+                            onclick="return confirm('Apakah Anda yakin ingin menghapus pesanan ini? Semua data pesanan ini akan hilang.')">
+
+                            <i class="fa-solid fa-trash"></i>Hapus Pesanan
+
+                        </a>
+
+                        <button type="button" class="btn-cancel" onclick="window.location='pesanan.php'">Batal</button>
+
+                    </div>                </form>
             </div>
         </div>
     </div>

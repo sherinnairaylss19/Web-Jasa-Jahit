@@ -516,3 +516,26 @@ td.aksi-buttons {
     color: white;
     text-decoration: none;
 }
+
+.btn-delete {
+    background-color: #d33c2b;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 5px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit; 
+    transition: background-color 0.3s ease; 
+}
+
+.btn-delete:hover {
+    background-color: #d33c2b;
+}
+
+.btn-delete i {
+    margin-right: 8px;
+}
