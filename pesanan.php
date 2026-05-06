@@ -8,29 +8,20 @@ if (!isset($_SESSION['login'])) {
 }
 
 $keyword = "";
-$status_filter = "";
-
 if (isset($_GET['cari'])) {
     $keyword = mysqli_real_escape_string($koneksi, $_GET['cari']);
+    $query_str = "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.alamat_lengkap, pelanggan.no_hp 
+                  FROM pesanan 
+                  JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
+                  WHERE pelanggan.nama_lengkap LIKE '%$keyword%' AND pesanan.is_deleted = 0
+                  ORDER BY tgl_tenggat ASC";
+} else {
+    $query_str = "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.alamat_lengkap, pelanggan.no_hp 
+                  FROM pesanan 
+                  JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
+                  WHERE pesanan.is_deleted = 0 
+                  ORDER BY tgl_tenggat ASC";
 }
-if (isset($_GET['status'])) {
-    $status_filter = mysqli_real_escape_string($koneksi, $_GET['status']);
-}
-
-$where = "WHERE pesanan.is_deleted = 0";
-
-if (!empty($keyword)) {
-    $where .= " AND pelanggan.nama_lengkap LIKE '%$keyword%'";
-}
-if (!empty($status_filter)) {
-    $where .= " AND pesanan.status_produksi = '$status_filter'";
-}
-
-$query_str = "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.alamat_lengkap, pelanggan.no_hp 
-              FROM pesanan 
-              JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
-              $where
-              ORDER BY tgl_tenggat ASC";
 
 $query = mysqli_query($koneksi, $query_str);
 ?>
@@ -60,13 +51,6 @@ $query = mysqli_query($koneksi, $query_str);
                     <form action="" method="GET" class="search-box">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" name="cari" placeholder="Cari Nama Pelanggan" value="<?= isset($_GET['cari']) ? htmlspecialchars($_GET['cari']) : ''; ?>">
-                        <select name="status" onchange="this.form.submit()">
-                            <option value="">Semua Status</option>
-                            <option value="Proses" <?= (isset($_GET['status']) && $_GET['status'] == 'Proses') ? 'selected' : ''; ?>>Proses</option>
-                            <option value="Selesai" <?= (isset($_GET['status']) && $_GET['status'] == 'Selesai') ? 'selected' : ''; ?>>Selesai</option>
-                            <option value="Telat" <?= (isset($_GET['status']) && $_GET['status'] == 'Telat') ? 'selected' : ''; ?>>Telat</option>
-                            <option value="Siap Diambil" <?= (isset($_GET['status']) && $_GET['status'] == 'Siap Diambil') ? 'selected' : ''; ?>>Siap Diambil</option>
-                        </select>
                         <button type="submit" style="display:none;">Cari</button> 
                     </form>
                     <a href="tambah-pesanan.php" class="btn-add">+ Tambahkan Pesanan</a>
