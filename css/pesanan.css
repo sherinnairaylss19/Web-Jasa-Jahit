@@ -539,3 +539,19 @@ td.aksi-buttons {
 .btn-delete i {
     margin-right: 8px;
 }
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-box select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #fff;
+    height: 100%;
+}
