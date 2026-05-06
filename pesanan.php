@@ -8,20 +8,26 @@ if (!isset($_SESSION['login'])) {
 }
 
 $keyword = "";
+$filter_status = isset($_GET['status']) ? $_GET['status'] : "";
+
 if (isset($_GET['cari'])) {
     $keyword = mysqli_real_escape_string($koneksi, $_GET['cari']);
-    $query_str = "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.alamat_lengkap, pelanggan.no_hp 
-                  FROM pesanan 
-                  JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
-                  WHERE pelanggan.nama_lengkap LIKE '%$keyword%' AND pesanan.is_deleted = 0
-                  ORDER BY tgl_tenggat ASC";
-} else {
-    $query_str = "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.alamat_lengkap, pelanggan.no_hp 
-                  FROM pesanan 
-                  JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
-                  WHERE pesanan.is_deleted = 0 
-                  ORDER BY tgl_tenggat ASC";
 }
+
+$where = "pesanan.is_deleted = 0";
+if ($keyword != "") {
+    $where .= " AND pelanggan.nama_lengkap LIKE '%$keyword%'";
+}
+if ($filter_status != "") {
+    $status_esc = mysqli_real_escape_string($koneksi, $filter_status);
+    $where .= " AND pesanan.status_produksi = '$status_esc'";
+}
+
+$query_str = "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.alamat_lengkap, pelanggan.no_hp 
+              FROM pesanan 
+              JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
+              WHERE $where
+              ORDER BY tgl_tenggat ASC";
 
 $query = mysqli_query($koneksi, $query_str);
 ?>
@@ -34,6 +40,21 @@ $query = mysqli_query($koneksi, $query_str);
     <title>Halaman Pesanan - Jasa Jahit</title>
     <link rel="stylesheet" href="css/pesanan.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .filter-status {
+            padding: 9px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            color: #374151;
+            outline: none;
+        }
+        .filter-status:focus {
+            border-color: #2D5E55;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -48,11 +69,31 @@ $query = mysqli_query($koneksi, $query_str);
 
             <div class="content-body">
                 <div class="toolbar">
-                    <form action="" method="GET" class="search-box">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" name="cari" placeholder="Cari Nama Pelanggan" value="<?= isset($_GET['cari']) ? htmlspecialchars($_GET['cari']) : ''; ?>">
-                        <button type="submit" style="display:none;">Cari</button> 
-                    </form>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <form action="" method="GET" class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" name="cari" placeholder="Cari Nama Pelanggan" value="<?= isset($_GET['cari']) ? htmlspecialchars($_GET['cari']) : ''; ?>">
+                            <button type="submit" style="display:none;">Cari</button>
+                        </form>
+
+                        <!-- Dropdown Filter Status -->
+                        <form action="" method="GET" style="display:inline;">
+                            <?php if ($keyword != ""): ?>
+                                <input type="hidden" name="cari" value="<?= htmlspecialchars($keyword) ?>">
+                            <?php endif; ?>
+                            <select name="status" class="filter-status" onchange="this.form.submit()">
+                                <option value="">Semua Status</option>
+                                <?php
+                                $status_list = ['Proses', 'Selesai', 'Telat', 'Siap Diambil'];
+                                foreach ($status_list as $s):
+                                    $selected = ($filter_status === $s) ? 'selected' : '';
+                                ?>
+                                    <option value="<?= $s ?>" <?= $selected ?>><?= $s ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </form>
+                    </div>
+
                     <a href="tambah-pesanan.php" class="btn-add">+ Tambahkan Pesanan</a>
                 </div>
 
@@ -77,7 +118,9 @@ $query = mysqli_query($koneksi, $query_str);
                         <tbody>
                             <?php 
                             $no = 1;
+                            $ada_data = false;
                             while($row = mysqli_fetch_assoc($query)) : 
+                                $ada_data = true;
                             ?>
                             <tr>
                                 <td><?= $no++; ?></td>
@@ -103,6 +146,13 @@ $query = mysqli_query($koneksi, $query_str);
                                 </td>
                             </tr>
                             <?php endwhile; ?>
+                            <?php if (!$ada_data): ?>
+                                <tr>
+                                    <td colspan="11" style="text-align:center; padding:20px; color:#9ca3af;">
+                                        Tidak ada pesanan<?= $filter_status != "" ? " dengan status \"" . htmlspecialchars($filter_status) . "\"" : "" ?>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -114,9 +164,8 @@ $query = mysqli_query($koneksi, $query_str);
         searchInput.addEventListener('keyup', function() {
             const filter = searchInput.value.toLowerCase();
             const tr = document.querySelectorAll('tbody tr');
-
             tr.forEach(row => {
-                const nama = row.cells[1].innerText.toLowerCase();
+                const nama = row.cells[1]?.innerText.toLowerCase() ?? '';
                 row.style.display = nama.includes(filter) ? "" : "none";
             });
         });
