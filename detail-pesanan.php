@@ -43,7 +43,6 @@ $sisa_bayar = $data['sisa_bayar'] ?? $data['total_biaya'];
     <link rel="stylesheet" href="css/pesanan.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-
         @media print {
             .sidebar, .header-breadcrumb, .btn-print, .nota-actions {
                 display: none !important;
@@ -104,11 +103,46 @@ $sisa_bayar = $data['sisa_bayar'] ?? $data['total_biaya'];
                             <td><?= $data['jenis_pesanan']; ?></td>
                             <td><?= nl2br($data['catatan']); ?></td>
                             <td>
+                                <?php
+                                $jenis = $data['jenis_pesanan'] ?? '';
+                                $jenis_celana = ['Celana', 'Celana Jeans'];
+                                $jenis_atasan = ['Kemeja', 'Atasan', 'Gamis', 'Kebaya', 'Seragam'];
+                                ?>
                                 <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; line-height: 1.6;">
+                                <?php if (in_array($jenis, $jenis_celana)): ?>
+                                    <li><strong>Pinggang:</strong> <?= $data['lingkar_pinggang'] ?? '-'; ?></li>
+                                    <li><strong>Pinggul:</strong> <?= $data['lingkar_pinggul'] ?? '-'; ?></li>
+                                    <li><strong>Paha:</strong> <?= $data['lingkar_paha'] ?? '-'; ?></li>
+                                    <li><strong>Panjang:</strong> <?= $data['panjang_baju'] ?? '-'; ?></li>
+                                <?php elseif (in_array($jenis, $jenis_atasan)): ?>
                                     <li><strong>Bahu:</strong> <?= $data['lebar_bahu'] ?? '-'; ?></li>
                                     <li><strong>Dada:</strong> <?= $data['lingkar_dada'] ?? '-'; ?></li>
                                     <li><strong>Lengan:</strong> <?= $data['panjang_lengan'] ?? '-'; ?></li>
-                                    <li><strong>Baju:</strong> <?= $data['panjang_baju'] ?? '-'; ?></li>
+                                    <li><strong>Panjang:</strong> <?= $data['panjang_baju'] ?? '-'; ?></li>
+                                <?php else: ?>
+                                    <?php
+                                    // Jenis manual / lainnya — tampilkan semua yang tidak kosong
+                                    $ukuran = [
+                                        'Bahu'     => $data['lebar_bahu'] ?? '',
+                                        'Dada'     => $data['lingkar_dada'] ?? '',
+                                        'Lengan'   => $data['panjang_lengan'] ?? '',
+                                        'Panjang'  => $data['panjang_baju'] ?? '',
+                                        'Pinggang' => $data['lingkar_pinggang'] ?? '',
+                                        'Pinggul'  => $data['lingkar_pinggul'] ?? '',
+                                        'Paha'     => $data['lingkar_paha'] ?? '',
+                                    ];
+                                    $ada = false;
+                                    foreach ($ukuran as $label => $val):
+                                        if ($val != ''):
+                                            $ada = true;
+                                    ?>
+                                        <li><strong><?= $label ?>:</strong> <?= htmlspecialchars($val) ?></li>
+                                    <?php
+                                        endif;
+                                    endforeach;
+                                    if (!$ada): echo '<li>-</li>'; endif;
+                                    ?>
+                                <?php endif; ?>
                                 </ul>
                             </td>
                             <td>Rp <?= number_format($data['total_biaya'], 0, ',', '.'); ?></td>
@@ -120,8 +154,7 @@ $sisa_bayar = $data['sisa_bayar'] ?? $data['total_biaya'];
                     <div class="footer-left">
                         <p><strong>Total Keseluruhan:</strong> Rp <?= number_format($data['total_biaya'], 0, ',', '.'); ?></p>
                         <p><strong>Uang Muka (DP)</strong> Rp <?= number_format($uang_muka, 0, ',', '.'); ?></p>
-                        <p style="color: #d32f2f;"><strong>Sisa Tagihan</strong></td> Rp <?= number_format($sisa_bayar, 0, ',', '.'); ?></p>
-                    </tr>
+                        <p style="color: #d32f2f;"><strong>Sisa Tagihan</strong> Rp <?= number_format($sisa_bayar, 0, ',', '.'); ?></p>
                     </div>
                     <div class="footer-right">
                         <p>Hormat kami,</p>
