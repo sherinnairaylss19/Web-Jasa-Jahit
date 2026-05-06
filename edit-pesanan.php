@@ -63,6 +63,7 @@ if (isset($_POST['update'])) {
                                     <option value="Proses" <?= ($data['status_produksi']=='Proses')?'selected':''; ?>>Proses</option>
                                     <option value="Selesai" <?= ($data['status_produksi']=='Selesai')?'selected':''; ?>>Selesai</option>
                                     <option value="Telat" <?= ($data['status_produksi']=='Telat')?'selected':''; ?>>Telat</option>
+                                    <option value="Siap Diambil" <?= ($data['status_produksi']=='Siap Diambil')?'selected':''; ?>>Siap Diambil</option>
                                 </select>
                             </div>
                         </div>

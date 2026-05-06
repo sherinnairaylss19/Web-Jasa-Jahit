@@ -65,6 +65,7 @@ $query = mysqli_query($koneksi, $query_str);
                             <option value="Proses" <?= (isset($_GET['status']) && $_GET['status'] == 'Proses') ? 'selected' : ''; ?>>Proses</option>
                             <option value="Selesai" <?= (isset($_GET['status']) && $_GET['status'] == 'Selesai') ? 'selected' : ''; ?>>Selesai</option>
                             <option value="Telat" <?= (isset($_GET['status']) && $_GET['status'] == 'Telat') ? 'selected' : ''; ?>>Telat</option>
+                            <option value="Siap Diambil" <?= (isset($_GET['status']) && $_GET['status'] == 'Siap Diambil') ? 'selected' : ''; ?>>Siap Diambil</option>
                         </select>
                         <button type="submit" style="display:none;">Cari</button> 
                     </form>

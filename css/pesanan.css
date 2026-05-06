@@ -181,22 +181,25 @@ td {
     vertical-align: middle;
 }
 
-/* Ganti .status menjadi .status_produksi agar sesuai dengan class di HTML */
 .status_produksi { 
     display: inline-block;
     padding: 5px 15px;
-    border-radius: 15px; /* Ini yang membuat bentuknya bulat lonjong */
+    border-radius: 15px; 
     text-decoration: none;
     font-size: 12px;
     font-weight: bold;
     text-align: center;
-    min-width: 80px; /* Tambahan agar lebar kotak seragam */
+    min-width: 80px; 
 }
 
-/* Pastikan nama class warna ini dipanggil setelah status_produksi */
 .selesai { background: #2D5E55; color: white; border: none; }
 .proses { background: #fff9c4; color: #856404; border: none; }
 .telat { background: #ffcdd2; color: #c62828; border: none; }
+.siap-diambil {
+    background-color: #ecad24;
+    color: #fff;
+    border:none;
+}
 
 td.aksi-buttons {
     text-align: center;

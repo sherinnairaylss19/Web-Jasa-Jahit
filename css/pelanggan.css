@@ -114,34 +114,17 @@ td { padding: 12px; border: 1px solid #ddd; vertical-align: middle; font-size: 1
     text-decoration: none;
 }
 
-/* --- PERBAIKAN WARNA STATUS SESUAI FOTO --- */
-
 .badge-status {
-    padding: 5px 15px;
+    padding: 5px 12px;
     border-radius: 15px;
     font-size: 11px;
-    text-transform: capitalize;
-    display: inline-block;
     font-weight: 600;
+    display: inline-block;
     text-align: center;
-    min-width: 80px;
-    border: none;
+    min-width: 90px;
 }
 
-/* Status Selesai: Background Hijau Gelap, Tulisan Putih */
-.status-selesai {
-    background-color: #1d5c4e !important;
-    color: white !important;
-}
-
-/* Status Proses: Background Kuning Muda, Tulisan Kuning Gelap/Cokelat */
-.status-proses {
-    background-color: #fff4d1 !important;
-    color: #856404 !important;
-}
-
-/* Status Telat: Background Merah Muda/Pink, Tulisan Merah */
-.status-telat {
-    background-color: #f8d7da !important;
-    color: #721c24 !important;
-}
+.status-selesai { background-color: #2D5E55 !important; color: white !important; }
+.status-siap-diambil { background-color: #ecad24 !important; color: white !important; }
+.status-proses { background-color: #fff4d1 !important; color: #856404 !important; }
+.status-telat { background-color: #f8d7da !important; color: #721c24 !important; }
