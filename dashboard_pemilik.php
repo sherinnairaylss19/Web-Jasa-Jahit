@@ -2,38 +2,41 @@
 session_start();
 include 'koneksi.php'; 
 
-// Proteksi halaman
 if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'pemilik') {
     header("Location: index.php");
     exit();
 }
 
-// Mengambil statistik terbaru langsung dari database
-$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan");
+$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE is_deleted = 0");
 $res_total = mysqli_fetch_assoc($total_q);
 
-$proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses'");
+$proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND is_deleted = 0");
 $res_proses = mysqli_fetch_assoc($proses_q);
 
-$selesai_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Selesai'");
+$pelanggan_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pelanggan");
+$res_pelanggan = mysqli_fetch_assoc($pelanggan_q);
+
+$selesai_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Selesai' AND is_deleted = 0");
 $res_selesai = mysqli_fetch_assoc($selesai_q);
 
-$telat_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Telat'");
+$telat_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Telat' AND is_deleted = 0");
 $res_telat = mysqli_fetch_assoc($telat_q);
 
-// Kueri tabel: Pastikan menggunakan INNER JOIN agar hanya pesanan yang punya pelanggan yang muncul
-// Menampilkan 5 pesanan terbaru yang benar-benar ada di tabel pesanan
-$query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap 
-                                       FROM pesanan 
-                                       INNER JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
-                                       ORDER BY pesanan.id_pesanan DESC LIMIT 5");
+$omzet_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan WHERE is_deleted = 0");
+$res_omzet = mysqli_fetch_assoc($omzet_q);
 
-// Hitung pemasukan bulan ini dari pesanan yang sudah selesai
 $bulan_ini_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan 
                                        WHERE status_produksi = 'Selesai' 
+                                       AND is_deleted = 0
                                        AND MONTH(tgl_masuk) = MONTH(CURDATE()) 
                                        AND YEAR(tgl_masuk) = YEAR(CURDATE())");
 $res_bulan_ini = mysqli_fetch_assoc($bulan_ini_q);
+
+$query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap 
+                                       FROM pesanan 
+                                       JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
+                                       WHERE pesanan.is_deleted = 0
+                                       ORDER BY pesanan.id_pesanan DESC LIMIT 5");
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +51,7 @@ $res_bulan_ini = mysqli_fetch_assoc($bulan_ini_q);
 <body>
     <div class="container">
         <nav class="sidebar">
-            <?php include 'sidebar.php'; ?>
+        <?php include 'sidebar.php'; ?>
         </nav>
 
         <div class="main-content">
@@ -93,25 +96,21 @@ $res_bulan_ini = mysqli_fetch_assoc($bulan_ini_q);
                             </tr>
                         </thead>
                         <tbody>
-                        <?php if(mysqli_num_rows($query_tabel) > 0): ?>
-                            <?php while($row = mysqli_fetch_assoc($query_tabel)) : ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($row['nama_lengkap']); ?></td>
-                                    <td><?php echo htmlspecialchars($row['jenis_pesanan']); ?></td>
-                                    <td>
-                                        <?php 
-                                            $status_raw = $row['status_produksi']; 
-                                            $status_clean = str_replace(' ', '-', strtolower($status_raw)); 
-                                            echo "<span class='status status-$status_clean'>" . htmlspecialchars($status_raw) . "</span>";
-                                        ?>
-                                    </td>
-                                    <td><?php echo date('d M', strtotime($row['tgl_tenggat'])); ?></td>
-                                    <td><?php echo number_format($row['total_biaya'], 0, ',', '.'); ?></td>
-                                </tr>
-                            <?php endwhile; ?>
-                        <?php else: ?>
-                            <tr><td colspan="5" style="text-align:center;">Tidak ada pesanan terbaru</td></tr>
-                        <?php endif; ?>
+                        <?php while($row = mysqli_fetch_assoc($query_tabel)) : ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['nama_lengkap']); ?></td>
+                                <td><?php echo htmlspecialchars($row['jenis_pesanan']); ?></td>
+                                <td>
+                                    <?php 
+                                        $status_raw = $row['status_produksi']; 
+                                        $status_clean = str_replace(' ', '-', strtolower($status_raw)); 
+                                        echo "<span class='status status-$status_clean'>" . htmlspecialchars($status_raw) . "</span>";
+                                    ?>
+                                </td>
+                                <td><?php echo date('d M', strtotime($row['tgl_tenggat'])); ?></td>
+                                <td><?php echo number_format($row['total_biaya'], 0, ',', '.'); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
                         </tbody>
                     </table>
                     <div class="button-container">
@@ -130,8 +129,6 @@ $res_bulan_ini = mysqli_fetch_assoc($bulan_ini_q);
                         </h2>
                     </div>
                 </div>
-            </div> 
-        </div> 
-    </div> 
-</body>
+
+            </div> </div> </div> </body>
 </html>
