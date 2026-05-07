@@ -2,39 +2,34 @@
 session_start();
 include 'koneksi.php'; 
 
-// Proteksi halaman: Pastikan hanya penjahit yang sudah login bisa masuk
 if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'penjahit') {
     header("Location: index.php");
     exit();
 }
 
-// 1. Hitung Total Semua Pesanan
-$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan");
+$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE is_deleted = 0");
 $res_total = mysqli_fetch_assoc($total_q);
 
-// 2. Hitung Pesanan Dalam Proses
-$proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses'");
+$proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND is_deleted = 0");
 $res_proses = mysqli_fetch_assoc($proses_q);
 
-// 3. Hitung Pesanan Selesai
-$selesai_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Selesai'");
+$selesai_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Selesai' AND is_deleted = 0");
 $res_selesai = mysqli_fetch_assoc($selesai_q);
 
-// 4. Hitung Pesanan Telat
-$telat_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Telat'");
+$telat_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Telat' AND is_deleted = 0");
 $res_telat = mysqli_fetch_assoc($telat_q);
 
-// 5. QUERY PEMASUKAN BULAN INI (Hanya yang statusnya 'Selesai')
 $bulan_ini_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan 
                                        WHERE status_produksi = 'Selesai' 
+                                       AND is_deleted = 0
                                        AND MONTH(tgl_masuk) = MONTH(CURDATE()) 
                                        AND YEAR(tgl_masuk) = YEAR(CURDATE())");
 $res_bulan_ini = mysqli_fetch_assoc($bulan_ini_q);
 
-// 6. Ambil 5 Pesanan Terbaru untuk Tabel
 $query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap 
                                        FROM pesanan 
                                        JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
+                                       WHERE pesanan.is_deleted = 0
                                        ORDER BY pesanan.id_pesanan DESC LIMIT 5");
 ?>
 
