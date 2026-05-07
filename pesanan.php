@@ -110,6 +110,7 @@ $query = mysqli_query($koneksi, $query_str);
                                 <th>Tgl Masuk</th>
                                 <th>Tgl Tenggat</th>
                                 <th>Catatan</th>
+                                <th>Ukuran</th>
                                 <th>Total</th>
                                 <th>Status Produksi</th>
                                 <th>Aksi</th>
@@ -121,6 +122,9 @@ $query = mysqli_query($koneksi, $query_str);
                             $ada_data = false;
                             while($row = mysqli_fetch_assoc($query)) : 
                                 $ada_data = true;
+                                $jenis = $row['jenis_pesanan'] ?? '';
+                                $jenis_celana = ['Celana', 'Celana Jeans'];
+                                $jenis_atasan = ['Kemeja', 'Atasan', 'Gamis', 'Kebaya', 'Seragam'];
                             ?>
                             <tr>
                                 <td><?= $no++; ?></td>
@@ -131,6 +135,43 @@ $query = mysqli_query($koneksi, $query_str);
                                 <td><?= date('d M Y', strtotime($row['tgl_masuk'])); ?></td>
                                 <td><?= date('d M Y', strtotime($row['tgl_tenggat'])); ?></td>
                                 <td><?= htmlspecialchars($row['catatan']); ?></td>
+                                <td>
+                                    <ul style="list-style:none; padding:0; margin:0; font-size:13px; line-height:1.7;">
+                                    <?php if (in_array($jenis, $jenis_atasan)): ?>
+                                        <li><strong>Bahu:</strong> <?= $row['lebar_bahu'] ? htmlspecialchars($row['lebar_bahu']).' cm' : '-' ?></li>
+                                        <li><strong>Dada:</strong> <?= $row['lingkar_dada'] ? htmlspecialchars($row['lingkar_dada']).' cm' : '-' ?></li>
+                                        <li><strong>Lengan:</strong> <?= $row['panjang_lengan'] ? htmlspecialchars($row['panjang_lengan']).' cm' : '-' ?></li>
+                                        <li><strong>Panjang:</strong> <?= $row['panjang_baju'] ? htmlspecialchars($row['panjang_baju']).' cm' : '-' ?></li>
+                                    <?php elseif (in_array($jenis, $jenis_celana)): ?>
+                                        <li><strong>Pinggang:</strong> <?= $row['lingkar_pinggang'] ? htmlspecialchars($row['lingkar_pinggang']).' cm' : '-' ?></li>
+                                        <li><strong>Pinggul:</strong> <?= $row['lingkar_pinggul'] ? htmlspecialchars($row['lingkar_pinggul']).' cm' : '-' ?></li>
+                                        <li><strong>Paha:</strong> <?= $row['lingkar_paha'] ? htmlspecialchars($row['lingkar_paha']).' cm' : '-' ?></li>
+                                        <li><strong>Panjang:</strong> <?= $row['panjang_baju'] ? htmlspecialchars($row['panjang_baju']).' cm' : '-' ?></li>
+                                    <?php else: ?>
+                                        <?php
+                                        $ukuran = [
+                                            'Bahu'     => $row['lebar_bahu'] ?? '',
+                                            'Dada'     => $row['lingkar_dada'] ?? '',
+                                            'Lengan'   => $row['panjang_lengan'] ?? '',
+                                            'Panjang'  => $row['panjang_baju'] ?? '',
+                                            'Pinggang' => $row['lingkar_pinggang'] ?? '',
+                                            'Pinggul'  => $row['lingkar_pinggul'] ?? '',
+                                            'Paha'     => $row['lingkar_paha'] ?? '',
+                                        ];
+                                        $ada_ukuran = false;
+                                        foreach ($ukuran as $label => $val):
+                                            if ($val != ''):
+                                                $ada_ukuran = true;
+                                        ?>
+                                            <li><strong><?= $label ?>:</strong> <?= htmlspecialchars($val) ?> cm</li>
+                                        <?php
+                                            endif;
+                                        endforeach;
+                                        if (!$ada_ukuran): echo '<li>-</li>'; endif;
+                                        ?>
+                                    <?php endif; ?>
+                                    </ul>
+                                </td>
                                 <td><?= number_format($row['total_biaya'], 0, ',', '.'); ?></td>
                                 <td>
                                     <span class="status_produksi <?= strtolower(str_replace(' ', '-', $row['status_produksi'])); ?>">
@@ -148,7 +189,7 @@ $query = mysqli_query($koneksi, $query_str);
                             <?php endwhile; ?>
                             <?php if (!$ada_data): ?>
                                 <tr>
-                                    <td colspan="11" style="text-align:center; padding:20px; color:#9ca3af;">
+                                    <td colspan="12" style="text-align:center; padding:20px; color:#9ca3af;">
                                         Tidak ada pesanan<?= $filter_status != "" ? " dengan status \"" . htmlspecialchars($filter_status) . "\"" : "" ?>
                                     </td>
                                 </tr>
