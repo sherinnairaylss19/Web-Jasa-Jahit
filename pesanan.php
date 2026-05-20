@@ -19,8 +19,12 @@ if ($keyword != "") {
     $where .= " AND pelanggan.nama_lengkap LIKE '%$keyword%'";
 }
 if ($filter_status != "") {
-    $status_esc = mysqli_real_escape_string($koneksi, $filter_status);
-    $where .= " AND pesanan.status_produksi = '$status_esc'";
+    if ($filter_status === 'Telat') {
+        $where .= " AND pesanan.status_produksi = 'Proses' AND pesanan.tgl_tenggat < CURDATE()";
+    } else {
+        $status_esc = mysqli_real_escape_string($koneksi, $filter_status);
+        $where .= " AND pesanan.status_produksi = '$status_esc'";
+    }
 }
 
 $query_str = "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.alamat_lengkap, pelanggan.no_hp 
@@ -67,6 +71,7 @@ $query = mysqli_query($koneksi, $query_str);
                 <h1 class="top-bar-title">Pesanan</h1>
             </header>
 
+            
             <div class="content-body">
                 <div class="toolbar">
                     <div style="display:flex; align-items:center; gap:10px;">
@@ -84,7 +89,7 @@ $query = mysqli_query($koneksi, $query_str);
                             <select name="status" class="filter-status" onchange="this.form.submit()">
                                 <option value="">Semua Status</option>
                                 <?php
-                                $status_list = ['Proses', 'Selesai', 'Telat', 'Siap Diambil'];
+                                $status_list = ['Proses', 'Selesai', 'Diambil', 'Telat', 'Batal'];
                                 foreach ($status_list as $s):
                                     $selected = ($filter_status === $s) ? 'selected' : '';
                                 ?>
@@ -125,6 +130,12 @@ $query = mysqli_query($koneksi, $query_str);
                                 $jenis = $row['jenis_pesanan'] ?? '';
                                 $jenis_celana = ['Celana', 'Celana Jeans'];
                                 $jenis_atasan = ['Kemeja', 'Atasan', 'Gamis', 'Kebaya', 'Seragam'];
+
+                                // Logika otomatis status Telat
+                                $status_tampil = $row['status_produksi'];
+                                if ($status_tampil === 'Proses' && $row['tgl_tenggat'] < date('Y-m-d')) {
+                                    $status_tampil = 'Telat';
+                                }
                             ?>
                             <tr>
                                 <td><?= $no++; ?></td>
@@ -174,13 +185,13 @@ $query = mysqli_query($koneksi, $query_str);
                                 </td>
                                 <td><?= number_format($row['total_biaya'], 0, ',', '.'); ?></td>
                                 <td>
-                                    <span class="status_produksi <?= strtolower(str_replace(' ', '-', $row['status_produksi'])); ?>">
-                                        <?= htmlspecialchars($row['status_produksi']); ?>
+                                    <span class="status_produksi <?= strtolower(str_replace(' ', '-', $status_tampil)); ?>">
+                                        <?= htmlspecialchars($status_tampil); ?>
                                     </span>
                                 </td>
                                 <td class="aksi-buttons">
                                     <div class="button-group">
-                                        <a href="detail-pesanan.php?id=<?= $row['id_pesanan']; ?>" class="btn-detail">Nota</a>
+                                        <a href="nota_pesanan.php?id=<?= $row['id_pesanan']; ?>" class="btn-detail">Nota</a>
                                         <a href="edit-pesanan.php?id=<?= $row['id_pesanan']; ?>" class="btn-edit">Edit</a>
                                         <a href="tambah-pembayaran.php?id=<?= $row['id_pesanan']; ?>" class="btn-bayar">Bayar</a>
                                     </div>
