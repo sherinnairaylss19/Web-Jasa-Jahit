@@ -7,10 +7,10 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'pemilik') {
     exit();
 }
 
-$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE is_deleted = 0");
+$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE is_deleted = 0 AND status_produksi != 'Batal'");
 $res_total = mysqli_fetch_assoc($total_q);
 
-$proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND is_deleted = 0");
+$proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND tgl_tenggat >= CURDATE() AND is_deleted = 0");
 $res_proses = mysqli_fetch_assoc($proses_q);
 
 $pelanggan_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pelanggan");
@@ -19,17 +19,22 @@ $res_pelanggan = mysqli_fetch_assoc($pelanggan_q);
 $selesai_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Selesai' AND is_deleted = 0");
 $res_selesai = mysqli_fetch_assoc($selesai_q);
 
-$telat_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Telat' AND is_deleted = 0");
+$telat_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND tgl_tenggat < CURDATE() AND is_deleted = 0");
 $res_telat = mysqli_fetch_assoc($telat_q);
 
-$omzet_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan WHERE is_deleted = 0");
+$diambil_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Diambil' AND is_deleted = 0");
+$res_diambil = mysqli_fetch_assoc($diambil_q);
+
+$omzet_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan WHERE is_deleted = 0 AND status_produksi != 'Batal'");
 $res_omzet = mysqli_fetch_assoc($omzet_q);
 
-$bulan_ini_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan 
-                                       WHERE status_produksi = 'Selesai' 
-                                       AND is_deleted = 0
-                                       AND MONTH(tgl_masuk) = MONTH(CURDATE()) 
-                                       AND YEAR(tgl_masuk) = YEAR(CURDATE())");
+$bulan_ini_q = mysqli_query($koneksi, "SELECT SUM(pb.uang_muka) as total 
+                                       FROM pembayaran pb
+                                       INNER JOIN pesanan ps ON pb.id_pesanan = ps.id_pesanan
+                                       WHERE ps.is_deleted = 0
+                                       AND ps.status_produksi != 'Batal'
+                                       AND MONTH(pb.tgl_pembayaran) = MONTH(CURDATE()) 
+                                       AND YEAR(pb.tgl_pembayaran) = YEAR(CURDATE())");
 $res_bulan_ini = mysqli_fetch_assoc($bulan_ini_q);
 
 $query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap 
@@ -81,6 +86,11 @@ $query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap
                         <p>Pesanan Telat</p>
                         <h2><?php echo $res_telat['total'] ?? 0; ?></h2>
                     </div>
+                    <div class="card orange">
+                        <img src="assets/diambil.jpg" alt="Icon" width="40">
+                        <p>Diambil</p>
+                        <h2><?php echo $res_diambil['total'] ?? 0; ?></h2>
+                    </div>
                 </div>
 
                 <div class="table-section">
@@ -96,16 +106,20 @@ $query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap
                             </tr>
                         </thead>
                         <tbody>
-                        <?php while($row = mysqli_fetch_assoc($query_tabel)) : ?>
+                        <?php while($row = mysqli_fetch_assoc($query_tabel)) : 
+                            $status_tampil = $row['status_produksi'];
+                            if ($status_tampil === 'Proses' && $row['tgl_tenggat'] < date('Y-m-d')) {
+                                $status_tampil = 'Telat';
+                            }
+                            $status_clean = str_replace(' ', '-', strtolower($status_tampil));
+                        ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($row['nama_lengkap']); ?></td>
                                 <td><?php echo htmlspecialchars($row['jenis_pesanan']); ?></td>
                                 <td>
-                                    <?php 
-                                        $status_raw = $row['status_produksi']; 
-                                        $status_clean = str_replace(' ', '-', strtolower($status_raw)); 
-                                        echo "<span class='status status-$status_clean'>" . htmlspecialchars($status_raw) . "</span>";
-                                    ?>
+                                    <span class="status status-<?php echo $status_clean; ?>">
+                                        <?php echo htmlspecialchars($status_tampil); ?>
+                                    </span>
                                 </td>
                                 <td><?php echo date('d M', strtotime($row['tgl_tenggat'])); ?></td>
                                 <td><?php echo number_format($row['total_biaya'], 0, ',', '.'); ?></td>
@@ -130,5 +144,8 @@ $query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap
                     </div>
                 </div>
 
-            </div> </div> </div> </body>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
