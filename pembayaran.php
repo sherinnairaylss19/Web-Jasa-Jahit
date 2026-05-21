@@ -85,8 +85,8 @@ $query = mysqli_query($koneksi, $sql);
                                 <th>Total</th>
                                 <th>Uang Muka</th>
                                 <th>Sisa Bayar</th>
-                                <th>Status Bayar</th>
                                 <th>Status Pesanan</th>
+                                <th>Status Bayar</th>
                                 <th>Status Pengembalian</th>
                                 <th style="text-align:center;">Aksi</th>
                             </tr>
@@ -113,6 +113,13 @@ $query = mysqli_query($koneksi, $sql);
                                 <td>Rp <?= number_format($row['total_biaya'], 0, ',', '.'); ?></td>
                                 <td>Rp <?= number_format($row['uang_muka'], 0, ',', '.'); ?></td>
                                 <td>Rp <?= number_format($row['sisa_bayar'], 0, ',', '.'); ?></td>
+
+                                <td>
+                                    <span class="status_produksi <?= $status_class ?>">
+                                        <?= htmlspecialchars($status_produksi) ?>
+                                    </span>
+                                </td>
+
                                 <td>
                                     <?php if ($status_bayar == 'lunas'): ?>
                                         <span class="status selesai">Lunas</span>
@@ -122,11 +129,7 @@ $query = mysqli_query($koneksi, $sql);
                                         <span class="status proses">DP</span>
                                     <?php endif; ?>
                                 </td>
-                                <td>
-                                    <span class="status_produksi <?= $status_class ?>">
-                                        <?= htmlspecialchars($status_produksi) ?>
-                                    </span>
-                                </td>
+
                                 <td>
                                     <?php if ($status_bayar === 'dikembalikan'): ?>
                                         <span style="background:#d1fae5;color:#065f46;border:1px; padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;display:inline-block;">
@@ -140,6 +143,8 @@ $query = mysqli_query($koneksi, $sql);
                                         <span style="color:#9ca3af;">-</span>
                                     <?php endif; ?>
                                 </td>
+
+                               
                                 <td class="aksi-buttons">
                                     <div class="button-group">
                                         <?php if ($status_bayar === 'dikembalikan'): ?>
