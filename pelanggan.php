@@ -15,6 +15,7 @@ $sql_baru = "SELECT COUNT(DISTINCT pelanggan.id_pelanggan) as baru
 
 $query_baru = mysqli_query($koneksi, $sql_baru);
 $data_baru = mysqli_fetch_assoc($query_baru);
+
 ?>
 
 <!DOCTYPE html>
@@ -92,11 +93,10 @@ $data_baru = mysqli_fetch_assoc($query_baru);
                     </thead>
                     <tbody>
                         <?php
-                        $sql = "SELECT p.*, s.* 
-                                FROM pelanggan p 
-                                LEFT JOIN pesanan s ON p.id_pelanggan = s.id_pelanggan 
-                                WHERE s.is_deleted = 0 OR s.id_pesanan IS NULL
-                                ORDER BY s.tgl_masuk DESC";
+                       $sql = "SELECT p.*, s.* 
+                        FROM pelanggan p 
+                        LEFT JOIN pesanan s ON p.id_pelanggan = s.id_pelanggan 
+                        ORDER BY s.tgl_masuk DESC";
                         
                         $result = mysqli_query($koneksi, $sql);
 
