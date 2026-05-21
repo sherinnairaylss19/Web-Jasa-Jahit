@@ -140,6 +140,14 @@ th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
 .status-proses { background: #fff9c4; color: #856404; }
 .status-telat { background: #8B0000; color: white; }
 .status-diambil { background-color: #ecad24; color: white; }
+.status-dibatalkan {
+background: #fee2e2;
+    color: #991b1b;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
 
 .btn-all { background: #2D5E55; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; display: block; margin: 0 auto; }
 
@@ -236,3 +244,6 @@ h3 {
     width: 100%; 
     margin-bottom: 20px; 
 }
+
+.red-cancel { 
+    border-top: 5px solid #ef4444; }

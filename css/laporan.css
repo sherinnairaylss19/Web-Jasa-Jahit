@@ -253,3 +253,121 @@ td {
     gap: 10px;
     font-weight: bold;
 }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .sum-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .sum-card .icon {
+            font-size: 28px;
+        }
+
+        .sum-card p {
+            margin: 0;
+            font-size: 12px;
+            font-family: sans-serif;
+            color: #6b7280;
+        }
+
+        .sum-card h3 {
+            margin: 4px 0 0;
+            font-size: 18px;
+            font-family: sans-serif;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .sum-card.green  { border-left: 4px solid #2D5E55; }
+        .sum-card.orange { border-left: 4px solid #f59e0b; }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar select,
+        .filter-bar input[type=number] {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: sans-serif;
+            background: #fff;
+            color: #374151;
+            outline: none;
+        }
+
+        .btn-filter {
+            background: #2D5E55;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: sans-serif;
+            font-weight: bold;
+        }
+
+        .btn-print {
+            background-color: #084a4e;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: sans-serif;
+            font-weight: bold;
+        }
+
+        .action-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+            font-family: sans-serif;
+            display: inline-block;
+            text-align: center;
+            min-width: 70px;
+        }
+
+        .badge-lunas { background: #2D5E55; color: white; }
+        .badge-dp    { background: #fff9c4; color: #856404; }
+
+        .table-section h3 {
+            font-size: 16px;
+            font-family: sans-serif;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        @media print {
+            .sidebar, .filter-bar, .action-footer, .top-bar { display: none !important; }
+            .main-content { margin-left: 0 !important; width: 100% !important; }
+            .container { display: block !important; }
+        }

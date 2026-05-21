@@ -199,7 +199,7 @@ td {
     color: #fff;
     border:none;
 }
-.batal {
+.dibatalkan {
 background: #fee2e2;
     color: #991b1b;
     padding: 4px 10px;
@@ -578,13 +578,14 @@ td.aksi-buttons {
 }
 
 .btn-batal-pesanan {
-    background: #f97316;
-    color: white;
+    background: #fee2e2;
+    color: #991b1b;
     padding: 8px 16px;
     border-radius: 6px;
     text-decoration: none;
     font-size: 14px;
 }
 .btn-batal-pesanan:hover {
-    background: #ea580c;
+    background: #fee2e2;
 }
+

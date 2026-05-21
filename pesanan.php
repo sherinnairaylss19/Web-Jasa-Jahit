@@ -89,7 +89,7 @@ $query = mysqli_query($koneksi, $query_str);
                             <select name="status" class="filter-status" onchange="this.form.submit()">
                                 <option value="">Semua Status</option>
                                 <?php
-                                $status_list = ['Proses', 'Selesai', 'Diambil', 'Telat', 'Batal'];
+                                $status_list = ['Proses', 'Selesai', 'Diambil', 'Telat', 'Dibatalkan'];
                                 foreach ($status_list as $s):
                                     $selected = ($filter_status === $s) ? 'selected' : '';
                                 ?>

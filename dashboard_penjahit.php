@@ -7,7 +7,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'penjahit') {
     exit();
 }
 
-$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE is_deleted = 0");
+$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE is_deleted = 0 AND status_produksi != 'Dibatalkan'");
 $res_total = mysqli_fetch_assoc($total_q);
 
 $proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND tgl_tenggat >= CURDATE() AND is_deleted = 0");
@@ -18,6 +18,9 @@ $res_selesai = mysqli_fetch_assoc($selesai_q);
 
 $telat_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND tgl_tenggat < CURDATE() AND is_deleted = 0");
 $res_telat = mysqli_fetch_assoc($telat_q);
+
+$batal_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Dibatalkan' AND is_deleted = 0");
+$res_batal = mysqli_fetch_assoc($batal_q);
 
 $diambil_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Diambil' AND is_deleted = 0");
 $res_diambil = mysqli_fetch_assoc($diambil_q);
@@ -70,6 +73,11 @@ $query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap
                         <img src="assets/icon-deadline.png" alt="Icon" width="40">
                         <p>Pesanan Telat</p>
                         <h2><?php echo $res_telat['total'] ?? 0; ?></h2>
+                    </div>
+                    <div class="card red-cancel">
+                        <img src="assets/batal.jpg" alt="Icon" width="40">
+                        <p>Dibatalkan</p>
+                        <h2><?php echo $res_batal['total'] ?? 0; ?></h2>
                     </div>
                     <div class="card orange">
                         <img src="assets/diambil.jpg" alt="Icon" width="40">
