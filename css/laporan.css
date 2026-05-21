@@ -254,9 +254,9 @@ td {
     font-weight: bold;
 }
 
-        .summary-grid {
+                .summary-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 16px;
             margin-bottom: 24px;
         }
@@ -292,6 +292,8 @@ td {
 
         .sum-card.green  { border-left: 4px solid #2D5E55; }
         .sum-card.orange { border-left: 4px solid #f59e0b; }
+        .sum-card.red { border-left: 4px solid #dc2626; background: #fff5f5; }
+
 
         .filter-bar {
             display: flex;

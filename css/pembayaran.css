@@ -195,3 +195,9 @@ td {
     font-weight: bold;
     display: inline-block;
 }
+
+.status_produksi.proses      { background: #fff9c4;  color: #856404; border: none; }
+.status_produksi.selesai     { background: #2D5E55;  color: white;   border: none; }
+.status_produksi.diambil     { background: #ecad24;  color: #fff;    border: none; }
+.status_produksi.telat       { background: #8B0000;  color: white;   border: none; }
+.status_produksi.dibatalkan  { background: #fee2e2; color: #991b1b; border: none; }
