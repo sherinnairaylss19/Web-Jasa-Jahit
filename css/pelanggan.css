@@ -209,6 +209,7 @@ td {
 .selesai  { background: #2D5E55;  color: white;   border: none; }
 .proses   { background: #fff9c4;  color: #856404; border: none; }
 .diambil  { background: #ecad24;  color: #fff;    border: none; }
+.dibatalkan {background: #fee2e2; color: #991b1b}
 .telat    { background: #8B0000;  color: white;   border: none; }
 
 /* ── Tombol Aksi ── */
