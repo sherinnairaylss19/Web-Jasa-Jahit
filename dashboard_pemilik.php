@@ -7,7 +7,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'pemilik') {
     exit();
 }
 
-$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE is_deleted = 0 AND status_produksi != 'Batal'");
+$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE is_deleted = 0 AND status_produksi != 'Dibatalkan'");
 $res_total = mysqli_fetch_assoc($total_q);
 
 $proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND tgl_tenggat >= CURDATE() AND is_deleted = 0");
@@ -22,20 +22,20 @@ $res_selesai = mysqli_fetch_assoc($selesai_q);
 $telat_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND tgl_tenggat < CURDATE() AND is_deleted = 0");
 $res_telat = mysqli_fetch_assoc($telat_q);
 
-$batal_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Batal' AND is_deleted = 0");
+$batal_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Dibatalkan' AND is_deleted = 0");
 $res_batal = mysqli_fetch_assoc($batal_q);
 
 $diambil_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Diambil' AND is_deleted = 0");
 $res_diambil = mysqli_fetch_assoc($diambil_q);
 
-$omzet_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan WHERE is_deleted = 0 AND status_produksi != 'Batal'");
+$omzet_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan WHERE is_deleted = 0 AND status_produksi != 'Dibatalkan'");
 $res_omzet = mysqli_fetch_assoc($omzet_q);
 
 $bulan_ini_q = mysqli_query($koneksi, "SELECT SUM(pb.uang_muka) as total 
                                        FROM pembayaran pb
                                        INNER JOIN pesanan ps ON pb.id_pesanan = ps.id_pesanan
                                        WHERE ps.is_deleted = 0
-                                       AND ps.status_produksi != 'Batal'
+                                       AND ps.status_produksi != '  Dibatalkan'
                                        AND MONTH(pb.tgl_pembayaran) = MONTH(CURDATE()) 
                                        AND YEAR(pb.tgl_pembayaran) = YEAR(CURDATE())");
 $res_bulan_ini = mysqli_fetch_assoc($bulan_ini_q);
