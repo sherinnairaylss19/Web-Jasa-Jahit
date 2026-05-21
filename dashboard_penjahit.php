@@ -7,31 +7,87 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'penjahit') {
     exit();
 }
 
-$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE is_deleted = 0 AND status_produksi != 'Dibatalkan'");
+$total_q = mysqli_query($koneksi, "
+    SELECT COUNT(*) as total 
+    FROM pesanan 
+    WHERE is_deleted = 0
+      AND NOT (
+          status_produksi = 'Dibatalkan'
+          AND EXISTS (
+              SELECT 1 FROM pembayaran pb
+              WHERE pb.id_pesanan = pesanan.id_pesanan
+                AND pb.status_bayar = 'Dikembalikan'
+          )
+      )
+");
 $res_total = mysqli_fetch_assoc($total_q);
 
-$proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND tgl_tenggat >= CURDATE() AND is_deleted = 0");
+$proses_q = mysqli_query($koneksi, "
+    SELECT COUNT(*) as total 
+    FROM pesanan 
+    WHERE status_produksi = 'Proses' 
+      AND tgl_tenggat >= CURDATE() 
+      AND is_deleted = 0
+");
 $res_proses = mysqli_fetch_assoc($proses_q);
 
-$selesai_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Selesai' AND is_deleted = 0");
+$selesai_q = mysqli_query($koneksi, "
+    SELECT COUNT(*) as total 
+    FROM pesanan 
+    WHERE status_produksi = 'Selesai' 
+      AND is_deleted = 0
+");
 $res_selesai = mysqli_fetch_assoc($selesai_q);
 
-$telat_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND tgl_tenggat < CURDATE() AND is_deleted = 0");
+$telat_q = mysqli_query($koneksi, "
+    SELECT COUNT(*) as total 
+    FROM pesanan 
+    WHERE status_produksi = 'Proses' 
+      AND tgl_tenggat < CURDATE() 
+      AND is_deleted = 0
+");
 $res_telat = mysqli_fetch_assoc($telat_q);
 
-$batal_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Dibatalkan' AND is_deleted = 0");
+// Dibatalkan: hanya yang belum dikembalikan
+$batal_q = mysqli_query($koneksi, "
+    SELECT COUNT(*) as total 
+    FROM pesanan
+    WHERE status_produksi = 'Dibatalkan' 
+      AND is_deleted = 0
+      AND NOT EXISTS (
+          SELECT 1 FROM pembayaran pb
+          WHERE pb.id_pesanan = pesanan.id_pesanan
+            AND pb.status_bayar = 'Dikembalikan'
+      )
+");
 $res_batal = mysqli_fetch_assoc($batal_q);
 
-$diambil_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Diambil' AND is_deleted = 0");
+$diambil_q = mysqli_query($koneksi, "
+    SELECT COUNT(*) as total 
+    FROM pesanan 
+    WHERE status_produksi = 'Diambil' 
+      AND is_deleted = 0
+");
 $res_diambil = mysqli_fetch_assoc($diambil_q);
 
-$query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap 
-                                       FROM pesanan 
-                                       JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
-                                       WHERE pesanan.is_deleted = 0
-                                       ORDER BY pesanan.id_pesanan DESC LIMIT 5");
+// Pesanan terbaru: kecualikan dibatalkan+sudah dikembalikan
+$query_tabel = mysqli_query($koneksi, "
+    SELECT pesanan.*, pelanggan.nama_lengkap
+    FROM pesanan 
+    JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan
+    WHERE pesanan.is_deleted = 0
+      AND NOT (
+          pesanan.status_produksi = 'Dibatalkan'
+          AND EXISTS (
+              SELECT 1 FROM pembayaran pb
+              WHERE pb.id_pesanan = pesanan.id_pesanan
+                AND pb.status_bayar = 'Dikembalikan'
+          )
+      )
+    ORDER BY pesanan.id_pesanan DESC 
+    LIMIT 5
+");
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -124,7 +180,6 @@ $query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap
                         <a href="pesanan.php" class="btn-all">Lihat Semua Pesanan</a>
                     </div>
                 </div>
-
             </div> 
         </div> 
     </div> 

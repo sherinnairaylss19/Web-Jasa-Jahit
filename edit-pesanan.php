@@ -283,11 +283,6 @@ function val($data, $key) {
                        onclick="return confirm('Batalkan pesanan ini? Status akan berubah menjadi Dibatalkan.')">
                         <i class="fa-solid fa-ban"></i> Batalkan Pesanan
                     </a>
-                    <a href="hapus_pesanan.php?id=<?= $id_pesanan ?>"
-                       class="btn-delete"
-                       onclick="return confirm('Apakah Anda yakin ingin menghapus pesanan ini? Semua data pesanan ini akan hilang.')">
-                        <i class="fa-solid fa-trash"></i> Hapus Pesanan
-                    </a>
                     <button type="button" class="btn-cancel" onclick="window.location='pesanan.php'">Kembali</button>
                 </div>
 

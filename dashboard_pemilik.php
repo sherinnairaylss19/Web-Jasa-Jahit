@@ -7,46 +7,103 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'pemilik') {
     exit();
 }
 
-$total_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE is_deleted = 0 AND status_produksi != 'Dibatalkan'");
+// Total pesanan (semua status kecuali batal-sudah-dikembalikan)
+$total_q = mysqli_query($koneksi, "
+    SELECT COUNT(*) as total 
+    FROM pesanan 
+    WHERE is_deleted = 0
+      AND NOT (
+          status_produksi = 'Dibatalkan'
+          AND EXISTS (
+              SELECT 1 FROM pembayaran pb
+              WHERE pb.id_pesanan = pesanan.id_pesanan
+                AND pb.status_bayar = 'Dikembalikan'
+          )
+      )
+");
 $res_total = mysqli_fetch_assoc($total_q);
 
-$proses_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND tgl_tenggat >= CURDATE() AND is_deleted = 0");
+// Dalam proses 
+$proses_q = mysqli_query($koneksi, "
+    SELECT COUNT(*) as total 
+    FROM pesanan 
+    WHERE status_produksi = 'Proses' 
+      AND tgl_tenggat >= CURDATE() 
+      AND is_deleted = 0
+");
 $res_proses = mysqli_fetch_assoc($proses_q);
 
-$pelanggan_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pelanggan");
-$res_pelanggan = mysqli_fetch_assoc($pelanggan_q);
-
-$selesai_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Selesai' AND is_deleted = 0");
+// Selesai
+$selesai_q = mysqli_query($koneksi, "
+    SELECT COUNT(*) as total 
+    FROM pesanan 
+    WHERE status_produksi = 'Selesai' 
+      AND is_deleted = 0
+");
 $res_selesai = mysqli_fetch_assoc($selesai_q);
 
-$telat_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Proses' AND tgl_tenggat < CURDATE() AND is_deleted = 0");
+// Telat (Proses + lewat tenggat)
+$telat_q = mysqli_query($koneksi, "
+    SELECT COUNT(*) as total 
+    FROM pesanan 
+    WHERE status_produksi = 'Proses' 
+      AND tgl_tenggat < CURDATE() 
+      AND is_deleted = 0
+");
 $res_telat = mysqli_fetch_assoc($telat_q);
 
-$batal_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Dibatalkan' AND is_deleted = 0");
+// Dibatalkan: hanya yang belum dikembalikan uangnya
+$batal_q = mysqli_query($koneksi, "
+    SELECT COUNT(*) as total 
+    FROM pesanan
+    WHERE status_produksi = 'Dibatalkan' 
+      AND is_deleted = 0
+      AND NOT EXISTS (
+          SELECT 1 FROM pembayaran pb
+          WHERE pb.id_pesanan = pesanan.id_pesanan
+            AND pb.status_bayar = 'Dikembalikan'
+      )
+");
 $res_batal = mysqli_fetch_assoc($batal_q);
 
-$diambil_q = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM pesanan WHERE status_produksi='Diambil' AND is_deleted = 0");
+// Diambil
+$diambil_q = mysqli_query($koneksi, "
+    SELECT COUNT(*) as total 
+    FROM pesanan 
+    WHERE status_produksi = 'Diambil' 
+      AND is_deleted = 0
+");
 $res_diambil = mysqli_fetch_assoc($diambil_q);
 
-$omzet_q = mysqli_query($koneksi, "SELECT SUM(total_biaya) as total FROM pesanan WHERE is_deleted = 0 AND status_produksi != 'Dibatalkan'");
-$res_omzet = mysqli_fetch_assoc($omzet_q);
-
-$bulan_ini_q = mysqli_query($koneksi, "SELECT SUM(pb.uang_muka) as total 
-                                       FROM pembayaran pb
-                                       INNER JOIN pesanan ps ON pb.id_pesanan = ps.id_pesanan
-                                       WHERE ps.is_deleted = 0
-                                       AND ps.status_produksi != '  Dibatalkan'
-                                       AND MONTH(pb.tgl_pembayaran) = MONTH(CURDATE()) 
-                                       AND YEAR(pb.tgl_pembayaran) = YEAR(CURDATE())");
+// Income bulan ini: hilang hanya setelah status_bayar = 'Dikembalikan'
+$bulan_ini_q = mysqli_query($koneksi, "
+    SELECT SUM(pb.uang_muka) as total 
+    FROM pembayaran pb
+    INNER JOIN pesanan ps ON pb.id_pesanan = ps.id_pesanan
+    WHERE ps.is_deleted = 0
+      AND pb.status_bayar != 'Dikembalikan'
+      AND MONTH(pb.tgl_pembayaran) = MONTH(CURDATE()) 
+      AND YEAR(pb.tgl_pembayaran) = YEAR(CURDATE())
+");
 $res_bulan_ini = mysqli_fetch_assoc($bulan_ini_q);
 
-$query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap 
-                                       FROM pesanan 
-                                       JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
-                                       WHERE pesanan.is_deleted = 0
-                                       ORDER BY pesanan.id_pesanan DESC LIMIT 5");
+$query_tabel = mysqli_query($koneksi, "
+    SELECT pesanan.*, pelanggan.nama_lengkap
+    FROM pesanan 
+    JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan
+    WHERE pesanan.is_deleted = 0
+      AND NOT (
+          pesanan.status_produksi = 'Dibatalkan'
+          AND EXISTS (
+              SELECT 1 FROM pembayaran pb
+              WHERE pb.id_pesanan = pesanan.id_pesanan
+                AND pb.status_bayar = 'Dikembalikan'
+          )
+      )
+    ORDER BY pesanan.id_pesanan DESC 
+    LIMIT 5
+");
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -61,12 +118,10 @@ $query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap
         <nav class="sidebar">
         <?php include 'sidebar.php'; ?>
         </nav>
-
         <div class="main-content">
             <header class="top-bar">
                 <h1 class="top-bar-title">Dashboard Pemilik</h1>
             </header>
-
             <div class="dashboard-body">
                 <div class="stats-container">
                     <div class="card blue">
@@ -145,13 +200,12 @@ $query_tabel = mysqli_query($koneksi, "SELECT pesanan.*, pelanggan.nama_lengkap
                         <img src="assets/icon-koin.png" alt="Coin Icon">
                     </div>
                     <div class="income-info">
-                        <p class="income-label">Total Pemasukan Bulan Ini </p>
+                        <p class="income-label">Total Pemasukan Bulan Ini</p>
                         <h2 class="income-amount">
                             Rp <?php echo number_format($res_bulan_ini['total'] ?? 0, 0, ',', '.'); ?>
                         </h2>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

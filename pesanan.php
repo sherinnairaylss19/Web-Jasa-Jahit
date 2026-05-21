@@ -15,9 +15,11 @@ if (isset($_GET['cari'])) {
 }
 
 $where = "pesanan.is_deleted = 0";
+
 if ($keyword != "") {
     $where .= " AND pelanggan.nama_lengkap LIKE '%$keyword%'";
 }
+
 if ($filter_status != "") {
     if ($filter_status === 'Telat') {
         $where .= " AND pesanan.status_produksi = 'Proses' AND pesanan.tgl_tenggat < CURDATE()";
@@ -27,9 +29,9 @@ if ($filter_status != "") {
     }
 }
 
-$query_str = "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.alamat_lengkap, pelanggan.no_hp 
+$query_str = "SELECT pesanan.*, pelanggan.nama_lengkap, pelanggan.alamat_lengkap, pelanggan.no_hp
               FROM pesanan 
-              JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan 
+              JOIN pelanggan ON pesanan.id_pelanggan = pelanggan.id_pelanggan
               WHERE $where
               ORDER BY tgl_tenggat ASC";
 
@@ -58,6 +60,18 @@ $query = mysqli_query($koneksi, $query_str);
         .filter-status:focus {
             border-color: #2D5E55;
         }
+        .btn-hapus {
+            background-color: #dc2626;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-hapus:hover { background-color: #b91c1c; }
     </style>
 </head>
 <body>
@@ -71,7 +85,6 @@ $query = mysqli_query($koneksi, $query_str);
                 <h1 class="top-bar-title">Pesanan</h1>
             </header>
 
-            
             <div class="content-body">
                 <div class="toolbar">
                     <div style="display:flex; align-items:center; gap:10px;">
@@ -81,7 +94,6 @@ $query = mysqli_query($koneksi, $query_str);
                             <button type="submit" style="display:none;">Cari</button>
                         </form>
 
-                        <!-- Dropdown Filter Status -->
                         <form action="" method="GET" style="display:inline;">
                             <?php if ($keyword != ""): ?>
                                 <input type="hidden" name="cari" value="<?= htmlspecialchars($keyword) ?>">
@@ -131,7 +143,6 @@ $query = mysqli_query($koneksi, $query_str);
                                 $jenis_celana = ['Celana', 'Celana Jeans'];
                                 $jenis_atasan = ['Kemeja', 'Atasan', 'Gamis', 'Kebaya', 'Seragam'];
 
-                                // Logika otomatis status Telat
                                 $status_tampil = $row['status_produksi'];
                                 if ($status_tampil === 'Proses' && $row['tgl_tenggat'] < date('Y-m-d')) {
                                     $status_tampil = 'Telat';
@@ -191,9 +202,17 @@ $query = mysqli_query($koneksi, $query_str);
                                 </td>
                                 <td class="aksi-buttons">
                                     <div class="button-group">
-                                        <a href="nota_pesanan.php?id=<?= $row['id_pesanan']; ?>" class="btn-detail">Nota</a>
-                                        <a href="edit-pesanan.php?id=<?= $row['id_pesanan']; ?>" class="btn-edit">Edit</a>
-                                        <a href="tambah-pembayaran.php?id=<?= $row['id_pesanan']; ?>" class="btn-bayar">Bayar</a>
+                                        <?php if ($row['status_produksi'] === 'Dibatalkan'): ?>
+                                            <a href="hapus_pesanan.php?id=<?= $row['id_pesanan']; ?>" 
+                                               class="btn-hapus"
+                                               onclick="return confirm('Yakin ingin menghapus pesanan ini? Tindakan ini tidak bisa dibatalkan.')">
+                                               Hapus
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="nota_pesanan.php?id=<?= $row['id_pesanan']; ?>" class="btn-detail">Nota</a>
+                                            <a href="edit-pesanan.php?id=<?= $row['id_pesanan']; ?>" class="btn-edit">Edit</a>
+                                            <a href="tambah-pembayaran.php?id=<?= $row['id_pesanan']; ?>" class="btn-bayar">Bayar</a>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
