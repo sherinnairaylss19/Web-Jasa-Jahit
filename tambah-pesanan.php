@@ -58,10 +58,17 @@ if (isset($_POST['submit'])) {
     $l_bahu     = $_POST['lebar_bahu'] ?? '';
     $l_dada     = $_POST['lingkar_dada'] ?? '';
     $p_lengan   = $_POST['panjang_lengan'] ?? '';
-    $p_baju     = $_POST['panjang_baju'] ?? '';
     $l_pinggang = $_POST['lingkar_pinggang'] ?? '';
     $l_pinggul  = $_POST['lingkar_pinggul'] ?? '';
     $l_paha     = $_POST['lingkar_paha'] ?? '';
+
+    // Pilih panjang_baju dari field yang sesuai jenis pesanan
+    $jenis_celana = ['Celana', 'Celana Jeans'];
+    if (in_array($jenis, $jenis_celana)) {
+        $p_baju = $_POST['panjang_celana'] ?? '';
+    } else {
+        $p_baju = $_POST['panjang_baju'] ?? '';
+    }
 
     if (empty($id_pelanggan)) {
         $query_pelanggan = "INSERT INTO pelanggan (nama_lengkap, no_hp, alamat_lengkap) 
@@ -240,7 +247,7 @@ if (isset($_POST['submit'])) {
                                     </div>
                                     <div class="input-group">
                                         <label>Panjang Celana</label>
-                                        <input type="text" name="panjang_baju" value="<?= val_lama($data_lama, 'panjang_baju') ?>" placeholder="cm">
+                                        <input type="text" name="panjang_celana" value="<?= val_lama($data_lama, 'panjang_baju') ?>" placeholder="cm">
                                     </div>
                                 </div>
                             </div>
@@ -254,7 +261,7 @@ if (isset($_POST['submit'])) {
 
                     <div class="form-buttons">
                         <button type="submit" name="submit" class="btn-save">Simpan Pesanan</button>
-                        <button type="button" class="btn-cancel" onclick="window.location='pesanan.php'">Batal</button>
+                        <button type="button" class="btn-cancel" onclick="window.location='pesanan.php'">Kembali</button>
                     </div>
                 </form>
             </div>

@@ -34,7 +34,13 @@ if (isset($_POST['update'])) {
     $l_bahu   = mysqli_real_escape_string($koneksi, trim($_POST['lebar_bahu'] ?? ''));
     $l_dada   = mysqli_real_escape_string($koneksi, trim($_POST['lingkar_dada'] ?? ''));
     $p_lengan = mysqli_real_escape_string($koneksi, trim($_POST['panjang_lengan'] ?? ''));
-    $p_baju   = mysqli_real_escape_string($koneksi, trim($_POST['panjang_baju'] ?? ''));
+
+    $jenis_celana = ['Celana', 'Celana Jeans'];
+    if (in_array($jenis, $jenis_celana)) {
+        $p_baju = mysqli_real_escape_string($koneksi, trim($_POST['panjang_celana'] ?? ''));
+    } else {
+        $p_baju = mysqli_real_escape_string($koneksi, trim($_POST['panjang_baju'] ?? ''));
+    }
 
     $q1 = mysqli_query($koneksi, "UPDATE pelanggan 
                                    SET nama_lengkap = '$nama', no_hp = '$no_hp', alamat_lengkap = '$alamat' 
@@ -88,7 +94,6 @@ function val($data, $key) {
         .alert-success { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
         .alert-error   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
 
-        /* Wrapper input manual */
         #manual-jenis-wrap {
             margin-top: 8px;
             display: none;
@@ -165,7 +170,7 @@ function val($data, $key) {
                                 <label>Status Produksi</label>
                                 <select name="status_produksi" style="width:100%; padding:8px;">
                                     <?php
-                                    $status_list = ['Proses', 'Selesai', 'Telat', 'Siap Diambil'];
+                                    $status_list = ['Proses', 'Selesai', 'Diambil', 'Batal'];
                                     foreach ($status_list as $s):
                                         $selected = ($data['status_produksi'] === $s) ? 'selected' : '';
                                     ?>
@@ -175,27 +180,27 @@ function val($data, $key) {
                             </div>
                         </div>
 
-        
+                        <!-- Kolom Kanan: Detail Jahitan & Ukuran -->
                         <div class="form-column">
                             <h3>Detail Jahitan &amp; Ukuran</h3>
 
                             <div class="input-group">
                                 <label>Jenis Pesanan</label>
 
-                                <!-- Dropdown pilihan jenis -->
                                 <select id="jenis_select" style="width:100%; padding:8px;" onchange="handleJenisChange(this.value)">
                                     <option value="">-- Pilih Jenis --</option>
                                     <?php foreach ($jenis_list as $j): ?>
+                                        <?php if (in_array($j, ['Kemeja','Atasan','Celana','Celana Jeans','Gamis','Kebaya','Seragam'])): ?>
                                         <option value="<?= $j ?>" <?= (!$is_manual && $jenis_db === $j) ? 'selected' : '' ?>>
                                             <?= $j ?>
                                         </option>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                     <option value="lainnya" <?= $is_manual ? 'selected' : '' ?>>
                                         Lainnya (input manual)
                                     </option>
                                 </select>
 
-                                <!-- Input manual — muncul jika pilih "Lainnya" -->
                                 <div id="manual-jenis-wrap" style="<?= $is_manual ? 'display:block;' : 'display:none;' ?>">
                                     <input
                                         type="text"
@@ -204,10 +209,8 @@ function val($data, $key) {
                                         value="<?= $is_manual ? val($data, 'jenis_pesanan') : '' ?>"
                                         oninput="document.getElementById('jenis_pesanan_final').value = this.value.trim()"
                                     >
-                        
                                 </div>
 
-                               
                                 <input
                                     type="hidden"
                                     name="jenis_pesanan"
@@ -259,7 +262,7 @@ function val($data, $key) {
                                     </div>
                                     <div class="input-group">
                                         <label>Panjang Celana</label>
-                                        <input type="text" name="panjang_baju" value="<?= val($data,'panjang_baju') ?>" placeholder="cm">
+                                        <input type="text" name="panjang_celana" value="<?= val($data,'panjang_baju') ?>" placeholder="cm">
                                     </div>
                                 </div>
                             </div>
@@ -276,6 +279,11 @@ function val($data, $key) {
                         <button type="submit" name="update" class="btn-save">
                             <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
                         </button>
+                        <a href="batal_pesanan.php?id=<?= $id_pesanan ?>"
+                           class="btn-batal-pesanan"
+                           onclick="return confirm('Batalkan pesanan ini? Status akan berubah menjadi Batal.')">
+                            <i class="fa-solid fa-ban"></i> Batalkan Pesanan
+                        </a>
                         <a href="hapus_pesanan.php?id=<?= $id_pesanan ?>"
                            class="btn-delete"
                            onclick="return confirm('Apakah Anda yakin ingin menghapus pesanan ini? Semua data pesanan ini akan hilang.')">
@@ -290,7 +298,6 @@ function val($data, $key) {
     </div>
 
     <script>
-    
     const mapping = {
         'Kemeja':       'ukuran_atasan',
         'Atasan':       'ukuran_atasan',
@@ -301,7 +308,6 @@ function val($data, $key) {
         'Celana Jeans': 'ukuran_celana',
     };
 
-    
     function tampilkanUkuran(jenis) {
         document.querySelectorAll('.ukuran-group').forEach(el => el.style.display = 'none');
         const target = mapping[jenis];
@@ -309,16 +315,15 @@ function val($data, $key) {
     }
 
     function handleJenisChange(val) {
-        const manualWrap = document.getElementById('manual-jenis-wrap');
-        const finalInput = document.getElementById('jenis_pesanan_final');
+        const manualWrap  = document.getElementById('manual-jenis-wrap');
+        const finalInput  = document.getElementById('jenis_pesanan_final');
         const manualInput = document.getElementById('jenis_manual');
 
         if (val === 'lainnya') {
-         
             manualWrap.style.display = 'block';
             manualInput.focus();
             finalInput.value = manualInput.value.trim();
-            tampilkanUkuran(''); 
+            tampilkanUkuran('');
         } else {
             manualWrap.style.display = 'none';
             finalInput.value = val;
@@ -327,13 +332,13 @@ function val($data, $key) {
     }
 
     (function init() {
-        const select = document.getElementById('jenis_select');
+        const select     = document.getElementById('jenis_select');
         const finalInput = document.getElementById('jenis_pesanan_final');
-        const currentVal = finalInput.value; 
+        const currentVal = finalInput.value;
 
         if (select.value === 'lainnya') {
             document.getElementById('manual-jenis-wrap').style.display = 'block';
-            tampilkanUkuran(''); 
+            tampilkanUkuran('');
         } else {
             tampilkanUkuran(currentVal);
         }
