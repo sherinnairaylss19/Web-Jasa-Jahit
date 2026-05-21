@@ -20,7 +20,7 @@ if (mysqli_num_rows($cek) === 0) {
     exit();
 }
 
-mysqli_query($koneksi, "UPDATE pesanan SET status_produksi = 'Batal' WHERE id_pesanan = $id_pesanan");
+mysqli_query($koneksi, "UPDATE pesanan SET status_produksi = 'Dibatalkan' WHERE id_pesanan = $id_pesanan");
 
 header("Location: pesanan.php");
 exit();
